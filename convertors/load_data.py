@@ -117,6 +117,12 @@ def main():
         'mip2016'
     )
 
+    # corporatie bezit 2017
+    esri_json2psql(
+        os.path.join(datadir, 'corporatie_bezit', 'AFWC_2017.json'),
+        pg_str,
+        'afwc2017'
+    )
 
 if __name__ == '__main__':
     main()
