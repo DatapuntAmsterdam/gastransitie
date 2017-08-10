@@ -1,3 +1,7 @@
+# Under no circumstances commit the raw data:
+data/*
+ancillary-tools/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
