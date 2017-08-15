@@ -124,5 +124,13 @@ def main():
         'afwc2017'
     )
 
+    # energie labels (van maps.amsterdam.nl open geodata)
+    esri_json2psql(
+        os.path.join(datadir, 'energie_labels', 'ENERGIE_LABELS.json'),
+        pg_str,
+        'energie_labels'
+    )
+
+
 if __name__ == '__main__':
     main()
