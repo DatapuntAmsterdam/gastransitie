@@ -8,7 +8,7 @@ database:
     POSTGRES_USER: transitiegas
     POSTGRES_DB: transitiegas
 
-builder:
+importer:
   build: .
   links:
     - database:database
