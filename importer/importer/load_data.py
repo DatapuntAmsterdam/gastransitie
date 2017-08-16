@@ -85,7 +85,7 @@ def main(datadir):
     shp2psql(
         os.path.join(datadir, 'renovaties', 'renovatiesperbuurtvanaf2017_region.shp'),
         pg_str,
-        'woningbouw_renovatie_plannen'
+        'gas_woningbouw_renovatie_plannen'
     )
 
     # alliander data
@@ -93,42 +93,42 @@ def main(datadir):
         os.path.join(datadir, 'alliander', 'Groen_Amsterdam.zip'),
         'Groen_Amsterdam.shp',
         pg_str,
-        'alliander_gas_groen'
+        'gas_alliander_gas_groen'
     )
 
     zipped_shp2psql(
         os.path.join(datadir, 'alliander', 'Oranje_Amsterdam.zip'),
         'Oranje_Amsterdam.shp',
         pg_str,
-        'alliander_gas_oranje'
+        'gas_alliander_gas_oranje'
     )
 
     # Stads warmte / koude net:
     esri_json2psql(
         os.path.join(datadir, 'warmtekoude', 'STADSWARMTEKOUDE.json'),
         pg_str,
-        'stadswarmtekoude'
+        'gas_stadswarmtekoude'
     )
 
     # MIP2016
     esri_json2psql(
         os.path.join(datadir, 'mip', 'MIP2016.json'),
         pg_str,
-        'mip2016'
+        'gas_mip2016'
     )
 
     # corporatie bezit 2017
     esri_json2psql(
         os.path.join(datadir, 'corporatie_bezit', 'AFWC_2017.json'),
         pg_str,
-        'afwc2017'
+        'gas_afwc2017'
     )
 
     # energie labels (van maps.amsterdam.nl open geodata)
     esri_json2psql(
         os.path.join(datadir, 'energie_labels', 'ENERGIE_LABELS.json'),
         pg_str,
-        'energie_labels'
+        'gas_energie_labels'
     )
 
 

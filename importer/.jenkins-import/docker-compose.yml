@@ -1,0 +1,45 @@
+version: '3.0'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: gastransitie
+    volumes:
+      - tmpdatabase:/tmp
+
+  importer:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${ENVIRONMENT}
+    links:
+      - database
+    environment:
+      DATABASE_NAME: gastransitie
+      DATABASE_USER: gastransitie
+      DATABASE_PASSWORD: insecure
+      GASTRANSITIE_OBJECTSTORE_PASSWORD:
+      PGPASSWORD: insecure
+      DATAPUNT_API_URL:
+    command: >
+      bash -c "/app/docker-wait.sh \
+               && /app/import.sh"
+
+  db-backup:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    links:
+      - database
+    environment:
+      PGPASSWORD: insecure
+    volumes:
+      - ./backups:/tmp/backups
+    command: >
+      bash -c "echo database:5432:gastransitie:gastransitie:insecure > ~/.pgpass \
+              && chmod 600 ~/.pgpass \
+              && pg_dump --clean \
+                          -Fc \
+                          -t gas* \
+                          -U gastransitie \
+                          -h database -p 5432 \
+                          gastransitie > /tmp/backups/database.dump"
+
+volumes:
+   tmpdatabase:

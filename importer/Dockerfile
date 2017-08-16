@@ -1,6 +1,9 @@
 FROM amsterdam/docker_python:latest
 
-ADD /entrypoint.sh /entrypoint.sh
-RUN chmod u+x /entrypoint.sh
+COPY importer /app/
+RUN mkdir /data
+COPY .jenkins-import /.jenkins-import/
 
-ENTRYPOINT /entrypoint.sh
+ADD /import.sh /app/import.sh
+ENTRYPOINT /app/import.sh
+
