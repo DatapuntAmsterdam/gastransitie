@@ -2,6 +2,7 @@ import os
 import tempfile
 import subprocess
 import logging
+import argparse
 
 
 FORMAT = '%(asctime)-15s %(message)s'
@@ -75,11 +76,10 @@ def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
     run_command_sync(cmd)
 
 
-def main():
+def main(datadir):
     # Current setup is to run locally, using datapunt Postgres image and the
     # builder image.
     pg_str = get_pg_str('database', 'transitiegas', 'transitiegas', 'insecure')
-    datadir = os.path.join('/', 'data')
 
     # renovatieplannen
     shp2psql(
@@ -133,4 +133,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    desc = 'Upload gas transitie datasets into PostgreSQL.'
+    parser = argparse.ArgumentParser(desc)
+    parser.add_argument('datadir', type=str,
+        help='Local data directory', nargs=1)
+    args = parser.parse_args()
+    main(args.datadir[0])
