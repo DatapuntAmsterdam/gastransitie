@@ -19,8 +19,8 @@ logging.getLogger('swiftclient').setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
-#FORMAT = '%(asctime)-15s %(message)s'
-#logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 
 GASTRANSITIE_OBJECTSTORE_PASSWORD = os.environ['GASTRANSITIE_OBJECTSTORE_PASSWORD']
 
@@ -122,3 +122,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     main(args.datadir[0])
+    print(os.listdir(args.datadir[0]))

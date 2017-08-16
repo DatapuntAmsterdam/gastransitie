@@ -5,11 +5,13 @@ services:
     environment:
       POSTGRES_PASSWORD: insecure
       POSTGRES_USER: gastransitie
+      POSTGRES_DB: gastransitie
     volumes:
       - tmpdatabase:/tmp
 
   importer:
     image: build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${ENVIRONMENT}
+    #    build: ..
     links:
       - database
     environment:

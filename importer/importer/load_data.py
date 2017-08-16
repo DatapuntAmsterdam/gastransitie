@@ -24,7 +24,8 @@ def scrub(l):
 
 
 def run_command_sync(cmd, allow_fail=False):
-    logging.debug('Running %s', scrub(cmd))
+#    logging.debug('Running %s', scrub(cmd))
+    logging.debug('Running %s', cmd)
     p = subprocess.Popen(cmd)
     p.wait()
 
@@ -79,7 +80,7 @@ def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
 def main(datadir):
     # Current setup is to run locally, using datapunt Postgres image and the
     # builder image.
-    pg_str = get_pg_str('database', 'transitiegas', 'transitiegas', 'insecure')
+    pg_str = get_pg_str('database', 'gastransitie', 'gastransitie', 'insecure')
 
     # renovatieplannen
     shp2psql(

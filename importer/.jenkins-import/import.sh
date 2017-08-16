@@ -2,16 +2,17 @@
 
 set -e
 set -u
+set -x
 
 DIR="$(dirname $0)"
 
 dc() {
-	docker-compose -p hr -f ${DIR}/docker-compose.yml $*;
+	docker-compose -p gastransitie -f ${DIR}/docker-compose.yml $*;
 }
 
 dc pull
 
-trap 'dc kill ; dc rm -f -v' EXIT
+# trap 'dc kill ; dc rm -f -v' EXIT
 
 echo "Do we have OS password?"
 echo $GASTRANSITIE_OBJECTSTORE_PASSWORD
@@ -25,20 +26,18 @@ dc build --pull
 
 dc up -d database
 
-# wait to give postgres the change to be up
-sleep 50
-
 # load latest bag into database
 echo "Load latest verblijfsobjecten en nummeraanduidingen in gastransitie database"
 
 # dc exec -T database update-db.sh atlas
+dc run --rm importer /app/docker-wait.sh
 dc exec -T database update-table.sh bag bag_buurt public gastransitie
 # dc exec -T database update-table.sh bag bag_nummeraanduiding public gastransitie
 
-echo "create gastransitie api database"
+echo "Running importer "
 dc run --rm importer
 
-echo "DONE! importing mks into database"
+echo "DONE!"
 
 echo "create gastransitie dump"
 # run the backup shizzle

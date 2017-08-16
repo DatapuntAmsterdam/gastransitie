@@ -1,6 +1,6 @@
 # Under no circumstances commit the raw data:
 data/*
-ancillary-tools/*
+importer/.jenkins-import/backups/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
