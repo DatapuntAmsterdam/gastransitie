@@ -1,22 +1,31 @@
-database:
-  image: build.datapunt.amsterdam.nl:5000/atlas/postgres
-  ports:
-#    - "5434:5432"
-    - "5435:5432"
-  environment:
-    POSTGRES_PASSWORD: insecure
-    POSTGRES_USER: transitiegas
-    POSTGRES_DB: transitiegas
+version: '3.0'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: gastransitie
+      POSTGRES_DB: gastransitie
+    ports:
+      - 5435:5432
+    volumes:
+      - tmpdatabase:/tmp
 
-importer:
-  build: .
-  links:
-    - database:database
-  ports:
-    - "8080:8080"
-  environment:
-    DATABASE_NAME: atlas
-    DATABASE_PASSWORD: insecure
-  volumes:
-    - ./data:/data
-    - ./convertors:/convertors
+  importer:
+    #image: build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${ENVIRONMENT}
+    build: importer
+    links:
+      - database
+    environment:
+      DATABASE_NAME: gastransitie
+      DATABASE_USER: gastransitie
+      DATABASE_PASSWORD: insecure
+      GASTRANSITIE_OBJECTSTORE_PASSWORD:
+      PGPASSWORD: insecure
+      DATAPUNT_API_URL:
+    command: >
+      bash -c "/app/docker-wait.sh \
+               && /app/import.sh"
+
+volumes:
+   tmpdatabase:
