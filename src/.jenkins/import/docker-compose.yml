@@ -33,4 +33,4 @@ services:
                           -Fc \
                           -t gas*  \
                           -h db -p 5432 \
-                          woz > /tmp/backups/database.dump"
+                          gastransitie > /tmp/backups/database.dump"
