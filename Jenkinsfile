@@ -22,18 +22,18 @@ node {
         checkout scm
     }
 
-/*    stage('Test') {
+    stage('Test') {
         tryStep "test", {
-            sh "docker-compose -p handelsregister -f .jenkins-test/docker-compose.yml build && " +
-               "docker-compose -p handelsregister -f .jenkins-test/docker-compose.yml run -u root --rm tests"
+            sh "docker-compose -p gastransitie -f src/.jenkins/test/docker-compose.yml build"
+               "docker-compose -p gastransitie -f src/.jenkins/test/docker-compose.yml run -u root --rm tests"
         }, {
-            sh "docker-compose -p handelsregister -f .jenkins-test/docker-compose.yml down"
+            sh "docker-compose -p gastransitie -f src/.jenkins/test/docker-compose.yml down"
         }
-    } */
+    }
 
     stage("Build image") {
         tryStep "build", {
-            def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${env.BUILD_NUMBER}", "importer")
+            def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${env.BUILD_NUMBER}", "src")
             image.push()
         }
     }
