@@ -1,0 +1,21 @@
+version: '3.0'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: gastransitie
+      POSTGRES_DB: gastransitie
+
+  tests:
+    build: ../../
+    links:
+      - database
+    environment:
+      DATABASE_NAME: gastransitie
+      DATABASE_USER: gastransitie
+      DATABASE_PASSWORD: insecure
+      GASTRANSITIE_OBJECTSTORE_PASSWORD:
+    command: >
+      bash -c "/app/docker-wait.sh \
+               && /app/run_test.sh"
