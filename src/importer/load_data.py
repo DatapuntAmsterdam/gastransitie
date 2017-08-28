@@ -24,8 +24,8 @@ def scrub(l):
 
 
 def run_command_sync(cmd, allow_fail=False):
-#    logging.debug('Running %s', scrub(cmd))
-    logging.debug('Running %s', cmd)
+    logging.debug('Running %s', scrub(cmd))
+#    logging.debug('Running %s', cmd)
     p = subprocess.Popen(cmd)
     p.wait()
 
@@ -42,7 +42,10 @@ def get_pg_str(host, user, dbname, password):
 
 
 def shp2psql(shp_filename, pg_str, layer_name, **kwargs):
-    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL', pg_str, shp_filename]
+    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+    if 't_srs' in kwargs:
+        cmd.extend(['-t_srs', kwargs['t_srs']])
+    cmd.extend([pg_str, shp_filename])
     run_command_sync(cmd)
 
 
@@ -54,7 +57,7 @@ def zipped_shp2psql(zip_filename, shp_filename, pg_str, layer_name, **kwargs):
         cmd = ['unzip', '-d', tempdir, zip_filename]
         run_command_sync(cmd)
 
-        shp2psql(os.path.join(tempdir, shp_filename), pg_str, layer_name)
+        shp2psql(os.path.join(tempdir, shp_filename), pg_str, layer_name, **kwargs)
 
 
 def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
@@ -94,14 +97,16 @@ def main(datadir):
         os.path.join(datadir, 'alliander', 'Groen_Amsterdam.zip'),
         'Groen_Amsterdam.shp',
         pg_str,
-        'gas_alliander_gas_groen'
+        'gas_alliander_gas_groen',
+        t_srs='EPSG:28992'
     )
 
     zipped_shp2psql(
         os.path.join(datadir, 'alliander', 'Oranje_Amsterdam.zip'),
         'Oranje_Amsterdam.shp',
         pg_str,
-        'gas_alliander_gas_oranje'
+        'gas_alliander_gas_oranje',
+        t_srs='EPSG:28992'
     )
 
     # Stads warmte / koude net:

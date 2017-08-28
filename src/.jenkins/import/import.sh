@@ -16,4 +16,5 @@ mkdir -p ${DIR}/backups
 
 dc build
 dc run --rm importer
+dc exec -T database update-table.sh bag bag_buurt public gastransitie
 dc run --rm db-backup
