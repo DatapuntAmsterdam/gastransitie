@@ -31,6 +31,8 @@ services:
               && chmod 600 ~/.pgpass \
               && pg_dump --clean \
                           -Fc \
-                          -t gas*  \
+                          -t gas* \
+                          -T auth* \
                           -h db -p 5432 \
-                          woz > /tmp/backups/database.dump"
+                          -U gastransitie \
+                          gastransitie > /tmp/backups/database.dump"
