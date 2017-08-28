@@ -22,4 +22,4 @@ services:
       - ./data:/data
     command: >
       bash -c "/app/docker-wait.sh \
-               && /app/import.sh"
+               && /app/run_import.sh"
