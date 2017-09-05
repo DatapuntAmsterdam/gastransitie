@@ -9,14 +9,16 @@ create view
   gas_groen_per_buurt
 as select
   b.vollcode,
-  sum(ST_Length(g.wkb_geometry))/1000 as lengte
+  sum(ST_Length(g.wkb_geometry))/1000 as lengte,
+  b.geometrie
 from
   bag_buurt as b,
   gas_alliander_gas_groen as g
 where
   ST_Contains(b.geometrie, g.wkb_geometry)
 group by
-  b.vollcode
+  b.vollcode,
+  b.geometrie
 order by
   lengte desc;
 """
@@ -26,14 +28,16 @@ create view
   gas_oranje_per_buurt
 as select
   b.vollcode,
-  sum(ST_Length(g.wkb_geometry))/1000 as lengte
+  sum(ST_Length(g.wkb_geometry))/1000 as lengte,
+  b.geometrie
 from
   bag_buurt as b,
   gas_alliander_gas_oranje as g
 where
   ST_Contains(b.geometrie, g.wkb_geometry)
 group by
-  b.vollcode
+  b.vollcode,
+  b.geometrie
 order by
   lengte desc;
 """

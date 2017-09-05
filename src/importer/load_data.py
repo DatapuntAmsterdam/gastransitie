@@ -45,14 +45,13 @@ def shp2psql(shp_filename, pg_str, layer_name, **kwargs):
     cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
     if 't_srs' in kwargs:
         cmd.extend(['-t_srs', kwargs['t_srs']])
+    if 'nlt' in kwargs:
+        cmd.extend(['-nlt', kwargs['nlt']])
     cmd.extend([pg_str, shp_filename])
     run_command_sync(cmd)
 
 
 def zipped_shp2psql(zip_filename, shp_filename, pg_str, layer_name, **kwargs):
-    # Assume for now no structure in zip file, hence shp_filename has no
-    # directory in it.
-    shp_filename = os.path.split(shp_filename)[1]  # enforce assumption
     with tempfile.TemporaryDirectory() as tempdir:
         cmd = ['unzip', '-d', tempdir, zip_filename]
         run_command_sync(cmd)
@@ -135,6 +134,16 @@ def main(datadir):
         os.path.join(datadir, 'energie_labels', 'ENERGIE_LABELS.json'),
         pg_str,
         'gas_energie_labels'
+    )
+
+    # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
+    zipped_shp2psql(
+        os.path.join(datadir, 'cbs', 'shape 2016 versie 10.zip'),
+        # The relevant shape files are in a subdirectory, hence the join.
+        os.path.join('Uitvoer_shape', 'buurt_2016.shp'),
+        pg_str,
+        'gas_cbs_buurt_2016',
+        nlt='PROMOTE_TO_MULTI'
     )
 
 
