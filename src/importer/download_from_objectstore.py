@@ -42,7 +42,8 @@ DATASETS = set([
     'energie_labels',
     'mip',
     'renovaties',
-    'warmtekoude'
+    'warmtekoude',
+    'cbs'
 ])
 
 
