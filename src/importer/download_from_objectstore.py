@@ -43,7 +43,8 @@ DATASETS = set([
     'mip',
     'renovaties',
     'warmtekoude',
-    'cbs'
+    'cbs',
+    'eigendomskaart'
 ])
 
 
@@ -120,7 +121,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(desc)
     parser.add_argument('datadir', type=str,
                         help='Local data directory.', nargs=1)
-
     args = parser.parse_args()
-    main(args.datadir[0])
-    print(os.listdir(args.datadir[0]))
+
+    # Check whether local cached downloads should be used.
+    ENV_VAR = 'GASTRANSITIE_USE_LOCAL'
+    use_local = True if os.environ.get(ENV_VAR, '') == 'TRUE' else False
+
+    if not use_local:
+        main(args.datadir[0])
+    else:
+        logger.info('No download from datastore requested, quitting.')

@@ -18,6 +18,7 @@ services:
       DATABASE_USER: gastransitie
       DATABASE_PASSWORD: insecure
       GASTRANSITIE_OBJECTSTORE_PASSWORD:
+      GASTRANSITIE_USE_LOCAL:
     volumes:
       - ./data:/data
     command: >

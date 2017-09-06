@@ -3,10 +3,22 @@ import tempfile
 import subprocess
 import logging
 import argparse
+from collections import OrderedDict
 
+from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
+import pandas as pd
 
 FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+
+LOCAL_POSTGRES_URL = URL(
+    drivername='postgresql',
+    username='gastransitie',
+    password='insecure',
+    host='database',
+    database='gastransitie'
+)
 
 
 class NonZeroReturnCode(Exception):
@@ -47,6 +59,8 @@ def shp2psql(shp_filename, pg_str, layer_name, **kwargs):
         cmd.extend(['-t_srs', kwargs['t_srs']])
     if 'nlt' in kwargs:
         cmd.extend(['-nlt', kwargs['nlt']])
+    if 'where' in kwargs:
+        cmd.extend(['-where', kwargs['where']])
     cmd.extend([pg_str, shp_filename])
     run_command_sync(cmd)
 
@@ -79,6 +93,23 @@ def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
     run_command_sync(cmd)
 
 
+def load_stoplicht_alliander(filename):
+    # This contains knowledge about the data layout
+    STOPLICHT_COLUMNS = OrderedDict([
+        ('BU_CODE', str),
+        ('Buurt', str),
+        ('Kleur', str),
+    ])
+
+    df = pd.read_excel(
+        filename, sheetname=0, names=STOPLICHT_COLUMNS.keys(),
+        dtypes=STOPLICHT_COLUMNS)
+
+    # Write our data to database
+    engine = create_engine(LOCAL_POSTGRES_URL)
+    df.to_sql('gas_alliander_stoplicht', engine)
+
+
 def main(datadir):
     # Current setup is to run locally, using datapunt Postgres image and the
     # builder image.
@@ -97,7 +128,8 @@ def main(datadir):
         'Groen_Amsterdam.shp',
         pg_str,
         'gas_alliander_gas_groen',
-        t_srs='EPSG:28992'
+        t_srs='EPSG:28992',
+        nlt='PROMOTE_TO_MULTI'
     )
 
     zipped_shp2psql(
@@ -136,15 +168,32 @@ def main(datadir):
         'gas_energie_labels'
     )
 
+#    # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
+#    zipped_shp2psql(
+#        os.path.join(datadir, 'cbs', 'shape 2016 versie 10.zip'),
+#        # The relevant shape files are in a subdirectory, hence the join.
+#        os.path.join('Uitvoer_shape', 'buurt_2016.shp'),
+#        pg_str,
+#        'gas_cbs_buurt_2016',
+#        t_srs='EPSG:28992',
+#        nlt='PROMOTE_TO_MULTI'
+#    )
+
     # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
     zipped_shp2psql(
-        os.path.join(datadir, 'cbs', 'shape 2016 versie 10.zip'),
+        os.path.join(datadir, 'cbs', 'buurt_2017.zip'),
         # The relevant shape files are in a subdirectory, hence the join.
-        os.path.join('Uitvoer_shape', 'buurt_2016.shp'),
+        'buurt_2017.shp',
         pg_str,
-        'gas_cbs_buurt_2016',
-        nlt='PROMOTE_TO_MULTI'
+        'gas_cbs_buurt_2017',
+        t_srs='EPSG:28992',
+        nlt='PROMOTE_TO_MULTI',
+        where='"gm_code"=\'GM0363\''  # only load Amsterdam
     )
+
+    # Alliander stoplicht
+    fn = '20170829 - Stoplicht Amsterdam DISTRIBUTIELEIDINGEN (deelbaar) v0.02.xlsx'
+    load_stoplicht_alliander(os.path.join(datadir, 'alliander', fn))
 
 
 if __name__ == '__main__':

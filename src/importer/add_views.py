@@ -42,6 +42,37 @@ order by
   lengte desc;
 """
 
+# BUURT_MAPPING = """
+# create materialized view
+#         "buurtcode_mapping"
+# as select
+#         "bag"."vollcode" as vollcode,
+#         "cbs"."bu_code" as cbscode,
+#         "bag"."geometrie"
+# from
+#         "bag_buurt" as "bag",
+#         "gas_cbs_buurt_2017" as "cbs"
+# where
+# case
+# 	when ("cbs"."gm_code" = 'GM0363' and "cbs"."bu_naam" like "bag"."naam") then true
+# 	when ST_Area(ST_Intersection("bag"."geometrie", "cbs"."wkb_geometry")) / ST_Area("bag"."geometrie") > 0.9 then true
+# else false
+# end
+# """
+
+BUURT_MAPPING = """
+create materialized view
+        "buurtcode_mapping"
+as select
+        "bag"."vollcode" as vollcode,
+        "cbs"."bu_code" as cbscode,
+        "bag"."geometrie"
+from
+        "bag_buurt" as "bag",
+        "gas_cbs_buurt_2017" as "cbs"
+where
+    "cbs"."gm_code" = 'GM0363' and "cbs"."bu_naam" like "bag"."naam";
+"""
 
 def execute_sql(pg_str, sql):
     with psycopg2.connect(pg_str) as conn:
@@ -61,6 +92,7 @@ def main():
 
     execute_sql(pg_str, GAS_GROEN_PER_BUURT)
     execute_sql(pg_str, GAS_ORANJE_PER_BUURT)
+    execute_sql(pg_str, BUURT_MAPPING)
     print('Test view created')
 
 
