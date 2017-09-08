@@ -86,6 +86,26 @@ def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
         run_command_sync(cmd)
 
 
+def load_eigendomskaart_mapinfo(zip_filename, pg_str, tab_filename, layer_name, **kwargs):
+    with tempfile.TemporaryDirectory() as tempdir:
+        # unpack zip file
+        cmd = ['unzip', '-d', tempdir, zip_filename]
+        run_command_sync(cmd)
+
+#        # load tab
+        cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+        cmd.extend([pg_str, os.path.join(tempdir, tab_filename)])
+
+#        d, fn = os.path.split(tab_filename)
+#        os.chdir(os.path.join(tempdir, d))
+#        cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'GeoJSON', 'temp.geojson', fn]
+
+        # HIERZO
+        env = os.environ.copy()
+        env[''] = ''
+        run_command_sync(cmd, env)
+
+
 def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
     # first attempt:
     # https://gis.stackexchange.com/questions/13029/converting-arcgis-server-json-to-geojson
@@ -168,17 +188,6 @@ def main(datadir):
         'gas_energie_labels'
     )
 
-#    # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
-#    zipped_shp2psql(
-#        os.path.join(datadir, 'cbs', 'shape 2016 versie 10.zip'),
-#        # The relevant shape files are in a subdirectory, hence the join.
-#        os.path.join('Uitvoer_shape', 'buurt_2016.shp'),
-#        pg_str,
-#        'gas_cbs_buurt_2016',
-#        t_srs='EPSG:28992',
-#        nlt='PROMOTE_TO_MULTI'
-#    )
-
     # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
     zipped_shp2psql(
         os.path.join(datadir, 'cbs', 'buurt_2017.zip'),
@@ -194,6 +203,28 @@ def main(datadir):
     # Alliander stoplicht
     fn = '20170829 - Stoplicht Amsterdam DISTRIBUTIELEIDINGEN (deelbaar) v0.02.xlsx'
     load_stoplicht_alliander(os.path.join(datadir, 'alliander', fn))
+
+    load_eigendomskaart_mapinfo(
+        os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
+        pg_str,
+        os.path.join('mapinfo', 'kot_eig_adam.tab'),
+        layer_name='kot_eig_adam'
+    )
+
+    load_eigendomskaart_mapinfo(
+        os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
+        pg_str,
+        os.path.join('mapinfo', 'kot_eig_adam.tab'),
+        layer_name='kot_eig_adam'
+    )
+
+    load_eigendomskaart_mapinfo(
+        os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
+        pg_str,
+        os.path.join('mapinfo', 'kot_eig_cat.tab'),
+        layer_name='kot_eig_cat'
+    )
+
 
 
 if __name__ == '__main__':
