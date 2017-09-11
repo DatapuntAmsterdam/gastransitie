@@ -60,19 +60,37 @@ order by
 # end
 # """
 
-BUURT_MAPPING = """
+#BUURT_MAPPING = """
+#create materialized view
+#        "buurtcode_mapping"
+#as select
+#        "bag"."vollcode" as vollcode,
+#        "cbs"."bu_code" as cbscode,
+#        "bag"."geometrie"
+#from
+#        "bag_buurt" as "bag",
+#        "gas_cbs_buurt_2017" as "cbs"
+#where
+#    "cbs"."gm_code" = 'GM0363' and "cbs"."bu_naam" like "bag"."naam";
+#"""
+
+BUURTCODE_MAPPING = """
 create materialized view
-        "buurtcode_mapping"
+	buurtcode_mapping
 as select
-        "bag"."vollcode" as vollcode,
-        "cbs"."bu_code" as cbscode,
-        "bag"."geometrie"
+	/*count("b"."vollcode"),*/
+	"b"."vollcode" as ams_code,
+	"c"."bu_code" as cbs_code,
+	"b"."naam" as ams_naam,
+ 	"c"."bu_naam" as cbs_naam,
+	"b"."geometrie" as geometrie
 from
-        "bag_buurt" as "bag",
-        "gas_cbs_buurt_2017" as "cbs"
+	"bag_buurt" as b,
+	"gas_cbs_buurt_2017" as c
 where
-    "cbs"."gm_code" = 'GM0363' and "cbs"."bu_naam" like "bag"."naam";
+	ST_Contains("b"."geometrie", ST_PointOnSurface("c"."wkb_geometry")) and "b"."vollcode" != 'N73g'
 """
+
 
 def execute_sql(pg_str, sql):
     with psycopg2.connect(pg_str) as conn:
@@ -92,7 +110,7 @@ def main():
 
     execute_sql(pg_str, GAS_GROEN_PER_BUURT)
     execute_sql(pg_str, GAS_ORANJE_PER_BUURT)
-    execute_sql(pg_str, BUURT_MAPPING)
+    execute_sql(pg_str, BUURTCODE_MAPPING)
     print('Test view created')
 
 

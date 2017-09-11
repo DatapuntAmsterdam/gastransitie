@@ -92,18 +92,13 @@ def load_eigendomskaart_mapinfo(zip_filename, pg_str, tab_filename, layer_name, 
         cmd = ['unzip', '-d', tempdir, zip_filename]
         run_command_sync(cmd)
 
-#        # load tab
-        cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+        # Load mapinfo file, we have an encoding problem here -skipfailures allows
+        # us to continue in the presence of these encoding errors (about 20 out of
+        # a total number of records of 500000.
+        cmd = ['ogr2ogr', '-skipfailures', '-nln', layer_name, '-F', 'PostgreSQL']
         cmd.extend([pg_str, os.path.join(tempdir, tab_filename)])
 
-#        d, fn = os.path.split(tab_filename)
-#        os.chdir(os.path.join(tempdir, d))
-#        cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'GeoJSON', 'temp.geojson', fn]
-
-        # HIERZO
-        env = os.environ.copy()
-        env[''] = ''
-        run_command_sync(cmd, env)
+        run_command_sync(cmd)
 
 
 def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
@@ -139,7 +134,8 @@ def main(datadir):
     shp2psql(
         os.path.join(datadir, 'renovaties', 'renovatiesperbuurtvanaf2017_region.shp'),
         pg_str,
-        'gas_woningbouw_renovatie_plannen'
+        'gas_woningbouw_renovatie_plannen',
+        t_srs='EPSG:28992'
     )
 
     # alliander data
@@ -164,28 +160,32 @@ def main(datadir):
     esri_json2psql(
         os.path.join(datadir, 'warmtekoude', 'STADSWARMTEKOUDE.json'),
         pg_str,
-        'gas_stadswarmtekoude'
+        'gas_stadswarmtekoude',
+        t_srs='EPSG:28992'
     )
 
     # MIP2016
     esri_json2psql(
         os.path.join(datadir, 'mip', 'MIP2016.json'),
         pg_str,
-        'gas_mip2016'
+        'gas_mip2016',
+        t_srs='EPSG:28992'
     )
 
     # corporatie bezit 2017
     esri_json2psql(
         os.path.join(datadir, 'corporatie_bezit', 'AFWC_2017.json'),
         pg_str,
-        'gas_afwc2017'
+        'gas_afwc2017',
+        t_srs='EPSG:28992'
     )
 
     # energie labels (van maps.amsterdam.nl open geodata)
     esri_json2psql(
         os.path.join(datadir, 'energie_labels', 'ENERGIE_LABELS.json'),
         pg_str,
-        'gas_energie_labels'
+        'gas_energie_labels',
+        t_srs='EPSG:28992'
     )
 
     # CBS buurt kaart (2016 versie) TODO: see whether more recent is available
@@ -204,33 +204,35 @@ def main(datadir):
     fn = '20170829 - Stoplicht Amsterdam DISTRIBUTIELEIDINGEN (deelbaar) v0.02.xlsx'
     load_stoplicht_alliander(os.path.join(datadir, 'alliander', fn))
 
+    # Eigendomskaart
     load_eigendomskaart_mapinfo(
         os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
         pg_str,
         os.path.join('mapinfo', 'kot_eig_adam.tab'),
-        layer_name='kot_eig_adam'
-    )
-
-    load_eigendomskaart_mapinfo(
-        os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
-        pg_str,
-        os.path.join('mapinfo', 'kot_eig_adam.tab'),
-        layer_name='kot_eig_adam'
+        layer_name='kot_eig_adam',
+        t_srs='EPSG:28992'
     )
 
     load_eigendomskaart_mapinfo(
         os.path.join(datadir, 'eigendomskaart', 'mapinfo.zip'),
         pg_str,
         os.path.join('mapinfo', 'kot_eig_cat.tab'),
-        layer_name='kot_eig_cat'
+        layer_name='kot_eig_cat',
+        t_srs='EPSG:28992',
     )
 
+    # Functiekaart (van maps.amsterdam.nl)
+    esri_json2psql(
+        os.path.join(datadir, 'functiekaart', 'FUNCTIEKAART.json'),
+        pg_str,
+        'niet_woon_functiekaart'
+    )
 
 
 if __name__ == '__main__':
     desc = 'Upload gas transitie datasets into PostgreSQL.'
     parser = argparse.ArgumentParser(desc)
-    parser.add_argument('datadir', type=str,
-        help='Local data directory', nargs=1)
+    parser.add_argument(
+        'datadir', type=str, help='Local data directory', nargs=1)
     args = parser.parse_args()
     main(args.datadir[0])

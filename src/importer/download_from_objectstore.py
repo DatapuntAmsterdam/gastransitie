@@ -44,7 +44,8 @@ DATASETS = set([
     'renovaties',
     'warmtekoude',
     'cbs',
-    'eigendomskaart'
+    'eigendomskaart',
+    'functiekaart'
 ])
 
 
