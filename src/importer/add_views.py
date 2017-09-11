@@ -105,13 +105,13 @@ def get_pg_str(host, user, dbname, password):
 
 
 def main():
-    print('Placeholder for addition of spatial views.')
+    print('Creating spatial views.')
     pg_str = get_pg_str('database', 'gastransitie', 'gastransitie', 'insecure')
 
     execute_sql(pg_str, GAS_GROEN_PER_BUURT)
     execute_sql(pg_str, GAS_ORANJE_PER_BUURT)
     execute_sql(pg_str, BUURTCODE_MAPPING)
-    print('Test view created')
+    print('Done creating spatial views.')
 
 
 if __name__ == '__main__':

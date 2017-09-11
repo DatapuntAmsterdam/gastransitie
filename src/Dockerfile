@@ -10,6 +10,7 @@ COPY importer /app/
 ADD /run_import.sh /app/run_import.sh
 ADD /run_test.sh /app/run_test.sh
 ADD /run_add_views.sh /app/run_add_views.sh
+ADD /run_additional_sql.sh /app/run_additional_sql.sh
 ADD /docker-wait.sh /app/docker-wait.sh
 
 # Do the .jenkins directory dance to enable data imports:

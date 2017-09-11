@@ -24,5 +24,6 @@ dc exec -T database update-table.sh bag bag_buurt public gastransitie
 dc exec -T database update-table.sh bag bag_verblijfsobject public gastransitie
 # dc exec -T database update-db.sh atlas  # Download / use full BAG data dump
 dc run --rm importer bash /app/run_add_views.sh
+dc run --rm importer bash /app/run_additional_sql.sh
 
 echo "Done!"
