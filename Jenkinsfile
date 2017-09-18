@@ -59,7 +59,7 @@ if (BRANCH == "master") {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
                     [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-handelsregister.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-gastransitie.yml'],
                 ]
             }
         }
@@ -67,7 +67,7 @@ if (BRANCH == "master") {
 
 
     stage('Waiting for approval') {
-        slackSend channel: '#ci-channel', color: 'warning', message: 'Handelsregister is waiting for Production Release - please confirm'
+        slackSend channel: '#ci-channel', color: 'warning', message: 'Gastransitie is waiting for Production Release - please confirm'
         input "Deploy to Production?"
     }
 
@@ -82,16 +82,16 @@ if (BRANCH == "master") {
         }
     }
 
-/*
+
     node {
         stage("Deploy") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
                     [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-handelsregister.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-gastransitie.yml'],
                 ]
             }
         }
-    } */
+    }
 }
