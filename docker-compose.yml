@@ -6,8 +6,13 @@ services:
       POSTGRES_PASSWORD: insecure
       POSTGRES_USER: gastransitie
       POSTGRES_DB: gastransitie
+      LOCAL: "True"
     ports:
       - 5435:5432
+    extra_hosts:
+      admin.datapunt.amsterdam.nl: 10.99.157.24
+    volumes:
+        - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
 
   importer:
     build: src
