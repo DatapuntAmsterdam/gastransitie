@@ -3,6 +3,7 @@ data/*
 importer/.jenkins-import/backups/*
 TEMP/*
 .DS_Store
+web/data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -28,6 +28,15 @@ with data.
   for local development.
 * Geographic data is reprojected to "Rijksdriehoek systeem"
 
+* Work is underway to package all this as a Django application that also
+  provides web views on these data.
+
+## About the new implementation (which is work-in-progress)
+* The new version will provide a Django application (under `web/`).
+* This web app provides detail pages for each Amsterdam neighborhood based on
+  quick scan documents currently used internally.
+* Furthermore some city wide overview maps will also be provided for comparison.
+
 ### Data sources
 Currently all these are backed-up on the object store.
 * Planned renovations of social housing - non-public, source AFWC

@@ -26,3 +26,23 @@ services:
     command: >
       bash -c "/app/docker-wait.sh \
                && /app/run_import.sh"
+
+  web:
+    build: web
+    links:
+      - database
+    environment:
+      DATABASE_NAME: gastransitie
+      DATABASE_USER: gastransitie
+      DATABASE_PASSWORD: insecure
+      GASTRANSITIE_OBJECTSTORE_PASSWORD:
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web/data:/data
+      - ./web/app:/app/
+      - ./web/deploy:/deploy
+    command: >
+      bash -c "/deploy/docker-wait.sh \
+              && /deploy/docker-migrate.sh \
+              && python manage.py runserver 0.0.0.0:8000"
