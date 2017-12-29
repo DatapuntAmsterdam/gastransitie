@@ -12,6 +12,9 @@ from gastransitie.settings_databases import LocationKey,\
 INSTALLED_APPS += [
     'datasets',
     'health',
+    'web',
+
+    'rest_framework_gis',
 ]
 
 # MIDDLEWARE = [

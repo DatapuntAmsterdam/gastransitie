@@ -2,6 +2,7 @@ import os
 
 from datasets.imports.util import zipped_shp2psql
 from datasets.imports.util import get_ogr2ogr_pgstr
+from datasets.imports.util import SRS_TO_STORE
 
 
 def import_cbs(datadir):
@@ -16,7 +17,7 @@ def import_cbs(datadir):
         'buurt_2017.shp',
         pg_str,
         'gas_cbs_buurt_2017_raw',
-        t_srs='EPSG:28992',
+        t_srs=SRS_TO_STORE,
         nlt='PROMOTE_TO_MULTI',
         where='"gm_code"=\'GM0363\''  # only load Amsterdam
     )

@@ -2,6 +2,7 @@ import os
 
 from datasets.imports.util import get_ogr2ogr_pgstr
 from datasets.imports.util import esri_json2psql
+from datasets.imports.util import SRS_TO_STORE
 
 
 def import_functiekaart(datadir):
@@ -10,5 +11,6 @@ def import_functiekaart(datadir):
     esri_json2psql(
         os.path.join(datadir, 'functiekaart', 'FUNCTIEKAART.json'),
         pg_str,
-        'niet_woon_functiekaart_raw'
+        'niet_woon_functiekaart_raw',
+        t_srs=SRS_TO_STORE
     )

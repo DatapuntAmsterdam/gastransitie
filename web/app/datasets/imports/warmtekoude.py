@@ -2,6 +2,7 @@ import os
 
 from datasets.imports.util import get_ogr2ogr_pgstr
 from datasets.imports.util import esri_json2psql
+from datasets.imports.util import SRS_TO_STORE
 
 
 def import_warmtekoude(datadir):
@@ -11,5 +12,5 @@ def import_warmtekoude(datadir):
         os.path.join(datadir, 'warmtekoude', 'STADSWARMTEKOUDE.json'),
         pg_str,
         'gas_stadswarmtekoude_raw',
-        t_srs='EPSG:28992'
+        t_srs=SRS_TO_STORE
     )

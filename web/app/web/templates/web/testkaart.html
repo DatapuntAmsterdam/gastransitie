@@ -1,0 +1,66 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Kaart AFWC data</title>
+  <style>
+    body {background-color: white; color: black; font-family: sans-serif}
+    #mapid { height: 480px; }
+  </style>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin=""/>
+
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+  <h1>Test Kaart AFWC data</h1>
+
+
+  <div id="mapid"></div>
+	<script>
+"use strict";
+var API_URL = 'http://127.0.0.1:8000/gastransitie/afwc/';
+var mymap = L.map('mapid', {attributionControl: false});
+var baseLayer = L.tileLayer(
+  'https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png',
+  {
+    minZoom: 11,
+    maxZoom: 21,
+    subdomains: ['t1', 't2', 't3', 't4']
+  }
+);
+var overLay = L.tileLayer.wms(
+  'https://map.data.amsterdam.nl/maps/gebieden',
+  {
+    layers: 'buurt,buurt_label',
+    format: 'image/png',
+    transparent: true
+    }
+);
+var geoJSONLayer = L.geoJSON();
+
+mymap.setView([52.36443980368169, 4.795318645566371], 12);
+baseLayer.addTo(mymap);
+overLay.addTo(mymap);
+geoJSONLayer.addTo(mymap);
+
+d3.json(API_URL, function(error, data){
+  console.log(data);
+
+  var myStyle = {
+    "color": "#ff7800",
+    "weight": 5,
+    "opacity": 0.65
+  };
+
+  L.geoJSON(data).addTo(mymap);
+  console.log('whatever');
+});
+	</script>
+</body>
+</html>

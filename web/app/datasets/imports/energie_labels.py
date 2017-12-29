@@ -3,6 +3,7 @@ import os
 
 from datasets.imports.util import get_ogr2ogr_pgstr
 from datasets.imports.util import esri_json2psql
+from datasets.imports.util import SRS_TO_STORE
 
 
 def import_energie_labels(datadir):
@@ -12,5 +13,5 @@ def import_energie_labels(datadir):
         os.path.join(datadir, 'energie_labels', 'ENERGIE_LABELS.json'),
         pg_str,
         'gas_energie_labels_raw',
-        t_srs='EPSG:28992'
+        t_srs=SRS_TO_STORE
     )

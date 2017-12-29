@@ -3,6 +3,7 @@ import tempfile
 
 from datasets.imports.util import get_ogr2ogr_pgstr
 from datasets.imports.util import run_command_sync
+from datasets.imports.util import SRS_TO_STORE
 
 
 def _load_eigendomskaart_mapinfo(
@@ -33,7 +34,7 @@ def import_eigendomskaart(datadir):
         pg_str,
         os.path.join('mapinfo', 'kot_eig_adam.tab'),
         layer_name='kot_eig_adam_raw',
-        t_srs='EPSG:28992'
+        t_srs=SRS_TO_STORE,
     )
 
     _load_eigendomskaart_mapinfo(
@@ -41,5 +42,5 @@ def import_eigendomskaart(datadir):
         pg_str,
         os.path.join('mapinfo', 'kot_eig_cat.tab'),
         layer_name='kot_eig_cat_raw',
-        t_srs='EPSG:28992',
+        t_srs=SRS_TO_STORE,
     )

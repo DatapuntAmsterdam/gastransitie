@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from datasets.imports.util import zipped_shp2psql
 from datasets.imports.util import get_sqlalchemy_db_url
 from datasets.imports.util import get_ogr2ogr_pgstr
+from datasets.imports.util import SRS_TO_STORE
 
 
 def _load_stoplicht_alliander(filename):
@@ -39,7 +40,7 @@ def import_alliander(datadir):
         'Groen_Amsterdam.shp',
         pg_str,
         'gas_alliander_gas_groen_raw',
-        t_srs='EPSG:28992',
+        t_srs=SRS_TO_STORE,
         nlt='PROMOTE_TO_MULTI'
     )
 
@@ -48,5 +49,5 @@ def import_alliander(datadir):
         'Oranje_Amsterdam.shp',
         pg_str,
         'gas_alliander_gas_oranje_raw',
-        t_srs='EPSG:28992'
+        t_srs=SRS_TO_STORE
     )

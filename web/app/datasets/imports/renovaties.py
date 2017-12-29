@@ -2,6 +2,7 @@ import os
 
 from datasets.imports.util import shp2psql
 from datasets.imports.util import get_ogr2ogr_pgstr
+from datasets.imports.util import SRS_TO_STORE
 
 
 def import_renovaties(datadir):
@@ -15,5 +16,5 @@ def import_renovaties(datadir):
             datadir, 'renovaties', 'renovatiesperbuurtvanaf2017_region.shp'),
         pg_str,
         'gas_woningbouw_renovatie_plannen_raw',
-        t_srs='EPSG:28992'
+        t_srs=SRS_TO_STORE
     )

@@ -9,6 +9,8 @@ import logging
 from sqlalchemy.engine.url import URL
 from django.conf import settings
 
+SRS_TO_STORE = 'EPSG:4326'
+
 
 def get_sqlalchemy_db_url():
     """
@@ -114,5 +116,10 @@ def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
 def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
     # first attempt:
     # https://gis.stackexchange.com/questions/13029/converting-arcgis-server-json-to-geojson
-    cmd = ['ogr2ogr', '-t_srs', 'EPSG:28992', '-nln', layer_name, '-F', 'PostgreSQL', pg_str, json_filename]
+    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+    if 't_srs' in kwargs:
+        cmd.extend(['-t_srs', kwargs['t_srs']])
+    else:
+        cmd.extend(['-t_srs', 'EPSG:28992'])
+    cmd.extend([pg_str, json_filename])
     run_command_sync(cmd)
