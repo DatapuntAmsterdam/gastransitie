@@ -1,9 +1,5 @@
-# gastransitie project
-Data handling for pilot project energy transition in Amsterdam. Currently this
-project does not offer an API or webservices of any kind. We are still in an
-early phase where we are determining the requirements. Maps are, for the moment,
-made using QGis using a locally running PostGIS database that this software fills
-with data.
+# Energie transitie project
+Data handling for pilot project energy transition in Amsterdam.
 
 ### Context:
 * A number of stakeholders have gotten together to select a number of
@@ -19,23 +15,36 @@ with data.
   2. For candidate pilot neighborhoods drill down in the data to see whether
      they are really good candidates.
 
-### About current implementation
-* Not all the data in this project is public. For now files reside in the
-  object store and are downloaded by the scipts and uploaded to a locally
-  running PostGIS instance.
-* The file handling is partially done through `ogr2ogr` (GDAL) and partially
-  from Python. The scripts have been set up to run in Docker containers (also
-  for local development.
-* Geographic data is reprojected to "Rijksdriehoek systeem"
-
-* Work is underway to package all this as a Django application that also
-  provides web views on these data.
-
 ## About the new implementation (which is work-in-progress)
 * The new version will provide a Django application (under `web/`).
 * This web app provides detail pages for each Amsterdam neighborhood based on
   quick scan documents currently used internally.
 * Furthermore some city wide overview maps will also be provided for comparison.
+* The file handling is partially done through `ogr2ogr` (GDAL) and partially
+  from Python. The scripts have been set up to run in Docker containers (also
+  for local development.
+* Geodata is reprojected to EPSG:3857 (WGS 84) before storage.
+* A Django web application is being developed to show factsheets per
+  neighborhood.
+
+### Runnning locally
+All this assumes you work for the Energie transitie / Datapunt team and have
+access to the relevant credentials.
+
+* Check out the repository.
+* Set the `GASTRANSITIE_OBJECTSTORE_PASSWORD` environment variable.
+* Run the following commands (in the repository root):
+```bash
+docker-compose up -d database
+docker-compose run --rm web python manage.py download_data
+docker-compose run --rm web python run_import.py
+docker-compose run --rm web python fix_tables
+docker-compose up web
+```
+
+Note that the Django app Admin will be removed (so no
+`manage.py createsuperuser` is needed).
+
 
 ### Data sources
 Currently all these are backed-up on the object store.
