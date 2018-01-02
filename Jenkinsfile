@@ -25,9 +25,9 @@ node {
     stage('Test') {
         tryStep "test", {
             sh "docker-compose -p gastransitie -f web/deploy/test/docker-compose.yml build"
-               "docker-compose -p gastransitie -f src/.jenkins/test/docker-compose.yml run -u root --rm tests"
+               "docker-compose -p gastransitie -f web/deploy/test/docker-compose.yml run -u root --rm tests"
         }, {
-            sh "docker-compose -p gastransitie -f src/.jenkins/test/docker-compose.yml down"
+            sh "docker-compose -p gastransitie -f web/deploy/test/docker-compose.yml down"
         }
     }
 
@@ -83,7 +83,7 @@ if (BRANCH == "master") {
     }
 
 
-    node {
+/*    node {
         stage("Deploy") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
@@ -93,5 +93,5 @@ if (BRANCH == "master") {
                 ]
             }
         }
-    }
+    } */
 }
