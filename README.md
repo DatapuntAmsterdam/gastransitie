@@ -23,7 +23,7 @@ Data handling for pilot project energy transition in Amsterdam.
 * The file handling is partially done through `ogr2ogr` (GDAL) and partially
   from Python. The scripts have been set up to run in Docker containers (also
   for local development.
-* Geodata is reprojected to EPSG:3857 (WGS 84) before storage.
+* Geodata is reprojected to EPSG:4326 (WGS 84) before storage.
 * A Django web application is being developed to show factsheets per
   neighborhood.
 
