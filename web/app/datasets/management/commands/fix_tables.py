@@ -4,7 +4,7 @@ from datasets.imports import fix_tables
 
 
 class Command(BaseCommand):
-    help = 'Import datasets relevant for Energie transitie project'
+    help = 'Fix field types.'
 
     def handle(self, *args, **options):
         self.stdout.write('First stage of import process beginning:')
