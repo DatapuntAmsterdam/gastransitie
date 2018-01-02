@@ -10,7 +10,7 @@ services:
         - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
 
   tests:
-    build: web
+    build: ../../
     links:
       - database
     environment:
@@ -20,10 +20,6 @@ services:
       GASTRANSITIE_OBJECTSTORE_PASSWORD:
     ports:
       - "8000:8000"
-    volumes:
-      - ./web/data:/data
-      - ./web/app:/app/
-      - ./web/deploy:/deploy
     command: >
       bash -c "/deploy/docker-wait.sh \
               && /deploy/docker-migrate.sh \
