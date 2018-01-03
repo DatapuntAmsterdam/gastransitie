@@ -37,9 +37,9 @@
 "use strict";
 
 (function (){
-  var API_URL = 'http://127.0.0.1:8000/gastransitie/afwc/';
+  var API_URL = document.location.origin + '/gastransitie/api/afwc/';
   var mymap = L.map('AFWCMAP', {
-    attributionControl: false, 
+    attributionControl: false,
     preferCanvas: true,
     dragging: true,
     zoomControl: true

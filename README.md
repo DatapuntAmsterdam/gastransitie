@@ -37,8 +37,8 @@ access to the relevant credentials.
 ```bash
 docker-compose up -d database
 docker-compose run --rm web python manage.py download_data
-docker-compose run --rm web python run_import.py
-docker-compose run --rm web python fix_tables
+docker-compose run --rm web python manage.py run_import
+docker-compose run --rm web python manage.py fix_tables
 docker-compose up web
 ```
 
