@@ -1,0 +1,30 @@
+openapi: 3.0.0
+
+info:
+  title: Gastransitie
+  version: v2
+
+servers:
+  - url: 'http://localhost:8000/'
+    description: Testing service
+
+paths:
+  /gastransitie/api/afwc/:
+    get:
+      description: Amsterdamse federatie voor woningcorporaties
+      security:
+        - OAuth2:
+            - GAS/R
+      responses:
+        '200':
+          description: OK
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://localhost:8686/oauth2/authorize'
+          scopes:
+            GAS/R: Read permissions

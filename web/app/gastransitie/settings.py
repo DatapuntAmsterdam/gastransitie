@@ -15,9 +15,12 @@ INSTALLED_APPS += [
     'web',
 
     'rest_framework_gis',
+
+    'corsheaders',
 ]
 
-# MIDDLEWARE = [
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
 #     'django.middleware.security.SecurityMiddleware',
 #     'django.contrib.sessions.middleware.SessionMiddleware',
 #     'django.middleware.common.CommonMiddleware',
@@ -25,7 +28,9 @@ INSTALLED_APPS += [
 #     'django.contrib.auth.middleware.AuthenticationMiddleware',
 #     'django.contrib.messages.middleware.MessageMiddleware',
 #     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-# ]
+] + MIDDLEWARE
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'gastransitie.urls'
 
