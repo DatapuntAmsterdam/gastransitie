@@ -17,6 +17,9 @@
 
   <!-- d3 -->
   <script src="{% static 'd3/d3.min.js' %}"></script>
+
+  <!-- oauth2 -->
+  <script src="{% static 'gastransitie_authz.js' %}"></script>
 </head>
 <body>
   <nav class="navbar navbar-dark bg-dark">
@@ -24,6 +27,8 @@
   </nav>
   <div style="container-fluid">
     <h1>Test Kaart AFWC data</h1>
+
+    <div class="row"><div class="alert" id="authz-messages"></div></div>
 
     <div class="row">
       <div class="col col-sm-6">A</div>
@@ -38,6 +43,8 @@
 
 (function (){
   var API_URL = document.location.origin + '/gastransitie/api/afwc/';
+  var oauth2 = window.Authz("authz-messages")
+
   var mymap = L.map('AFWCMAP', {
     attributionControl: false,
     preferCanvas: true,
@@ -86,10 +93,25 @@
     }
   }
 
-
-  d3.json(API_URL, function(error, data){
-    L.geoJSON(data, {style: style}).addTo(mymap);
-  });
+  var token = oauth2.token()
+  if (token != null) {
+    d3.request(API_URL)
+      .mimeType("application/json")
+      .header("Authorization", "bearer " + token)
+      .on("error", function(error) {
+        if (error.target.status == 401) {
+          oauth2.askLogin();
+        } else {
+          concole.log(error);
+        }
+      })
+      .on("load", function(data) {
+        L.geoJSON(data, {style: style}).addTo(mymap);
+      })
+      .get();
+  } else {
+    oauth2.askLogin();
+  }
 })();
   </script>
   <!-- bootstrap related javascript -->
