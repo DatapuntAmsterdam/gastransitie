@@ -5,7 +5,7 @@ info:
   version: v2
 
 servers:
-  - url: 'http://localhost:8000/'
+  - url: '{{ apihost }}'
     description: Testing service
 
 paths:
@@ -18,6 +18,8 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: Unauthorized
 
 components:
   securitySchemes:
@@ -25,6 +27,6 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: 'http://localhost:8686/oauth2/authorize'
+          authorizationUrl: '{{ oauth2host }}/oauth2/authorize'
           scopes:
             GAS/R: Read permissions
