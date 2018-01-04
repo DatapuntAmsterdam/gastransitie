@@ -28,4 +28,4 @@ services:
       bash -c "/deploy/import.sh"
 
 volumes:
-  gastransitie_import_cache
+  gastransitie_import_cache:
