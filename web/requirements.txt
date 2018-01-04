@@ -25,3 +25,5 @@ openpyxl
 
 #-e git+https://github.com/Amsterdam/objectstore.git#egg=datapunt-objectstore
 git+https://github.com/Amsterdam/objectstore.git#egg=datapunt-objectstore
+
+datapunt-authorization-django==0.2.18
