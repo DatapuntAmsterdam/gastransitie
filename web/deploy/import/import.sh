@@ -30,5 +30,8 @@ echo "Importing data into database"
 dc run --rm importer python manage.py run_import
 dc run --rm importer python manage.py fix_tables
 
+echo "What is running?"
+dc ps
+
 echo "Dumping database"
-dc run --rm database /backup-gastransitie-db.sh
+dc run --rm database bash /backup-gastransitie-db.sh

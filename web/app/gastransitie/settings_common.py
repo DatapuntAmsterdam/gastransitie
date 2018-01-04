@@ -66,7 +66,6 @@ if DEBUG:
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
     MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
     CORS_ORIGIN_ALLOW_ALL = True
-    TEMPLATES[0]['DIRS'].append('templates')
 
 
 # Internationalization

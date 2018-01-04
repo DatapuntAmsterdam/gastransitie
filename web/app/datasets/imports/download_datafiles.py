@@ -47,6 +47,7 @@ DATASETS = set([
 
 
 def download_container(conn, container, datadir):
+    logger.debug('Downloading dataset: %s', container['name'])
     target_dir = os.path.join(datadir, container['name'])
     os.makedirs(target_dir, exist_ok=True)
 

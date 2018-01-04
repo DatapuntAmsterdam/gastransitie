@@ -18,15 +18,15 @@ def import_raw(datadir):
     """
     Run the first step in the import process (build raw database tables).
     """
-    import_renovaties(datadir)
-    import_warmtekoude(datadir)
-    import_mip(datadir)
-    import_energie_labels(datadir)
+#    import_renovaties(datadir)
+#    import_warmtekoude(datadir)
+#    import_mip(datadir)
+#    import_energie_labels(datadir)
     import_cbs(datadir)
     import_corporatie_bezit(datadir)
-    import_alliander(datadir)
-    import_eigendomskaart(datadir)
-    import_functiekaart(datadir)
+#    import_alliander(datadir)
+#    import_eigendomskaart(datadir)
+#    import_functiekaart(datadir)
 
 
 def main(datadir):

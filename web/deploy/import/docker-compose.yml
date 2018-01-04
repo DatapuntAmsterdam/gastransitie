@@ -9,7 +9,6 @@ services:
     volumes:
       - ./backup-gastransitie-db.sh:/backup-gastransitie-db.sh
       - ./backups:/tmp/backups
-      - ./data:/data
 
 
   importer:
@@ -21,5 +20,7 @@ services:
       DATABASE_USER: gastransitie
       DATABASE_PASSWORD: insecure
       GASTRANSITIE_OBJECTSTORE_PASSWORD:
+    volumes:
+      - ./data:/data
     command: >
       bash -c "/deploy/import.sh"
