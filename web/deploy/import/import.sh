@@ -18,5 +18,12 @@ mkdir -p ${DIR}/backups
 dc build
 dc up -d database
 
-dc run --rm importer
-dc run --rm db-backup
+echo "Downloading raw datafiles from object store"
+dc run --rm importer python manage.py download_data
+
+echo "Importing data into database"
+dc run --rm importer python manage.py run_import
+dc run --rm importer python manage.py fix_tables
+
+echo "Dumping database"
+dc run --rm database /backup-gastransitie-db.sh
