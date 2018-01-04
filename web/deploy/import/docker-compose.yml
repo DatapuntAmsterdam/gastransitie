@@ -1,0 +1,24 @@
+version: '3.0'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: gastransitie
+      POSTGRES_DB: gastransitie
+    volumes:
+      - ./backup-gastransitie-db.sh:/backup-gastransitie-db.sh
+      - ./backups:/tmp/backups
+
+
+  importer:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${ENVIRONMENT}
+    links:
+      - database
+    environment:
+      DATABASE_NAME: gastransitie
+      DATABASE_USER: gastransitie
+      DATABASE_PASSWORD: insecure
+      GASTRANSITIE_OBJECTSTORE_PASSWORD:
+    command: >
+      bash -c "/deploy/import.sh"
