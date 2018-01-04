@@ -21,7 +21,7 @@ RUN apt update \
 WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
-RUN mkdir /data && chown datapunt /data
+# RUN mkdir /data && chown datapunt /data
 
 USER datapunt
 COPY ./app/ /app/

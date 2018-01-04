@@ -12,8 +12,13 @@ dc() {
 
 trap 'dc kill ; dc rm -f' EXIT
 
+# For database backups:
 rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
+
+# For datafile cache:
+rm -rf ${DIR}/data
+mkdir -p ${DIR}/data
 
 dc build
 dc up -d database

@@ -9,6 +9,7 @@ services:
     volumes:
       - ./backup-gastransitie-db.sh:/backup-gastransitie-db.sh
       - ./backups:/tmp/backups
+      - ./data:/data
 
 
   importer:
