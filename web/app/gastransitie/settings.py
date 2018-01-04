@@ -20,6 +20,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE = [
+    'authorization_django.authorization_middleware',
     'corsheaders.middleware.CorsMiddleware',
 #     'django.middleware.security.SecurityMiddleware',
 #     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,6 +68,36 @@ DATABASES = {
     'default': DATABASE_OPTIONS[get_database_key()]
 }
 
+# This is a JWKS used for testing only.
+JWKS_TEST_KEY = """
+{
+    "keys": [
+        {
+            "kty": "EC",
+            "key_ops": [
+                "verify",
+                "sign"
+            ],
+            "kid": "2aedafba-8170-4064-b704-ce92b7c89cc6",
+            "crv": "P-256",
+            "x": "6r8PYwqfZbq_QzoMA4tzJJsYUIIXdeyPA27qTgEJCDw=",
+            "y": "Cf2clfAfFuuCB06NMfIat9ultkMyrMQO9Hd2H7O9ZVE=",
+            "d": "N1vu0UQUp0vLfaNeM0EDbl4quvvL6m_ltjoAXXzkI3U="
+        }
+    ]
+}
+"""
+
+DATAPUNT_AUTHZ = {
+    'JWKS': os.getenv('PUB_JWKS', JWKS_TEST_KEY),
+    'MIN_SCOPE': 'GAS/R',
+    'FORCED_ANONYMOUS_ROUTES': (
+        '/status/',
+        '/gastransitie/admin/',
+        '/gastransitie/dash/',
+        '/gastransitie/static/',
+    )
+}
 
 # # Password validation
 # # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
