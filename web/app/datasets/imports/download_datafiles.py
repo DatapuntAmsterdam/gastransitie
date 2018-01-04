@@ -74,6 +74,7 @@ def download_containers(conn, datasets, datadir):
     if not os.path.exists(datadir):
         raise Exception('Local data directory does not exist.')
 
+    logger.debug('cache dir ls -l output:')
     p = subprocess.Popen(['ls', '-l', datadir])
     p.wait()
 
