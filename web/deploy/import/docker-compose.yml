@@ -27,3 +27,4 @@ services:
 
 volumes:
   gastransitie_import_cache:
+    external: true

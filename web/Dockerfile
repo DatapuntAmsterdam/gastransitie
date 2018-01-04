@@ -16,7 +16,11 @@ RUN apt update \
 	&& adduser --system datapunt \
 	&& mkdir -p /static \
 	&& chown datapunt /static \
+	&& mkdir /data \
+	&& chown datapunt /data \
 	&& pip install uwsgi
+
+VOLUME /data
 
 WORKDIR /app
 COPY requirements.txt /app/
