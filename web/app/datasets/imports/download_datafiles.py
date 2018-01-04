@@ -9,6 +9,7 @@ delivery of new data for this project.)
 """
 import os
 import logging
+import subprocess
 
 import objectstore
 
@@ -72,6 +73,9 @@ def download_containers(conn, datasets, datadir):
     logger.debug('Checking local data directory exists and is empty')
     if not os.path.exists(datadir):
         raise Exception('Local data directory does not exist.')
+
+    p = subprocess.Popen(['ls', '-l', datadir])
+    p.wait()
 
     listing = os.listdir(datadir)
     if listing:
