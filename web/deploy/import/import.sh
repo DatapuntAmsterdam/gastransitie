@@ -24,7 +24,7 @@ dc build
 dc up -d database
 
 echo "Downloading raw datafiles from object store"
-dc run --rm importer ls -l /
+dc run --rm importer ls -la /
 dc run --rm importer python manage.py download_data
 
 echo "Importing data into database"
