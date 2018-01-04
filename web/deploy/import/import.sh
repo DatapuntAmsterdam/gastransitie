@@ -18,6 +18,7 @@ mkdir -p ${DIR}/backups
 
 # For datafile cache:
 docker volume rm -f gastransitie_import_cache
+docker volume create --name=gastransitie_import_cache
 
 dc build
 dc up -d database
