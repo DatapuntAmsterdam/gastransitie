@@ -17,8 +17,7 @@ rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
 
 # For datafile cache:
-rm -rf ${DIR}/data
-mkdir -p ${DIR}/data
+docker volume rm -f gastransitie_import_cache
 
 dc build
 dc up -d database

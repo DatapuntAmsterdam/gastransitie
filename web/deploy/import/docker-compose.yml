@@ -21,6 +21,11 @@ services:
       DATABASE_PASSWORD: insecure
       GASTRANSITIE_OBJECTSTORE_PASSWORD:
     volumes:
-      - ./data:/data
+      - type: volume
+        source: gastransitie_import_cache
+        target: /data
     command: >
       bash -c "/deploy/import.sh"
+
+volumes:
+  gastransitie_import_cache
