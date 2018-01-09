@@ -23,7 +23,6 @@ docker volume create --name=gastransitie_import_cache
 dc build
 
 dc up -d database
-dc run importer .jenkins/docker-wait.sh
 
 echo "Downloading raw datafiles from object store"
 dc run --rm importer python manage.py download_data
