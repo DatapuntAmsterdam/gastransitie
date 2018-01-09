@@ -15,10 +15,7 @@ dc() {
 # For database backups:
 rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
-
-# For datafile cache:
-docker volume rm -f gastransitie_import_cache
-docker volume create --name=gastransitie_import_cache
+mkdir -p ${DIR}/import_cache
 
 dc build
 
@@ -34,5 +31,8 @@ dc run --rm importer python manage.py fix_tables
 
 echo "Running backups"
 dc exec -T database backup-db.sh gastransitie
+
+echo "Cleanup import cache"
+rm -rf ${DIR}/import_cache
 
 echo "Done"
