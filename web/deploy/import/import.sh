@@ -10,13 +10,11 @@ dc() {
 	docker-compose -p gastransitie -f ${DIR}/docker-compose.yml $*
 }
 
-#trap 'dc kill ; dc rm -f' EXIT
+trap 'dc kill ; dc rm -vf' EXIT
 
 # For database backups:
 rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
-mkdir -p ${DIR}/import_cache
-chmod 777 ${DIR}/import_cache
 
 dc build
 
@@ -33,7 +31,7 @@ dc run --rm importer python manage.py fix_tables
 echo "Running backups"
 dc exec -T database backup-db.sh gastransitie
 
-echo "Cleanup import cache"
-sudo rm -rf ${DIR}/import_cache
+echo "Remove containers and volumes."
+dc rm -vf
 
 echo "Done"
