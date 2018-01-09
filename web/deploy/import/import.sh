@@ -34,6 +34,6 @@ echo "Running backups"
 dc exec -T database backup-db.sh gastransitie
 
 echo "Cleanup import cache"
-rm -rf ${DIR}/import_cache
+sudo rm -rf ${DIR}/import_cache
 
 echo "Done"
