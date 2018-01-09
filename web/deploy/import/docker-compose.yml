@@ -7,9 +7,7 @@ services:
       POSTGRES_USER: gastransitie
       POSTGRES_DB: gastransitie
     volumes:
-      - ./backup-gastransitie-db.sh:/backup-gastransitie-db.sh
       - ./backups:/tmp/backups
-
 
   importer:
     image: build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${ENVIRONMENT}

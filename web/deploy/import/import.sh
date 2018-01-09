@@ -21,18 +21,18 @@ docker volume rm -f gastransitie_import_cache
 docker volume create --name=gastransitie_import_cache
 
 dc build
+
 dc up -d database
+dc run importer .jenkins/docker-wait.sh
 
 echo "Downloading raw datafiles from object store"
-dc run --rm importer ls -la /
 dc run --rm importer python manage.py download_data
 
 echo "Importing data into database"
 dc run --rm importer python manage.py run_import
 dc run --rm importer python manage.py fix_tables
 
-echo "What is running?"
-dc ps
+echo "Running backups"
+dc exec -T database backup-db.sh gastransitie
 
-echo "Dumping database"
-dc exec database bash /backup-gastransitie-db.sh
+echo "Done"
