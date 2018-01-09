@@ -16,6 +16,7 @@ dc() {
 rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
 mkdir -p ${DIR}/import_cache
+chmod 777 ${DIR}/import_cache
 
 dc build
 
