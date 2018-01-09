@@ -10,7 +10,7 @@ dc() {
 	docker-compose -p gastransitie -f ${DIR}/docker-compose.yml $*
 }
 
-trap 'dc kill ; dc rm -f' EXIT
+#trap 'dc kill ; dc rm -f' EXIT
 
 # For database backups:
 rm -rf ${DIR}/backups
@@ -35,4 +35,4 @@ echo "What is running?"
 dc ps
 
 echo "Dumping database"
-dc run --rm database bash /backup-gastransitie-db.sh
+dc exec database bash /backup-gastransitie-db.sh
