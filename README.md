@@ -71,5 +71,5 @@ Make sure the service is running locally (see instructions above), then run:
 
 ```
 $ docker-compose up -d swaggerui
-$ open http://localhost:8686/swagger-ui/?url=http://localhost:8000/gastransitie/dash/openapi.yml#/default/get_gastransitie_api_afwc_
+$ open http://localhost:8686/swagger-ui/?url=http://localhost:8000/gastransitie/static/openapi.yml
 ```

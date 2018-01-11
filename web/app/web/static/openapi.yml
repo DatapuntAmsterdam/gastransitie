@@ -4,10 +4,6 @@ info:
   title: Gastransitie
   version: v2
 
-servers:
-  - url: '{{ apihost }}'
-    description: Testing service
-
 paths:
   /gastransitie/api/afwc/:
     get:
@@ -27,6 +23,7 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: '{{ oauth2host }}/oauth2/authorize'
+          authorizationUrl: '/oauth2/authorize'
           scopes:
             GAS/R: Read permissions
+

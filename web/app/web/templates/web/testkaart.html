@@ -23,10 +23,11 @@
 </head>
 <body>
   <nav class="navbar navbar-dark bg-dark">
-      <span class="navbar-brand mb-0 h1">Energie transitie</span>
+      <span class="navbar-brand mb-0 h1">OAuth2 demo</span>
   </nav>
   <div style="container-fluid">
-    <h1>Test Kaart AFWC data</h1>
+
+    <div class="row"><div class="alert" id="authz-messages"></div></div>
 
     <div class="row"><div class="alert" id="authz-messages"></div></div>
 
@@ -105,10 +106,11 @@
           concole.log(error);
         }
       })
-      .on("load", function(data) {
+      .response(function(xhr) { return JSON.parse(xhr.responseText); })
+      .get(function(error, data){
+        if (error) throw error;
         L.geoJSON(data, {style: style}).addTo(mymap);
-      })
-      .get();
+      });
   } else {
     oauth2.askLogin();
   }
