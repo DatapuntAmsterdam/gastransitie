@@ -105,10 +105,13 @@
           console.error(error);
         }
       })
-      .on("load", function(data) {
+      .response(function(xhr) { return JSON.parse(xhr.responseText); })
+      .get(function(error, data){
+        if (error) throw error;
         L.geoJSON(data, {style: style}).addTo(mymap);
-      })
-      .get();
+      });
+  } else {
+    oauth2.askLogin();
   }
 })();
   </script>
