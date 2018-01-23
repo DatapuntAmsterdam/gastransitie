@@ -142,29 +142,35 @@ window.Authz = function() {
       window.location.href = uri;
     }
 
-    return {
-      token: function() {
+    function logout() {
+        datapuntProvider.deleteTokens();
+        window.location.href = REDIRECT_URI;
+    }
+
+    function getToken() {
         if (datapuntProvider.hasAccessToken() && hasCorrectScopes()) {
-          return datapuntProvider.getAccessToken();
+            return datapuntProvider.getAccessToken();
         }
         return null
-      },
-      askLogin: function() {
+    }
+
+    return {
+      token: getToken,
+      askLoginLogout: function() {
+        var token = getToken();
         var msgcontainer = document.getElementById(elmID);
-        var loginButton = document.createElement('button');
-        loginButton.onclick = authorize;
-        loginButton.innerHTML = 'Inloggen';
-        if (!datapuntProvider.hasAccessToken()) {
-          msgcontainer.appendChild(document.createTextNode("U bent niet ingelogd."));
-        } else if (!hasCorrectScopes()) {
-          datapuntProvider.deleteTokens();
-          msgcontainer.appendChild(document.createTextNode("U heeft niet voldoende rechten. U kunt inloggen als een andere gebruiker."));
+        var button = document.createElement('button');
+        if (token) {
+            button.onclick = logout;
+            button.innerHTML = 'Uitloggen';
         } else {
-          datapuntProvider.deleteTokens();
-          msgcontainer.appendChild(document.createTextNode("U bent niet meer ingelogd."));
+            button.onclick = authorize;
+            button.innerHTML = 'Inloggen';
         }
-        msgcontainer.appendChild(loginButton);
+        msgcontainer.appendChild(button);
+        return token
       },
+      logout: logout
     }
 
   };

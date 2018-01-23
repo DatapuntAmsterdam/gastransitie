@@ -93,24 +93,22 @@
     }
   }
 
-  var token = oauth2.token()
+  var token = oauth2.askLoginLogout()
   if (token != null) {
     d3.request(API_URL)
       .mimeType("application/json")
       .header("Authorization", "bearer " + token)
       .on("error", function(error) {
         if (error.target.status == 401) {
-          oauth2.askLogin();
+          oauth2.logout();
         } else {
-          concole.log(error);
+          console.error(error);
         }
       })
       .on("load", function(data) {
         L.geoJSON(data, {style: style}).addTo(mymap);
       })
       .get();
-  } else {
-    oauth2.askLogin();
   }
 })();
   </script>

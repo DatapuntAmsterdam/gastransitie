@@ -23,7 +23,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./web/data:/data
+      - gastransitie_import_cache:/data
       - ./web/app:/app/
       - ./web/deploy:/deploy
     command: >
@@ -35,3 +35,6 @@ services:
     image: amsterdam/oauth2swaggerui
     ports:
       - 8686:8686
+
+volumes:
+  gastransitie_import_cache:
