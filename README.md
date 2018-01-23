@@ -63,3 +63,13 @@ Currently all these are backed-up on the object store.
   source OIS
 * "Functiekaart" (classifies usage of real estate in Amsterdam other than
   housing) - non-public, source OIS
+
+
+### Browsing the API with Swagger-UI
+
+Make sure the service is running locally (see instructions above), then run:
+
+```
+$ docker-compose up -d swaggerui
+$ open http://localhost:8686/swagger-ui/?url=http://localhost:8000/gastransitie/dash/openapi.yml#/default/get_gastransitie_api_afwc_
+```

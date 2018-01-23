@@ -23,10 +23,18 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./web/data:/data
+      - gastransitie_import_cache:/data
       - ./web/app:/app/
       - ./web/deploy:/deploy
     command: >
       bash -c "/deploy/docker-wait.sh \
               && /deploy/docker-migrate.sh \
               && python manage.py runserver 0.0.0.0:8000"
+
+  swaggerui:
+    image: amsterdam/oauth2swaggerui
+    ports:
+      - 8686:8686
+
+volumes:
+  gastransitie_import_cache:
