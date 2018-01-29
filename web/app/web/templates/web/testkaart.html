@@ -93,6 +93,9 @@
     }
   }
 
+  var geoJSONLayer = L.geoJSON(null, {style: style});
+  geoJSONLayer.addTo(mymap);
+
   var token = oauth2.askLoginLogout()
   if (token != null) {
     d3.request(API_URL)
@@ -108,7 +111,7 @@
       .response(function(xhr) { return JSON.parse(xhr.responseText); })
       .get(function(error, data){
         if (error) throw error;
-        L.geoJSON(data, {style: style}).addTo(mymap);
+          geoJSONLayer.addData(data);
       });
   } else {
     oauth2.askLogin();
