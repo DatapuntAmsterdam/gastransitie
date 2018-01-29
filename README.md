@@ -42,9 +42,6 @@ docker-compose run --rm web python manage.py fix_tables
 docker-compose up web
 ```
 
-Note that the Django app Admin will be removed (so no
-`manage.py createsuperuser` is needed).
-
 
 ### Data sources
 Currently all these are backed-up on the object store.

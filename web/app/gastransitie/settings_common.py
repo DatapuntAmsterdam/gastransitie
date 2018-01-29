@@ -23,27 +23,18 @@ INTERNAL_IPS = ('127.0.0.1', '0.0.0.0')
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-
     'django.contrib.staticfiles',
-    'django.contrib.gis',
 
     'django_filters',
+    'django.contrib.gis',
+
     'rest_framework',
 ]
 
-# we are using Django admin etc.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 TEMPLATES = [
@@ -55,7 +46,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
             ],
         },
     },
@@ -64,7 +54,6 @@ TEMPLATES = [
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
-    MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
     CORS_ORIGIN_ALLOW_ALL = True
 
 
