@@ -42,7 +42,8 @@
 "use strict";
 
 (function (){
-  var API_URL = document.location.origin + '/gastransitie/api/afwc/';
+  var API_URL = document.location.origin + '/gastransitie/api/afwc/?buurt=A08d';
+//  var API_URL = document.location.origin + '/gastransitie/api/buurt/';
   var oauth2 = window.Authz("authz-messages")
 
   var mymap = L.map('AFWCMAP', {
@@ -67,24 +68,23 @@
       transparent: true
       }
   );
-  var geoJSONLayer = L.geoJSON();
 
   mymap.setView([52.367653, 4.900877], 12);
   baseLayer.addTo(mymap);
   overLay.addTo(mymap);
-  geoJSONLayer.addTo(mymap);
 
   var colorMapping = {
     "YMERE": 'red'
   }
 
   function getColor(corp){
-    var color = colorMapping[corp];
+/*    var color = colorMapping[corp];
     if (color === undefined){
       return 'gray';
     } else {
       return color;
-    }
+    }*/
+    return 'black';
   }
 
   function style(feature){

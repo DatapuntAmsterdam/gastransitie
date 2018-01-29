@@ -1,12 +1,32 @@
-from django.shortcuts import render
-
 from rest_framework import viewsets
 
 from .serializers import GasAfwc2017Serializer
+from .serializers import BagBuurtSerializer
 from datasets.models import GasAfwc2017
+from datasets.models import BagBuurt
 
 
 class GasAfwc2017ViewSet(viewsets.ModelViewSet):
     serializer_class = GasAfwc2017Serializer
-    queryset = GasAfwc2017.objects.all()
-    # TODO: queryset must be filtered agains neighborhood
+
+    def get_queryset(self):
+        """
+        Filter against buurt (neighborhood) specified in request.
+        """
+        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
+        buurt_code = self.request.query_params.get('buurt', None)
+        try:
+            buurt = BagBuurt.objects.get(vollcode=buurt_code)
+        except:
+            buurt = None
+
+        qs = GasAfwc2017.objects.all().order_by('ogc_fid')
+        if buurt is not None:
+            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+
+        return qs
+
+
+class BagBuurtViewSet(viewsets.ModelViewSet):
+    serializer_class = BagBuurtSerializer
+    queryset = BagBuurt.objects.all()
