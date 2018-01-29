@@ -8,6 +8,7 @@ import logging
 
 from sqlalchemy.engine.url import URL
 from django.conf import settings
+from django.db import connection
 
 SRS_TO_STORE = 'EPSG:4326'
 
@@ -123,3 +124,8 @@ def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
         cmd.extend(['-t_srs', 'EPSG:28992'])
     cmd.extend([pg_str, json_filename])
     run_command_sync(cmd)
+
+
+def run_sql(sql):
+    with connection.cursor() as cursor:
+        cursor.execute(sql)

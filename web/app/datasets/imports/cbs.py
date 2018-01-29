@@ -4,6 +4,10 @@ from datasets.imports.util import zipped_shp2psql
 from datasets.imports.util import get_ogr2ogr_pgstr
 from datasets.imports.util import SRS_TO_STORE
 
+# Note that this dataset will likely not be needed in the future. We
+# will switch to using the Amsterdam BBGA api for statistics and
+# gebieden API for shapes of the various areas. TODO
+
 
 def import_cbs(datadir):
     """
@@ -21,3 +25,7 @@ def import_cbs(datadir):
         nlt='PROMOTE_TO_MULTI',
         where='"gm_code"=\'GM0363\''  # only load Amsterdam
     )
+
+
+def fix_tables():
+    pass

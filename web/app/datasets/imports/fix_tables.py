@@ -2,36 +2,37 @@
 """
 This is where SQL queries that must be run after import go.
 """
-from django.db import connection
+from datasets.imports import corporatie_bezit
+from datasets.imports import cbs
+from datasets.imports.util import run_sql
 
-FIX_AWFC2017 = """
-DROP TABLE IF EXISTS public.gas_afwc2017;
-CREATE TABLE
-    public.gas_afwc2017
-AS (
-    SELECT
-        ogc_fid,
-        cast(corp as varchar(255)),
-        cast(corporatie as varchar(255)),
-        cast(bouwjaar as int),
-        cast(aantal_adressen as int),
-        cast(aantal_corporatie as int),
-        cast(percentage_corporatie as int),
-        cast(gemeente as varchar(255)),
-        cast(perc as int),
-        wkb_geometry
-    FROM
-        public.gas_afwc2017_raw
-);
-"""
+
+def fix_bag_buurt():
+    """
+    Run additional SQL after restoring BAG buurt table.
+
+    (reproject and add a spatial index)
+    """
+    sql = """
+    ALTER TABLE "bag_buurt"
+        ALTER COLUMN "geometrie"
+        type Geometry(MultiPolygon, 4326)
+        USING ST_Transform("geometrie", 4326);
+
+    DROP INDEX IF EXISTS bag_buurt_idx;
+    CREATE INDEX bag_buurt_idx ON public.bag_buurt USING GIST(geometrie);
+    """
+    run_sql(sql)
+    run_sql("""VACUUM ANALYZE public.bag_buurt;""")
 
 
 def main():
     """
     Create final tables that will be used by Django.
     """
-    with connection.cursor() as cursor:
-        cursor.execute(FIX_AWFC2017)
+    corporatie_bezit.fix_tables()
+    cbs.fix_tables()
+    fix_bag_buurt()
 
 
 if __name__ == '__main__':

@@ -11,11 +11,11 @@ class GasAfwc2017(models.Model):
     percentage_corporatie = models.IntegerField(blank=True, null=True)
     gemeente = models.CharField(max_length=255, blank=True, null=True)
     perc = models.IntegerField(blank=True, null=True)
-    wkb_geometry = models.GeometryField(srid=28992, blank=True, null=True)
+    wkb_geometry = models.GeometryField(srid=4326, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'gas_afwc2017'
+        db_table = 'afwc2017_clean'
         verbose_name = 'corporatie bezit - gebouw'
         verbose_name_plural = 'corporatie bezit - gebouwen'
 

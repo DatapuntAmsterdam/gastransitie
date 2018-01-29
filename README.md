@@ -38,6 +38,7 @@ access to the relevant credentials.
 docker-compose up -d database
 docker-compose run --rm web python manage.py download_data
 docker-compose run --rm web python manage.py run_import
+docker-compose exec database update-table.sh bag bag_buurt public gastransitie <username>
 docker-compose run --rm web python manage.py fix_tables
 docker-compose up web
 ```
