@@ -22,7 +22,13 @@ async function readData (url) {
   return response.data
 }
 
+async function loadCityData (buurt) {
+  let url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt // TODO: fix hostname
+  return readData(url) // is normal GeoJSON for now
+}
+
 export default {
   readPaginatedData,
-  readData
+  readData,
+  loadCityData
 }

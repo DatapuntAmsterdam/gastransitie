@@ -43,7 +43,7 @@
         <tbody class="text-center">
           <tr>
             <td>
-              ...
+              <leaflet-example></leaflet-example>
             </td>
             <td>
               <leaflet-example></leaflet-example>

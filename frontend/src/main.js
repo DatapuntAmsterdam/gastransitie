@@ -10,19 +10,14 @@ import BootstrapVue from 'bootstrap-vue'
 import { mapGetters, mapActions } from 'vuex'
 
 import store from './store'
-import util from './services/util'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import 'leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.css'
 
 Vue.use(VueAxios, axios)
 
 Vue.use(BootstrapVue)
-
-// Vue.component('v-map', Vue2Leaflet.Map)
-// Vue.component('v-tilelayer', Vue2Leaflet.TileLayer)
-// Vue.component('v-marker', Vue2Leaflet.Marker)
 
 Vue.config.productionTip = false
 
@@ -40,14 +35,10 @@ let vueApp = new Vue({
   },
   methods: {
     ...mapActions({
-      setText: 'setText'
+      setBuurt: 'setBuurt'
     }),
     async init () {
-      const url = 'https://jsonplaceholder.typicode.com/posts/1'
-      if (!this.text) {
-        let data = await util.readData(url)
-        this.setText(data.title)
-      }
+      this.setBuurt('A08d')
     }
   }
 })

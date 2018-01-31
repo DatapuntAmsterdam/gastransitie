@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import HelloAgain from '@/components/HelloAgain'
 import LeafletExample from '@/components/LeafletExample'
+import FactsheetPage from '@/components/FactsheetPage'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/kaart',
       name: 'LeafletExample',
       component: LeafletExample
+    },
+    {
+      path: '/factsheet',
+      name: 'FactsheetComponent',
+      component: FactsheetPage
     }
   ]
 })
