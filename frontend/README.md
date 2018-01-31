@@ -1,4 +1,4 @@
-# energietransitie-frontend
+# Energietransitie Frontend
 
 > Frontend voor het Energie Transitie project.
 

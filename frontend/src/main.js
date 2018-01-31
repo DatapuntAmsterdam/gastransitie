@@ -6,6 +6,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import BootstrapVue from 'bootstrap-vue'
+// import Vue2Leaflet from 'vue2-leaflet'
 import { mapGetters, mapActions } from 'vuex'
 
 import store from './store'
@@ -13,10 +14,15 @@ import util from './services/util'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import 'leaflet/dist/leaflet.css'
 
 Vue.use(VueAxios, axios)
 
 Vue.use(BootstrapVue)
+
+// Vue.component('v-map', Vue2Leaflet.Map)
+// Vue.component('v-tilelayer', Vue2Leaflet.TileLayer)
+// Vue.component('v-marker', Vue2Leaflet.Marker)
 
 Vue.config.productionTip = false
 
