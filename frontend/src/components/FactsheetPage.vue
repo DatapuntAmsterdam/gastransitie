@@ -19,7 +19,8 @@ export default {
   methods: {
     showMap () {
       let map = L.map(this.$el).setView([52.367653, 4.900877], 12)
-      L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png', {
+      // L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
         minZoom: 11,
         maxZoom: 21,
         subdomains: ['t1', 't2', 't3', 't4'],
@@ -38,7 +39,9 @@ export default {
   watch: {
     cityData (to, from) {
       // Show the GeoJSON features that were loaded:
-      this.vars.dataLayer.addData(to)
+      if (to.hasOwnProperty('features')) {
+        this.vars.dataLayer.addData(to)
+      }
     }
   }
 }
