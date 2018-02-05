@@ -8,7 +8,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   created () {
-    console.log('Geen errors?')
+    this.vars = {
+      map: null,
+      dataLayer: null
+    }
   },
   computed: {
     ...mapGetters(['cityData'])
@@ -22,6 +25,11 @@ export default {
         subdomains: ['t1', 't2', 't3', 't4'],
         attribution: 'Datapunt Amsterdam'
       }).addTo(map)
+      let dataLayer = L.geoJSON().addTo(map)
+
+      // Save map and layer references to the local state of this component:
+      this.vars.dataLayer = dataLayer
+      this.vars.map = map
     }
   },
   mounted () {
@@ -29,7 +37,8 @@ export default {
   },
   watch: {
     cityData (to, from) {
-      // this.showMap() Do something with this.vars
+      // Show the GeoJSON features that were loaded:
+      this.vars.dataLayer.addData(to)
     }
   }
 }
