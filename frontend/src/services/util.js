@@ -17,6 +17,27 @@ async function readPaginatedData (url) {
   return results
 }
 
+async function readPaginatedGeoJSON (url) {
+  // Read data from a paginated GeoJSON endpoint
+  // Note: distinct from normal JSON data because 'features' property must be accessed
+  let next = url
+  let results = {
+    type: 'FeatureCollection',
+    features: []
+  }
+
+  while (next) {
+    try {
+      let response = await Vue.axios.get(next)
+      next = response.data.next
+      results.features = results.features.concat(response.data.results.features)
+    } catch (e) {
+      next = null
+    }
+  }
+  return results
+}
+
 async function readData (url) {
   let response = await Vue.axios.get(url)
   return response.data
@@ -24,7 +45,7 @@ async function readData (url) {
 
 async function loadCityData (buurt) {
   let url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt // TODO: fix hostname
-  return readData(url) // is normal GeoJSON for now
+  return readPaginatedGeoJSON(url)
 }
 
 export default {

@@ -33,8 +33,10 @@ access to the relevant credentials.
 
 * Check out the repository.
 * Set the `GASTRANSITIE_OBJECTSTORE_PASSWORD` environment variable.
-* Run the following commands (in the repository root):
+* Run the following commands in the repository root. Note: <username> is the
+  user associated with the SSH key that Datapunt registered for you.
 ```bash
+docker-compose pull
 docker-compose up -d database
 docker-compose run --rm web python manage.py download_data
 docker-compose run --rm web python manage.py run_import
