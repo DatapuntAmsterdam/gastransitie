@@ -2,6 +2,7 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from datasets.models import GasAfwc2017
 from datasets.models import BagBuurt
 from datasets.models import Mip2016
+from datasets.models import EnergieLabel
 
 
 class GasAfwc2017Serializer(GeoFeatureModelSerializer):
@@ -26,3 +27,11 @@ class Mip2016Serializer(GeoFeatureModelSerializer):
         fields = '__all__'
 
         geo_field = "wkb_geometry"
+
+
+class EnergieLabelSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = EnergieLabel
+        fields = '__all__'
+
+        geo_field = 'wkb_geometry'

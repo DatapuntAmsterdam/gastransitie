@@ -5,6 +5,7 @@ This is where SQL queries that must be run after import go.
 from datasets.imports import corporatie_bezit
 from datasets.imports import cbs
 from datasets.imports import mip
+from datasets.imports import energie_labels
 from datasets.imports.util import run_sql
 
 
@@ -34,6 +35,7 @@ def main():
     corporatie_bezit.fix_tables()
     cbs.fix_tables()
     mip.fix_tables()
+    energie_labels.fix_tables()
     fix_bag_buurt()
 
 

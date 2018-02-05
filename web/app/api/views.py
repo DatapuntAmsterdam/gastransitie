@@ -3,9 +3,11 @@ from rest_framework import viewsets
 from .serializers import GasAfwc2017Serializer
 from .serializers import BagBuurtSerializer
 from .serializers import Mip2016Serializer
+from .serializers import EnergieLabelSerializer
 from datasets.models import GasAfwc2017
 from datasets.models import BagBuurt
 from datasets.models import Mip2016
+from datasets.models import EnergieLabel
 
 
 class GasAfwc2017ViewSet(viewsets.ModelViewSet):
@@ -44,6 +46,27 @@ class Mip2016ViewSet(viewsets.ModelViewSet):
             buurt = None
 
         qs = Mip2016.objects.all().order_by('ogc_fid')
+        if buurt is not None:
+            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+
+        return qs
+
+
+class EnergieLabelViewSet(viewsets.ModelViewSet):
+    serializer_class = EnergieLabelSerializer
+
+    def get_queryset(self):
+        """
+        Filter against buurt (neighborhood) specified in request.
+        """
+        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
+        buurt_code = self.request.query_params.get('buurt', None)
+        try:
+            buurt = BagBuurt.objects.get(vollcode=buurt_code)
+        except:
+            buurt = None
+
+        qs = EnergieLabel.objects.all().order_by('ogc_fid')
         if buurt is not None:
             qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
 

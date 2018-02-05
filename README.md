@@ -38,6 +38,7 @@ access to the relevant credentials.
 ```bash
 docker-compose pull
 docker-compose up -d database
+docker-compose run --rm web python manage.py migrate
 docker-compose run --rm web python manage.py download_data
 docker-compose run --rm web python manage.py run_import
 docker-compose exec database update-table.sh bag bag_buurt public gastransitie <username>
