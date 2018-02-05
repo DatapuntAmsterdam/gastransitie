@@ -20,7 +20,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE = [
-#    'authorization_django.authorization_middleware',
+    'authorization_django.authorization_middleware',
     'corsheaders.middleware.CorsMiddleware',
 ] + MIDDLEWARE
 
