@@ -38,7 +38,7 @@ let vueApp = new Vue({
       setBuurt: 'setBuurt'
     }),
     async init () {
-      this.setBuurt('A08d')
+      this.setBuurt('T93a')
     }
   }
 })

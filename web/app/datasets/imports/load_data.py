@@ -18,7 +18,7 @@ def import_raw(datadir):
     """
     Run the first step in the import process (build raw database tables).
     """
-#    import_renovaties(datadir)
+    import_renovaties(datadir)
 #    import_warmtekoude(datadir)
     import_mip(datadir)
     import_energie_labels(datadir)
