@@ -1,11 +1,15 @@
 <template>
   <div>
     <oauth></oauth>
-    <factsheet></factsheet>
+    <factsheet v-if="token"></factsheet>
+    <p>
+      Please login to continue...
+    </p>
   </div>
 </template>
 
 <script>
+import { getToken } from '../services/auth'
 import oauth from './OAuth'
 import factsheet from './FactsheetPage'
 
@@ -15,7 +19,13 @@ export default {
     'oauth': oauth,
     'factsheet': factsheet
   },
-  computed: {
+  data () {
+    return {
+      token: null
+    }
+  },
+  created () {
+    this.token = getToken()
   }
 }
 </script>
