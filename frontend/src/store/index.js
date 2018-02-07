@@ -19,7 +19,7 @@ export default new Vuex.Store({
     async setBuurt (context, buurt) {
       context.commit('buurt', buurt)
       context.commit('cityData', {})
-      let cityData = await util.loadCityData(buurt) // ??
+      let cityData = await util.loadCityData(buurt)
       context.commit('cityData', cityData)
     },
     setCityData (context, cityData) {

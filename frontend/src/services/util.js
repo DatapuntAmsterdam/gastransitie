@@ -1,44 +1,14 @@
 import Vue from 'vue'
 import { getToken } from './auth'
 
-async function readPaginatedData (url) {
+async function readPaginatedData (url, headers = {}, getData = r => r.data.results) {
   let next = url
   let results = []
   while (next) {
     try {
-      let response = await Vue.axios.get(next)
+      let response = await Vue.axios.get(next, { headers })
       next = response.data.next
-      response.data.results.forEach(result => {
-        results.push(result)
-      })
-    } catch (e) {
-      next = null
-    }
-  }
-  return results
-}
-
-async function readPaginatedGeoJSON (url) {
-  // Read data from a paginated GeoJSON endpoint
-  // Note: distinct from normal JSON data because 'features' property must be accessed
-  // .header("Authorization", "bearer " + token)
-
-  const token = getToken()
-  let next = url
-  let results = {
-    type: 'FeatureCollection',
-    features: []
-  }
-
-  while (next) {
-    try {
-      let response = await Vue.axios.get(next, {
-        headers: {
-          Authorization: 'bearer ' + token
-        }
-      })
-      next = response.data.next
-      results.features = results.features.concat(response.data.results.features)
+      results = results.concat(getData(response))
     } catch (e) {
       console.error('Request failed', e)
       next = null
@@ -53,8 +23,22 @@ async function readData (url) {
 }
 
 async function loadCityData (buurt) {
-  let url = 'http://localhost:8000/gastransitie/api/afwc?buurt=' + buurt // TODO: fix hostname
-  return readPaginatedGeoJSON(url)
+  const token = getToken()
+  if (token) {
+    const url = 'http://localhost:8000/gastransitie/api/afwc?buurt=' + buurt // TODO: fix hostname
+    const features = await readPaginatedData(
+      url, {
+        Authorization: 'bearer ' + token
+      },
+      r => r.data.results.features
+    )
+    return {
+      type: 'FeatureCollection',
+      features
+    }
+  } else {
+    return {}
+  }
 }
 
 export default {
