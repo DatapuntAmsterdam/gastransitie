@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import HelloAgain from '@/components/HelloAgain'
 import LeafletExample from '@/components/LeafletExample'
 import FactsheetPage from '@/components/FactsheetPage'
+import Home from '@/components/Home'
 
 Vue.use(Router)
 
@@ -12,7 +13,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/helloworld'
+      redirect: '/home'
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/helloworld',
