@@ -10,6 +10,7 @@ import { authorize, logout, getToken } from '../services/auth'
 
 export default {
   created () {
+    this.token = getToken()
   },
   data () {
     return {
@@ -23,11 +24,6 @@ export default {
     logout: function () {
       logout()
     }
-  },
-  mounted () {
-    this.token = getToken()
-  },
-  watch: {
   }
 }
 </script>

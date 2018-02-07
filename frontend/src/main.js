@@ -6,8 +6,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import BootstrapVue from 'bootstrap-vue'
-// import Vue2Leaflet from 'vue2-leaflet'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 import store from './store'
 
@@ -28,11 +27,6 @@ let vueApp = new Vue({
   store,
   components: { App },
   template: '<App/>',
-  computed: {
-    ...mapGetters([
-      'text'
-    ])
-  },
   methods: {
     ...mapActions({
       setBuurt: 'setBuurt'
