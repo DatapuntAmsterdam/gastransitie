@@ -2,7 +2,7 @@
   <div>
     <oauth></oauth>
     <factsheet v-if="token"></factsheet>
-    <p>
+    <p v-if="!token">
       Please login to continue...
     </p>
   </div>
