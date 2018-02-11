@@ -17,21 +17,27 @@ async function readPaginatedData (url, headers = {}, getData = r => r.data.resul
   return results
 }
 
-async function readData (url) {
-  let response = await Vue.axios.get(url)
-  return response.data
-}
-
-async function loadCityData (buurt) {
+async function readProtectedPaginatedData (url, getData = r => r.data.results) {
   const token = getToken()
   if (token) {
-    const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt // TODO: fix hostname
-    const features = await readPaginatedData(
+    const results = await readPaginatedData(
       url, {
         Authorization: 'bearer ' + token
       },
-      r => r.data.results.features
+      getData
     )
+    return results
+  } else {
+    return []
+  }
+}
+
+async function loadCityData (buurt) {
+  const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt
+  const getData = r => r.data.results.features
+
+  const features = await readProtectedPaginatedData(url, getData)
+  if (features.length) {
     return {
       type: 'FeatureCollection',
       features
@@ -42,15 +48,11 @@ async function loadCityData (buurt) {
 }
 
 async function loadBbox (buurt) {
-  const token = getToken()
-  if (token) {
-    const url = 'http://localhost:8000/gastransitie/api/buurtbbox/?vollcode=' + buurt
-    const features = await readPaginatedData(
-      url, {
-        Authorization: 'bearer ' + token
-      },
-      r => r.data.results.features
-    )
+  const url = 'http://localhost:8000/gastransitie/api/buurtbbox/?vollcode=' + buurt
+  const getData = r => r.data.results.features
+
+  const features = await readProtectedPaginatedData(url, getData)
+  if (features.length) {
     return {
       type: 'FeatureCollection',
       features
@@ -58,6 +60,11 @@ async function loadBbox (buurt) {
   } else {
     return {}
   }
+}
+
+async function readData (url) {
+  let response = await Vue.axios.get(url)
+  return response.data
 }
 
 export default {
