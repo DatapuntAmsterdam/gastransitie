@@ -1,13 +1,28 @@
 import Vue from 'vue'
 import { getToken } from './auth'
 
-async function readPaginatedData (url, headers = {}, getData = r => r.data.results) {
+// Helper function to access next link (used with readData)
+const getNoNext = r => null
+const getNextPage = r => r.data.next
+const getNextPageHAL = r => r._links.next.href
+
+const getNormalData = r => r.data
+const getPaginatedData = r => r.data.results
+const getGeoJSONData = r => r.data.results.features
+
+// Access paginated resource
+async function readPaginatedData (
+  url,
+  headers = {},
+  getData = r => getPaginatedData,
+  getNext = r => getNextPage
+) {
   let next = url
   let results = []
   while (next) {
     try {
       let response = await Vue.axios.get(next, { headers })
-      next = response.data.next
+      next = getNext(response)
       results = results.concat(getData(response))
     } catch (e) {
       console.error('Request failed', e)
@@ -17,14 +32,20 @@ async function readPaginatedData (url, headers = {}, getData = r => r.data.resul
   return results
 }
 
-async function readProtectedPaginatedData (url, getData = r => r.data.results) {
+// Access OAuth2 protected paginated resource
+async function readProtectedPaginatedData (
+  url,
+  getData = r => getPaginatedData,
+  getNext = r => getNextPage
+) {
   const token = getToken()
   if (token) {
     const results = await readPaginatedData(
       url, {
         Authorization: 'bearer ' + token
       },
-      getData
+      getData,
+      getNext
     )
     return results
   } else {
@@ -32,11 +53,7 @@ async function readProtectedPaginatedData (url, getData = r => r.data.results) {
   }
 }
 
-async function loadCityData (buurt) {
-  const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt
-  const getData = r => r.data.results.features
-
-  const features = await readProtectedPaginatedData(url, getData)
+function resultsAsGeoJSON (features) {
   if (features.length) {
     return {
       type: 'FeatureCollection',
@@ -47,19 +64,19 @@ async function loadCityData (buurt) {
   }
 }
 
+async function loadCityData (buurt) {
+  const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt
+
+  return resultsAsGeoJSON(
+    await readProtectedPaginatedData(url, getGeoJSONData, getNextPage)
+  )
+}
+
 async function loadBbox (buurt) {
   const url = 'http://localhost:8000/gastransitie/api/buurtbbox/?vollcode=' + buurt
-  const getData = r => r.data.results.features
-
-  const features = await readProtectedPaginatedData(url, getData)
-  if (features.length) {
-    return {
-      type: 'FeatureCollection',
-      features
-    }
-  } else {
-    return {}
-  }
+  return resultsAsGeoJSON(
+    await readProtectedPaginatedData(url, getGeoJSONData, getNextPage)
+  )
 }
 
 async function readData (url) {
@@ -71,5 +88,12 @@ export default {
   readPaginatedData,
   readData,
   loadCityData,
-  loadBbox
+  loadBbox,
+  // helper functions:
+  getNoNext,
+  getNextPage,
+  getNextPageHAL,
+  getNormalData,
+  getPaginatedData,
+  getGeoJSONData
 }
