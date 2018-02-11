@@ -1,10 +1,12 @@
 from rest_framework import viewsets
+from rest_framework.views import APIView
 
 from .serializers import GasAfwc2017Serializer
 from .serializers import BagBuurtSerializer
 from .serializers import Mip2016Serializer
 from .serializers import EnergieLabelSerializer
 from .serializers import RenovatieSerializer
+from .serializers import BagBuurtBboxSerializer
 from datasets.models import GasAfwc2017
 from datasets.models import BagBuurt
 from datasets.models import Mip2016
@@ -96,6 +98,13 @@ class RenovatieViewSet(viewsets.ModelViewSet):
         return qs
 
 
-class BagBuurtViewSet(viewsets.ModelViewSet):
+class BagBuurtViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = BagBuurtSerializer
-    queryset = BagBuurt.objects.all()
+    queryset = BagBuurt.objects.all().order_by('id')
+    filter_fields = ('vollcode',)
+
+
+class BagBuurtBboxViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BagBuurtBboxSerializer
+    queryset = BagBuurt.objects.all().order_by('id')
+    filter_fields = ('vollcode',)

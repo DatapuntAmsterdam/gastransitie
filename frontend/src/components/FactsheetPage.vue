@@ -10,17 +10,18 @@ export default {
   created () {
     this.vars = {
       map: null,
-      dataLayer: null
+      tileLayer: null,
+      dataLayer: null,
+      mapControl: null
     }
   },
   computed: {
-    ...mapGetters(['cityData'])
+    ...mapGetters(['cityData', 'bbox', 'VUILNIS'])
   },
   methods: {
     showMap () {
       let map = L.map(this.$el).setView([52.367653, 4.900877], 12)
-      // L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png', {
-      L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+      let tileLayer = L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
         minZoom: 11,
         maxZoom: 21,
         subdomains: ['t1', 't2', 't3', 't4'],
@@ -28,9 +29,15 @@ export default {
       }).addTo(map)
       let dataLayer = L.geoJSON().addTo(map)
 
+      let baseLayers = {tileLayer}
+      let overLays = {'AFWC data': dataLayer}
+
+      L.control.layers(baseLayers, overLays, {hideSingleBase: true, collapsed: false}).addTo(map)
+
       // Save map and layer references to the local state of this component:
-      this.vars.dataLayer = dataLayer
       this.vars.map = map
+      this.vars.tileLayer = tileLayer
+      this.vars.dataLayer = dataLayer
     }
   },
   mounted () {
@@ -41,6 +48,13 @@ export default {
       // Show the GeoJSON features that were loaded:
       if (to.hasOwnProperty('features')) {
         this.vars.dataLayer.addData(to)
+      }
+    },
+    bbox (to, from) {
+      if (to !== null) {
+        // Django GIS extent and Leaflet bounds differ, hence:
+        let bounds = [[to[1], to[0]], [to[3], to[2]]]
+        this.vars.map.fitBounds(bounds)
       }
     }
   }

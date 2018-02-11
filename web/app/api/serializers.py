@@ -1,4 +1,5 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from rest_framework.serializers import SerializerMethodField
 from datasets.models import GasAfwc2017
 from datasets.models import BagBuurt
 from datasets.models import Mip2016
@@ -44,3 +45,16 @@ class RenovatieSerializer(GeoFeatureModelSerializer):
         fields = '__all__'
 
         geo_field = 'wkb_geometry'
+
+
+class BagBuurtBboxSerializer(GeoFeatureModelSerializer):
+    bbox = SerializerMethodField()
+
+    class Meta:
+        model = BagBuurt
+        fields = ('vollcode','bbox')
+
+        geo_field = 'bbox'
+
+    def get_bbox(self, obj):
+        return obj.geometrie.extent

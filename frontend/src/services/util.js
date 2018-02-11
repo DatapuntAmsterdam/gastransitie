@@ -25,7 +25,26 @@ async function readData (url) {
 async function loadCityData (buurt) {
   const token = getToken()
   if (token) {
-    const url = 'http://localhost:8000/gastransitie/api/afwc?buurt=' + buurt // TODO: fix hostname
+    const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt // TODO: fix hostname
+    const features = await readPaginatedData(
+      url, {
+        Authorization: 'bearer ' + token
+      },
+      r => r.data.results.features
+    )
+    return {
+      type: 'FeatureCollection',
+      features
+    }
+  } else {
+    return {}
+  }
+}
+
+async function loadBbox (buurt) {
+  const token = getToken()
+  if (token) {
+    const url = 'http://localhost:8000/gastransitie/api/buurtbbox/?vollcode=' + buurt
     const features = await readPaginatedData(
       url, {
         Authorization: 'bearer ' + token
@@ -44,5 +63,6 @@ async function loadCityData (buurt) {
 export default {
   readPaginatedData,
   readData,
-  loadCityData
+  loadCityData,
+  loadBbox
 }
