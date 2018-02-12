@@ -16,7 +16,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['cityData', 'bbox', 'VUILNIS'])
+    ...mapGetters(['cityData', 'bbox'])
   },
   methods: {
     showMap () {

@@ -10,7 +10,8 @@ export default new Vuex.Store({
     text: null,
     buurt: '',
     bbox: null,
-    cityData: {}
+    cityData: {},
+    buurten: []
   },
   actions: {
     // can be async
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setCityData (context, cityData) {
       context.commit('cityData', cityData)
+    },
+    async setBuurten (context, buurten) {
+      context.commit('buurten', buurten)
     }
   },
   mutations: {
@@ -45,6 +49,9 @@ export default new Vuex.Store({
     },
     cityData (state, cityData) {
       state.cityData = cityData
+    },
+    buurten (state, buurten) {
+      state.buurten = buurten
     }
   },
   getters: {
@@ -59,6 +66,9 @@ export default new Vuex.Store({
     },
     cityData: state => {
       return state.cityData
+    },
+    buurten: state => {
+      return state.buurten
     }
   }
 })

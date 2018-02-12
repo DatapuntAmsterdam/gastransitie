@@ -86,9 +86,11 @@ async function readData (url) {
 
 export default {
   readPaginatedData,
+  readProtectedPaginatedData,
   readData,
   loadCityData,
   loadBbox,
+  resultsAsGeoJSON,
   // helper functions:
   getNoNext,
   getNextPage,

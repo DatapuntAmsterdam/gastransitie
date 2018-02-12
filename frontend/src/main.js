@@ -14,6 +14,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'leaflet/dist/leaflet.css'
 
+import util from './services/util'
+
 Vue.use(VueAxios, axios)
 
 Vue.use(BootstrapVue)
@@ -29,10 +31,31 @@ let vueApp = new Vue({
   template: '<App/>',
   methods: {
     ...mapActions({
-      setBuurt: 'setBuurt'
+      setBuurten: 'setBuurten'
     }),
     async init () {
-      this.setBuurt('T93a')
+      let buurten = this.$store.state.buurten
+      if (!buurten.length) {
+        const url = 'http://localhost:8000/gastransitie/api/buurt/'
+        let results = await util.readProtectedPaginatedData(
+          url,
+          util.getGeoJSONData,
+          util.getNextPage
+        )
+        let tmp = results.map(function (d, i) {
+          return {vollcode: d.properties.vollcode, naam: d.properties.naam}
+        })
+        tmp.sort(function (a, b) {
+          if (a.naam > b.naam) {
+            return +1
+          } else if (a.naam < b.naam) {
+            return -1
+          } else {
+            return 0
+          }
+        })
+        this.setBuurten(tmp)
+      }
     }
   }
 })
