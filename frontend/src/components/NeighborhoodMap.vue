@@ -1,11 +1,15 @@
 <!-- This component sets up the neighborhood map and zooms to the current neighborhood -->
 <template>
-  <div class="map">Buurt kaart</div>
+  <div>
+    <div class="map"></div>
+    <afwc-map-layer v-if="map" :buurt="buurt" :map="map"></afwc-map-layer>
+  </div>
 </template>
 
 <script>
 import L from 'leaflet'
 import util from '../services/util'
+import AfwcMapLayer from './AfwcMapLayer'
 
 export default {
   props: [
@@ -16,8 +20,10 @@ export default {
       map: null
     }
   },
+  components: {
+    'afwc-map-layer': AfwcMapLayer
+  },
   mounted () {
-    console.log('Buurt:', this.buurt)
     this.map = L.map(this.$el).setView([52.367653, 4.900877], 12)
     L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
       minZoom: 11,

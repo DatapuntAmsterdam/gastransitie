@@ -53,7 +53,7 @@ async function readProtectedPaginatedData (
   }
 }
 
-function resultsAsGeoJSON (features) {
+/* function resultsAsGeoJSON (features) {
   if (features.length) {
     return {
       type: 'FeatureCollection',
@@ -61,6 +61,13 @@ function resultsAsGeoJSON (features) {
     }
   } else {
     return {}
+  }
+} */
+
+function resultsAsGeoJSON (features) {
+  return {
+    type: 'FeatureCollection',
+    features
   }
 }
 
