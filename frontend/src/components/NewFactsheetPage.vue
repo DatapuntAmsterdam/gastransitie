@@ -12,7 +12,7 @@
       <div class="col-6"><afwc-map :buurt="buurt"></afwc-map></div>
     </div>
     <div class="row" v-if="buurten.length">
-      <div class="mt-2 col-12"><h3>Meerjarig Investerings Plan</h3></div>
+      <div class="mt-2 col-12"><h3>Meerjaren Investerings Programma</h3></div>
       <div class="col-6"></div>
       <div class="col-6"><mip-map :buurt="buurt"></mip-map></div>
     </div>
