@@ -86,6 +86,32 @@ async function loadBbox (buurt) {
   )
 }
 
+async function loadBuurten () {
+  const url = 'http://localhost:8000/gastransitie/api/buurt/'
+  let results = await readProtectedPaginatedData(
+    url,
+    getGeoJSONData,
+    getNextPage
+  )
+  let tmp = results.map(function (d, i) {
+    return {
+      vollcode: d.properties.vollcode,
+      naam: d.properties.naam,
+      landelijk: d.id
+    }
+  })
+  tmp.sort(function (a, b) {
+    if (a.naam > b.naam) {
+      return +1
+    } else if (a.naam < b.naam) {
+      return -1
+    } else {
+      return 0
+    }
+  })
+  return tmp
+}
+
 async function readData (url) {
   let response = await Vue.axios.get(url)
   return response.data
@@ -97,6 +123,7 @@ export default {
   readData,
   loadCityData,
   loadBbox,
+  loadBuurten,
   resultsAsGeoJSON,
   // helper functions:
   getNoNext,

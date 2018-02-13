@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="btn" v-if="!token" v-on:click="login()">Login</button>
-    <button class="btn" v-if="token"  v-on:click="logout()">Logout</button>
+    <button class="btn btn-outline-primary" v-if="!token" v-on:click="login()">Login</button>
+    <button class="btn btn-outline-primary" v-if="token"  v-on:click="logout()">Logout</button>
   </div>
 </template>
 

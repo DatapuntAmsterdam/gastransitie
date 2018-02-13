@@ -34,26 +34,10 @@ let vueApp = new Vue({
       setBuurten: 'setBuurten'
     }),
     async init () {
+      console.log('Init called on root of app')
       let buurten = this.$store.state.buurten
       if (!buurten.length) {
-        const url = 'http://localhost:8000/gastransitie/api/buurt/'
-        let results = await util.readProtectedPaginatedData(
-          url,
-          util.getGeoJSONData,
-          util.getNextPage
-        )
-        let tmp = results.map(function (d, i) {
-          return {vollcode: d.properties.vollcode, naam: d.properties.naam}
-        })
-        tmp.sort(function (a, b) {
-          if (a.naam > b.naam) {
-            return +1
-          } else if (a.naam < b.naam) {
-            return -1
-          } else {
-            return 0
-          }
-        })
+        let tmp = await util.loadBuurten()
         this.setBuurten(tmp)
       }
     }

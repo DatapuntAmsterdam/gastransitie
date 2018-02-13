@@ -12,7 +12,7 @@ if (document.location.hostname === 'localhost' ||
 const AUTHZ_URL = authzHost + '/oauth2/authorize?idp_id=datapunt'
 
 // Infer redirect_uri
-const REDIRECT_URI = document.location.origin + '/home'
+const REDIRECT_URI = document.location.origin + '/'
 
 // provider
 const datapuntProvider = new OAuth.Provider({
