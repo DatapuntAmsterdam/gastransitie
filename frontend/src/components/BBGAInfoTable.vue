@@ -1,8 +1,8 @@
 <template>
-  <div v-if="BBGAData">
+  <div>
     <div class="row">
       <div class="col-6">
-        <h4>Sociaal</h4>
+        <h3>Sociaal</h3>
 
         <table class="statstable">
           <tbody>
@@ -31,13 +31,13 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{BBGAData.BEVAUTOCH_P}}</td>
-              <td>{{BBGAData.BEVWEST_P}}</td>
+              <td>{{BBGAData.BEVAUTOCH_P}} %</td>
+              <td>{{BBGAData.BEVWEST_P}} %</td>
               <td>{{BBGAData.BEVSUR_P}} %</td>
-              <td>{{BBGAData.BEVANTIL_P}}</td>
+              <td>{{BBGAData.BEVANTIL_P}} %</td>
               <td>{{BBGAData.BEVTURK_P}} %</td>
-              <td>{{BBGAData.BEVMAROK_P}}</td>
-              <td>{{BBGAData.BEVNW_P}}</td>
+              <td>{{BBGAData.BEVMAROK_P}} %</td>
+              <td>{{BBGAData.BEVNW_P}} %</td>
             </tr>
           </tbody>
         </table>
@@ -50,13 +50,20 @@
 import util from '../services/util'
 import { mapGetters } from 'vuex'
 
+let requiredVariables = [
+  'BEVTOTAAL', 'BEVSUR_P', 'BEVTURK_P', 'BEVANTIL_P', 'BEVMAROK_P', 'BEVNW_P', 'BEVWEST_P', 'BEVAUTOCH_P']
+
 export default {
   props: [
     'buurt'
   ],
   data () {
+    let placeholder = {}
+    for (let variable of requiredVariables) {
+      placeholder[variable] = ''
+    }
     return {
-      BBGAData: null
+      BBGAData: placeholder
     }
   },
   created () {
@@ -70,8 +77,7 @@ export default {
   methods: {
     setBBGAData (buurt) {
       // access the relevant BBGA variable, latest year
-      this.getBBGAVariables(
-        ['BEVTOTAAL', 'BEVSUR_P', 'BEVTURK_P', 'BEVANTIL_P', 'BEVMAROK_P', 'BEVNW_P', 'BEVWEST_P', 'BEVAUTOCH_P'], 2017)
+      this.getBBGAVariables(requiredVariables, 2017)
     },
     async getBBGAVariables (vars, year) {
       let BBGAData = {}

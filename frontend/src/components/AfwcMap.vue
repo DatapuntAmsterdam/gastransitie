@@ -1,11 +1,9 @@
-<!-- This component sets up the neighborhood map and zooms to the current neighborhood -->
-<!-- duplicate part of this for other map views TODO -->
+<!-- TODO: refactor, make general map container -->
 <template>
   <div>
     <div class="map"></div>
     <afwc-map-layer v-if="map" :buurt="buurt" :map="map"></afwc-map-layer>
     <neighborhood-border-map-layer v-if="map" :buurt="buurt" :map="map" ></neighborhood-border-map-layer>
-    <mip-map-layer v-if="map" :buurt="buurt" :map="map"></mip-map-layer>
   </div>
 </template>
 
@@ -16,7 +14,6 @@ import util from '../services/util'
 // individual map layers:
 import AfwcMapLayer from './AfwcMapLayer'
 import NeighborhoodBorderLayer from './NeighborhoodBorderLayer'
-import MipMapLayer from './MipMapLayer'
 
 export default {
   props: [
@@ -29,11 +26,14 @@ export default {
   },
   components: {
     'afwc-map-layer': AfwcMapLayer,
-    'neighborhood-border-map-layer': NeighborhoodBorderLayer,
-    'mip-map-layer': MipMapLayer
+    'neighborhood-border-map-layer': NeighborhoodBorderLayer
   },
   mounted () {
-    this.map = L.map(this.$el).setView([52.367653, 4.900877], 12)
+    this.map = L.map(this.$el, {
+      attributionControl: false,
+      dragging: false,
+      zoomControl: false
+    }).setView([52.367653, 4.900877], 12)
     L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png', {
       minZoom: 11,
       maxZoom: 21,
