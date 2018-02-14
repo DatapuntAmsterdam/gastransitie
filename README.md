@@ -1,5 +1,8 @@
-# Energie transitie project
-Data handling for pilot project energy transition in Amsterdam.
+# Energy Transition Project / Energie transitie project
+
+Data dashboard providing information about gas / energy information
+of the city of Amsterdam. All stakeholders provide information relevant
+for an efficient transition away from gas energy.
 
 ### Context:
 * A number of stakeholders have gotten together to select a number of
@@ -16,7 +19,7 @@ Data handling for pilot project energy transition in Amsterdam.
      they are really good candidates.
 
 ## About the new implementation (which is work-in-progress)
-* The new version will provide a Django application (under `web/`).
+* Django application (under `web/`).
 * This web app provides detail pages for each Amsterdam neighborhood based on
   quick scan documents currently used internally.
 * Furthermore some city wide overview maps will also be provided for comparison.
