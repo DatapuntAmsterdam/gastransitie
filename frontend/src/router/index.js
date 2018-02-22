@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import NewFactsheetPage from '@/components/NewFactsheetPage'
+import FactsheetPage from '@/components/FactsheetPage'
 import NeighborhoodList from '@/components/NeighborhoodList'
 
 Vue.use(Router)
@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/factsheet/:buurt',
       name: 'Factsheet',
-      component: NewFactsheetPage
+      component: FactsheetPage
     },
     {
       path: '/buurten',
