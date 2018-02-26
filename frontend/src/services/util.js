@@ -53,30 +53,11 @@ async function readProtectedPaginatedData (
   }
 }
 
-/* function resultsAsGeoJSON (features) {
-  if (features.length) {
-    return {
-      type: 'FeatureCollection',
-      features
-    }
-  } else {
-    return {}
-  }
-} */
-
 function resultsAsGeoJSON (features) {
   return {
     type: 'FeatureCollection',
     features
   }
-}
-
-async function loadCityData (buurt) {
-  const url = 'http://localhost:8000/gastransitie/api/afwc/?buurt=' + buurt
-
-  return resultsAsGeoJSON(
-    await readProtectedPaginatedData(url, getGeoJSONData, getNextPage)
-  )
 }
 
 async function loadBbox (buurt) {
@@ -121,7 +102,6 @@ export default {
   readPaginatedData,
   readProtectedPaginatedData,
   readData,
-  loadCityData,
   loadBbox,
   loadBuurten,
   resultsAsGeoJSON,
