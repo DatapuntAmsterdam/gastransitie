@@ -1,0 +1,16 @@
+{
+    "layers": [
+        {
+            "dataset": "afwc"
+        },
+        {
+            "dataset": "mip"
+        },
+        {
+            "dataset": "energielabel"
+        },
+        {
+            "dataset": "renovatie"
+        }
+    ]
+}
