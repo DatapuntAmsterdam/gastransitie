@@ -2,6 +2,7 @@
   <div>
     <oauth></oauth>
     <refactor-map :config="afwcMapConfig" :buurt="buurt"></refactor-map>
+    <refactor-map :config="mipMapConfig" :buurt="buurt"></refactor-map>
   </div>
 </template>
 
@@ -11,12 +12,14 @@ import OAuth from './OAuth'
 
 import RefactorMap from './RefactorMap'
 import afwcMapConfig from '../../static/afwc-map-config'
+import mipMapConfig from '../../static/mip-map-config'
 
 export default {
   data () {
     return {
       buurt: this.$route.params.buurt,
-      afwcMapConfig
+      afwcMapConfig,
+      mipMapConfig
     }
   },
   components: {

@@ -32,13 +32,14 @@ export default {
   methods: {
     async updateLayer () {
       let geojsonLayer = this.geojsonLayer
+      // Create a Leaflet geoJSON layer, or clear it
       if (!geojsonLayer) {
-        console.log('Adding a new layer to the map, storing a reference.')
         geojsonLayer = L.geoJSON(null, {color: this.config.color}).addTo(this.map)
+      } else {
+        geojsonLayer.clearlayers()
       }
       geojsonLayer.addData(this.geojson)
       this.geojsonLayer = geojsonLayer
-      console.assert(this.geojsonLayer, 'this.geojsonLayer is not defined')
     }
   }
 }
