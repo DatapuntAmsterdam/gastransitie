@@ -34,7 +34,7 @@ export default {
       let geojsonLayer = this.geojsonLayer
       if (!geojsonLayer) {
         console.log('Adding a new layer to the map, storing a reference.')
-        geojsonLayer = L.geoJSON(null).addTo(this.map)
+        geojsonLayer = L.geoJSON(null, {color: this.config.color}).addTo(this.map)
       }
       geojsonLayer.addData(this.geojson)
       this.geojsonLayer = geojsonLayer

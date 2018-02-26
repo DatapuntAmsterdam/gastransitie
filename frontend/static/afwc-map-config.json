@@ -1,16 +1,20 @@
 {
     "layers": [
         {
-            "dataset": "afwc"
+            "dataset": "afwc",
+            "color": "blue"
         },
         {
-            "dataset": "mip"
+            "dataset": "mip",
+            "color": "red"
         },
         {
-            "dataset": "energielabel"
+            "dataset": "energielabel",
+            "color": "green"
         },
         {
-            "dataset": "renovatie"
+            "dataset": "renovatie",
+            "color": "orange"
         }
     ]
 }
