@@ -1,6 +1,6 @@
 const OAuth = require('@zalando/oauth2-client-js/dist/oauth2-client')
 
-const CLIENT_ID = 'gastransitie_dashboard'
+const CLIENT_ID = 'energietransitie_factsheet'
 const SCOPES = ['GAS/R']
 
 // Infer authorization URL
