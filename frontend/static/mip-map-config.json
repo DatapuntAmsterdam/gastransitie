@@ -1,0 +1,17 @@
+{
+    "tilelayer": null,
+    "layers": [
+        {
+            "dataset": "mip",
+            "color": "red"
+        },
+        {
+            "dataset": "afwc",
+            "color": "blue"
+        },
+        {
+            "dataset": "buurt",
+            "color": "black"
+        }
+    ]
+}

@@ -31,9 +31,15 @@ export default {
     'map-layer': MapLayer
   },
   async mounted () {
-    console.log('Map received buurt', this.buurt)
     this.map = L.map(this.$el.querySelector('.map'), {}).setView([52.367653, 4.900877], 12)
-    if (this.buurt) { this.setMapBounds(this.buurt) }
+
+    if (this.config.wms) {
+      L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
+    }
+
+    if (this.buurt) {
+      this.setMapBounds(this.buurt)
+    }
   },
   methods: {
     async setMapBounds (buurt) {
