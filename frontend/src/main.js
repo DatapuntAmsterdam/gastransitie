@@ -34,12 +34,8 @@ let vueApp = new Vue({
       setBuurten: 'setBuurten'
     }),
     async init () {
-      console.log('Init called on root of app')
-      let buurten = this.$store.state.buurten
-      if (!buurten.length) {
-        let tmp = await util.loadBuurten()
-        this.setBuurten(tmp)
-      }
+      const buurten = await util.loadBuurten()
+      this.setBuurten(buurten)
     }
   }
 })

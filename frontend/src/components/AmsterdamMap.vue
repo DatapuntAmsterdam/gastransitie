@@ -1,20 +1,25 @@
-<!-- This component sets up the neighborhood map and zooms to the current neighborhood -->
-<!-- duplicate part of this for other map views TODO -->
 <template>
   <div>
-    <div class="map"></div>
-    <neighborhood-border-map-layer v-if="map" :buurt="buurt" :map="map" ></neighborhood-border-map-layer>
+    <div class="map" style="height:400px"></div>
+    <map-layer
+      v-for="layerconfig in config.layers"
+      v-bind:key="layerconfig.dataset"
+      :config="layerconfig"
+      :map="map"
+      :v-if="map && buurt"
+      :buurt="buurt">
+    </map-layer>
   </div>
 </template>
 
 <script>
 import L from 'leaflet'
-
-// individual map layers:
-import NeighborhoodBorderLayer from './NeighborhoodBorderLayer'
+import MapLayer from '@/components/AmsterdamMapLayer'
+import datasets from '@/services/privatedatasets'
 
 export default {
   props: [
+    'config',
     'buurt'
   ],
   data () {
@@ -23,26 +28,44 @@ export default {
     }
   },
   components: {
-    'neighborhood-border-map-layer': NeighborhoodBorderLayer
+    'map-layer': MapLayer
   },
-  mounted () {
-    this.map = L.map(this.$el, {
+  async mounted () {
+    // TODO: make baseOptions configurable as well (just an override in JSON config files)
+    const baseOptions = {
       attributionControl: false,
-      preferCanvas: true,
-      dragging: false,
-      zoomControl: false
-    }).setView([52.367653, 4.900877], 12)
-    L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png', {
-      minZoom: 11,
-      maxZoom: 21,
-      subdomains: ['t1', 't2', 't3', 't4']
-    }).addTo(this.map)
+      zoomControl: false,
+      center: [52.367653, 4.900877],
+      zoom: 11
+    }
+
+    this.map = L.map(this.$el.querySelector('.map'), this.config.leafletBaseOptions || baseOptions)
+
+    if (this.config.wms) {
+      L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
+    }
+
+    if (this.buurt && !this.config.noZoom) {
+      this.setMapBounds(this.buurt)
+    }
+  },
+  methods: {
+    async setMapBounds (buurt) {
+      const bounds = await datasets.getBuurtBounds(buurt)
+      this.map.fitBounds(bounds)
+    }
+  },
+  watch: {
+    buurt (to, from) {
+      if (to) {
+        console.log('Map received new buurt', to)
+        this.setMapBounds(to)
+      }
+    }
   }
 }
 </script>
 
-<style scoped>
-.map {
-  height: 400px;
-}
+<style>
+
 </style>

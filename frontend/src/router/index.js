@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import FactsheetPage from '@/components/FactsheetPage'
-import NeighborhoodList from '@/components/NeighborhoodList'
+import BuurtList from '@/components/BuurtList'
+import BuurtFactsheet from '@/components/BuurtFactsheet'
 
 Vue.use(Router)
 
@@ -13,14 +13,18 @@ export default new Router({
       redirect: '/buurten'
     },
     {
-      path: '/factsheet/:buurt',
-      name: 'Factsheet',
-      component: FactsheetPage
-    },
-    {
       path: '/buurten',
       name: 'Buurten',
-      component: NeighborhoodList
+      component: BuurtList
+    },
+    {
+      path: '/factsheet/:buurt',
+      name: 'Refactor',
+      component: BuurtFactsheet
+    },
+    {
+      path: '/factsheet',
+      redirect: 'refactor/A08d'
     }
   ]
 })

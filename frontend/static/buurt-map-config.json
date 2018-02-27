@@ -1,0 +1,23 @@
+{
+    "leafletBaseOptions": {
+        "attributionControl": false,
+        "center": [52.367653, 4.900877],
+        "zoom": 11
+    },
+    "wms": {
+        "url": "https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png",
+        "settings": {
+            "minZoom": 11,
+            "maxZoom": 21,
+            "subdomains": ["t1", "t2", "t3", "t4"],
+            "attribution": "Datapunt Amsterdam"
+        }
+    },
+    "layers": [
+        {
+            "dataset": "buurt",
+            "color": "black"
+        }
+    ],
+    "noZoom": true
+}
