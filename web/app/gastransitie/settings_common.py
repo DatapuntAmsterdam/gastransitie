@@ -20,23 +20,6 @@ DATAPUNT_API_URL = os.getenv(
 INTERNAL_IPS = ('127.0.0.1', '0.0.0.0')
 
 
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.contenttypes',
-    'django.contrib.staticfiles',
-
-    'django_filters',
-    'django.contrib.gis',
-
-    'rest_framework',
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-]
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -50,11 +33,6 @@ TEMPLATES = [
         },
     },
 ]
-
-if DEBUG:
-    INSTALLED_APPS += ['debug_toolbar']
-    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
-    CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Internationalization

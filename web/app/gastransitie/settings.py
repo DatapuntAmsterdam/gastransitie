@@ -1,7 +1,7 @@
 import os
 
-from gastransitie.settings_common import * # noqa F403
-from gastransitie.settings_common import INSTALLED_APPS, DEBUG # noqa F401
+from gastransitie.settings_common import *  # noqa F403
+from gastransitie.settings_common import DEBUG
 from gastransitie.settings_databases import LocationKey,\
     get_docker_host,\
     get_database_key,\
@@ -9,20 +9,38 @@ from gastransitie.settings_databases import LocationKey,\
     OVERRIDE_PORT_ENV_VAR
 
 
-INSTALLED_APPS += [
+INSTALLED_APPS = [
+    'django.contrib.contenttypes',
+    'django.contrib.staticfiles',
+    'django_extensions',
+
+    'django_filters',
+    'django.contrib.gis',
+
+    'datapunt_api',
     'datasets',
     'health',
     'web',
 
-    'rest_framework_gis',
 
+    'rest_framework',
+    'rest_framework_gis',
     'corsheaders',
 ]
 
+
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'authorization_django.authorization_middleware',
     'corsheaders.middleware.CorsMiddleware',
-] + MIDDLEWARE
+]
+
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 
