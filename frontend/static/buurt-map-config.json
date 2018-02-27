@@ -1,4 +1,9 @@
 {
+    "leafletBaseOptions": {
+        "attributionControl": false,
+        "center": [52.367653, 4.900877],
+        "zoom": 11
+    },
     "wms": {
         "url": "https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png",
         "settings": {
@@ -12,10 +17,7 @@
         {
             "dataset": "buurt",
             "color": "black"
-        },
-        {
-            "dataset": "mip",
-            "color": "red"
         }
-    ]
+    ],
+    "noZoom": true
 }

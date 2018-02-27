@@ -10,20 +10,12 @@
     },
     "layers": [
         {
+            "dataset": "buurt",
+            "color": "black"
+        },
+        {
             "dataset": "afwc",
             "color": "blue"
-        },
-        {
-            "dataset": "mip",
-            "color": "red"
-        },
-        {
-            "dataset": "energielabel",
-            "color": "green"
-        },
-        {
-            "dataset": "renovatie",
-            "color": "orange"
         }
     ]
 }
