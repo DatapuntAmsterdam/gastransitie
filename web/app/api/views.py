@@ -37,17 +37,20 @@ class BuurtFilter():
 
 class GasAfwc2017Filter(FilterSet, BuurtFilter):
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = GasAfwc2017
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
 class GasAfwc2017ViewSet(viewsets.ModelViewSet):
+    """
+    Amsterdam Federate Woningbouw Coorporaties
+    """
     serializer_class = GasAfwc2017Serializer
     filter_class = GasAfwc2017Filter
     queryset = GasAfwc2017.objects.all().order_by('ogc_fid')
@@ -55,13 +58,13 @@ class GasAfwc2017ViewSet(viewsets.ModelViewSet):
 
 class MipFilter(FilterSet, BuurtFilter):
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = Mip2016
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
