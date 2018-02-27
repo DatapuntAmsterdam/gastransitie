@@ -1,4 +1,4 @@
-sn1crypto==0.24.0
+asn1crypto==0.24.0
 git+https://github.com/Amsterdam/objectstore.git#egg=datapunt-objectstore
 attrs==17.4.0
 Babel==2.5.3
@@ -12,7 +12,6 @@ coreschema==0.0.4
 cryptography==2.1.4
 datapunt-authorization-django==0.2.18
 datapunt-config-loader==1.1.0
-datapunt-objectstore==2017.10.1
 debtcollector==1.19.0
 Django==2.0.2
 django-cors-headers==2.1.0
