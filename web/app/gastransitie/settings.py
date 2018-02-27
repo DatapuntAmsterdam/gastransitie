@@ -1,6 +1,7 @@
 import os
 
 from gastransitie.settings_common import *  # noqa F403
+from gastransitie.settings_common import DEBUG
 from gastransitie.settings_databases import LocationKey,\
     get_docker_host,\
     get_database_key,\
@@ -11,6 +12,7 @@ from gastransitie.settings_databases import LocationKey,\
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
+    'django_extensions',
 
     'django_filters',
     'django.contrib.gis',
