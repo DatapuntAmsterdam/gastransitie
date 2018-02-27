@@ -14,7 +14,7 @@
 
 <script>
 import L from 'leaflet'
-import MapLayer from '@/components/RefactorMapLayer'
+import MapLayer from '@/components/AmsterdamMapLayer'
 import datasets from '@/services/privatedatasets'
 
 export default {

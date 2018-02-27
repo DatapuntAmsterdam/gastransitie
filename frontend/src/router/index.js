@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import NeighborhoodList from '@/components/NeighborhoodList'
-import Refactor from '@/components/Refactor'
+import BuurtList from '@/components/BuurtList'
+import BuurtFactsheet from '@/components/BuurtFactsheet'
 
 Vue.use(Router)
 
@@ -15,12 +15,12 @@ export default new Router({
     {
       path: '/buurten',
       name: 'Buurten',
-      component: NeighborhoodList
+      component: BuurtList
     },
     {
       path: '/factsheet/:buurt',
       name: 'Refactor',
-      component: Refactor
+      component: BuurtFactsheet
     },
     {
       path: '/factsheet',
