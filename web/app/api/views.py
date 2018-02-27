@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.views import APIView
 
 from .serializers import GasAfwc2017Serializer
 from .serializers import BagBuurtSerializer
@@ -7,95 +6,105 @@ from .serializers import Mip2016Serializer
 from .serializers import EnergieLabelSerializer
 from .serializers import RenovatieSerializer
 from .serializers import BagBuurtBboxSerializer
-from datasets.models import GasAfwc2017
-from datasets.models import BagBuurt
-from datasets.models import Mip2016
-from datasets.models import EnergieLabel
-from datasets.models import Renovatie
+
+from datasets.models.corporatie_bezit import GasAfwc2017
+from datasets.models.bag import BagBuurt
+from datasets.models.mip import Mip2016
+from datasets.models.energie_labels import EnergieLabel
+from datasets.models.renovaties import Renovatie
+
+
+from django_filters.rest_framework import filters
+from django_filters.rest_framework import FilterSet
+
+
+class BuurtFilter():
+    """
+    Filter dataset on buurt.
+    """
+
+    def buurtcode_filter(self, qs, _name, value):
+        try:
+            buurt = BagBuurt.objects.get(vollcode=value)
+        except BagBuurt.DoesNotExist:
+            buurt = None
+
+        if buurt is not None:
+            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+
+        return qs
+
+
+class GasAfwc2017Filter(FilterSet, BuurtFilter):
+
+    buurt_code = filters.CharFilter(
+        label='buurt_code', method='buurtcode_filter')
+
+    class Meta:
+        model = GasAfwc2017
+        fields = (
+            'buurt_code',
+        )
 
 
 class GasAfwc2017ViewSet(viewsets.ModelViewSet):
     serializer_class = GasAfwc2017Serializer
+    filter_class = GasAfwc2017Filter
+    queryset = GasAfwc2017.objects.all().order_by('ogc_fid')
 
-    def get_queryset(self):
-        """
-        Filter against buurt (neighborhood) specified in request.
-        """
-        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
-        buurt_code = self.request.query_params.get('buurt', None)
-        try:
-            buurt = BagBuurt.objects.get(vollcode=buurt_code)
-        except:
-            buurt = None
 
-        qs = GasAfwc2017.objects.all().order_by('ogc_fid')
-        if buurt is not None:
-            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+class MipFilter(FilterSet, BuurtFilter):
 
-        return qs
+    buurt_code = filters.CharFilter(
+        label='buurt_code', method='buurtcode_filter')
+
+    class Meta:
+        model = Mip2016
+        fields = (
+            'buurt_code',
+        )
 
 
 class Mip2016ViewSet(viewsets.ModelViewSet):
     serializer_class = Mip2016Serializer
+    filter_class = MipFilter
+    queryset = Mip2016.objects.all().order_by('ogc_fid')
 
-    def get_queryset(self):
-        """
-        Filter against buurt (neighborhood) specified in request.
-        """
-        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
-        buurt_code = self.request.query_params.get('buurt', None)
-        try:
-            buurt = BagBuurt.objects.get(vollcode=buurt_code)
-        except:
-            buurt = None
 
-        qs = Mip2016.objects.all().order_by('ogc_fid')
-        if buurt is not None:
-            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+class EnergieLabelFilter(FilterSet, BuurtFilter):
 
-        return qs
+    buurt_code = filters.CharFilter(
+        label='buurt_code', method='buurtcode_filter')
+
+    class Meta:
+        model = EnergieLabel
+        fields = (
+            'buurt_code',
+        )
 
 
 class EnergieLabelViewSet(viewsets.ModelViewSet):
     serializer_class = EnergieLabelSerializer
+    queryset = EnergieLabel.objects.all().order_by('ogc_fid')
+    filter_class = EnergieLabelFilter
 
-    def get_queryset(self):
-        """
-        Filter against buurt (neighborhood) specified in request.
-        """
-        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
-        buurt_code = self.request.query_params.get('buurt', None)
-        try:
-            buurt = BagBuurt.objects.get(vollcode=buurt_code)
-        except:
-            buurt = None
 
-        qs = EnergieLabel.objects.all().order_by('ogc_fid')
-        if buurt is not None:
-            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
+class RenovatieFilter(FilterSet):
 
-        return qs
+    buurt_code = filters.CharFilter(
+        label='buurt_code', method='buurtcode_filter')
+
+    class Meta:
+        model = Renovatie
+        fields = (
+            'buurt_code',
+        )
 
 
 class RenovatieViewSet(viewsets.ModelViewSet):
     serializer_class = RenovatieSerializer
-
-    def get_queryset(self):
-        """
-        Filter against buurt (neighborhood) specified in request.
-        """
-        # Retrieve neighborhood (no filtering if neighborhood cannot be found).
-        buurt_code = self.request.query_params.get('buurt', None)
-        try:
-            buurt = BagBuurt.objects.get(vollcode=buurt_code)
-        except:
-            buurt = None
-
-        qs = Renovatie.objects.all().order_by('ogc_fid')
-        if buurt is not None:
-            qs = qs.filter(wkb_geometry__intersects=buurt.geometrie)
-
-        return qs
+    queryset = Renovatie.objects.all().order_by('ogc_fid')
+    filter_class = RenovatieFilter
 
 
 class BagBuurtViewSet(viewsets.ReadOnlyModelViewSet):

@@ -57,4 +57,5 @@ class BagBuurtBboxSerializer(GeoFeatureModelSerializer):
         geo_field = 'bbox'
 
     def get_bbox(self, obj):
-        return obj.geometrie.extent
+        if obj.geometrie:
+            return obj.geometrie.extent
