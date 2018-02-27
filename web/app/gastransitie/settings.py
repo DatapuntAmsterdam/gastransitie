@@ -8,6 +8,8 @@ from gastransitie.settings_databases import LocationKey,\
     OVERRIDE_HOST_ENV_VAR,\
     OVERRIDE_PORT_ENV_VAR
 
+TEST_RUNNER = 'gastransitie.testrunner.UnManagedModelTestRunner'
+
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
