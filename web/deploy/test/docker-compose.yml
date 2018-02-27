@@ -23,4 +23,4 @@ services:
     command: >
       bash -c "/deploy/docker-wait.sh \
               && /deploy/docker-migrate.sh \
-              && python manage.py test --noinput"
+              && python manage.py test --noinput --nomigrations"

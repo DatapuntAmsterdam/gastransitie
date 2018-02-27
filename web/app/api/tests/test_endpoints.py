@@ -36,7 +36,6 @@ class BrowseDatasetsTestCase(APITestCase):
     """
 
     datasets = [
-        # 'predictiveparking/metingen/scans',
         'gastransitie/api/afwc',
         'gastransitie/api/buurt',
         'gastransitie/api/energielabel',

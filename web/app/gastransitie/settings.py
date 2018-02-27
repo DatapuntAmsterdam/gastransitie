@@ -12,6 +12,7 @@ TEST_RUNNER = 'gastransitie.testrunner.UnManagedModelTestRunner'
 
 
 INSTALLED_APPS = [
+    'test_without_migrations',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_extensions',
@@ -23,7 +24,6 @@ INSTALLED_APPS = [
     'datasets',
     'health',
     'web',
-
 
     'rest_framework',
     'rest_framework_gis',
