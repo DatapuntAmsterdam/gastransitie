@@ -6,3 +6,4 @@ from .energie_labels import EnergieLabel
 from .renovaties import Renovatie
 from .handelsregister import Handelsregister
 from .handelsregister import SBIcodes
+from .handelsregister import HandelsregisterBuurt

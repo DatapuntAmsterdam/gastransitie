@@ -1,4 +1,3 @@
-
 from django.contrib.gis.db import models
 
 from django.contrib.postgres.fields import JSONField
@@ -31,3 +30,12 @@ class SBIcodes(models.Model):
 
     sbi_tree = JSONField()
     qa_tree = JSONField(null=True)
+
+
+class HandelsregisterBuurt(models.Model):
+    """
+    Summary Information for each buurt
+    """
+    buurt_id = models.CharField(max_length=14)
+    buurt_naam = models.CharField(max_length=40)
+    data = JSONField()

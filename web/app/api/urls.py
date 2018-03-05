@@ -7,6 +7,8 @@ from .views import Mip2016ViewSet
 from .views import EnergieLabelViewSet
 from .views import RenovatieViewSet
 from .views import BagBuurtBboxViewSet
+from .hr_views import HandelsregisterViewSet
+from .hr_views import HandelsregisterBuurtViewSet
 
 
 class EnergieTransitieAPI(routers.APIRootView):
@@ -40,7 +42,9 @@ router.register('buurt', BagBuurtViewSet, base_name='buurt')
 router.register('mip', Mip2016ViewSet, base_name='mip')
 router.register('energielabel', EnergieLabelViewSet, base_name='enegielabel')
 router.register('renovatie', RenovatieViewSet, base_name='renovatie')
-
 router.register('buurtbbox', BagBuurtBboxViewSet, base_name='buurtbbox')
+
+router.register('handelsregister', HandelsregisterViewSet)
+router.register('handelsregisterbuurt', HandelsregisterBuurtViewSet)
 
 urlpatterns = router.urls

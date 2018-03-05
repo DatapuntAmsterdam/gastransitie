@@ -11,7 +11,6 @@ from unittest.mock import MagicMock
 from django.conf import settings
 
 from datasets.models import handelsregister
-from datasets.models import bag
 from api.tests import factories
 
 from django.core.management import call_command

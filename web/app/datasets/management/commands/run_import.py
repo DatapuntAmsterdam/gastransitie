@@ -20,6 +20,11 @@ class Command(BaseCommand):
             '--sbicodes', default=False, action='store_true',
             help='Load sbi data')
 
+        parser.add_argument(
+            '--hrrapport', default=False, action='store_true',
+            help='Fill hr summary information viewset')
+
+
     def handle(self, *args, **options):
 
         if options['handelsregister']:
@@ -28,6 +33,10 @@ class Command(BaseCommand):
 
         if options['sbicodes']:
             handelsregister.get_sbi_code_meta()
+            return
+
+        if options['hrrapport']:
+            handelsregister.create_tabledata_hr_per_buurt()
             return
 
         self.stdout.write('First stage of import process beginning:')
