@@ -1,7 +1,11 @@
 django>=2.0
-django-debug-toolbar==1.7
+django-debug-toolbar
 djangorestframework>=3.7.3
 djangorestframework-gis>=0.12
+datapunt-authorization-django
+datapunt-authorization-levels
+
+
 # django-rest-swagger #  Django 2.0 etc?
 # drf-extensions #  Django 2.0 etc?
 markdown
@@ -26,9 +30,8 @@ coreapi
 openpyxl
 
 django_extensions
+django-test-without-migrations
 werkzeug
 
 #-e git+https://github.com/Amsterdam/objectstore.git#egg=datapunt-objectstore
 git+https://github.com/Amsterdam/objectstore.git#egg=datapunt-objectstore
-
-datapunt-authorization-django==0.2.18

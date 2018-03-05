@@ -59,3 +59,29 @@ class TestDBWriting(TestCase):
         call_command('run_import', '--handelsregister')
         count = handelsregister.Handelsregister.objects.count()
         self.assertEqual(count, 10)
+
+    @mock.patch('requests.get', autospec=True)
+    def test_rapport(self, response_mock):
+
+        factories.BuurtFactory.create(
+            naam='testbuurt',
+        )
+
+        with open(FIX_DIR + '/fixtures/sbi.json') as mockjson:
+            test_json = json.loads(mockjson.read())
+
+        with open(FIX_DIR + '/fixtures/ds_hr.csv') as mockcsv:
+            test_csv = mockcsv.read()
+
+        type(response_mock.return_value).status_code = \
+            PropertyMock(return_value=200)
+
+        type(response_mock.return_value).text = \
+            PropertyMock(return_value=test_csv)
+
+        type(response_mock.return_value).json = \
+            MagicMock(return_value=test_json)
+
+        call_command('run_import', '--handelsregister')
+        call_command('run_import', '--sbicodes')
+        call_command('run_import', '--hrrapport')

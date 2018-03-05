@@ -99,6 +99,43 @@ def get_sbi_code_meta():
     assert SBIcodes.objects.count() > 0
 
 
+def extract_sbi_codes(inschrijvingen):
+    """
+    find sbi codes in hr json
+    """
+    sbi_counts = Counter()
+
+    # vestigingen = 0
+    # maatschappelijkeactiviteiten = 0
+    fail = 0
+    seen = 0
+
+    for h in inschrijvingen:
+        if not h.data:
+            fail += 1
+            continue
+        seen += 1
+
+        # convert sbicodes to valid
+        sbi_codes = h.data.get('SBI-code', '')
+        if not sbi_codes:
+            continue
+
+        int_sbi_codes = []
+        for sbi in sbi_codes.split('|'):
+            # sometime there is a 'geen' value.
+            sbi = sbi.strip()
+            if sbi.isdigit():
+                # values can be 01 != 1
+                # store as string!
+                int_sbi_codes.append(sbi)
+
+        sbi_counts.update(int_sbi_codes)
+    log.debug("FAIL %s SEEN %s", fail, seen)
+    log.debug(sbi_counts)
+    return sbi_counts
+
+
 def make_rapport(inschrijvingen):
     """
     Create a summary rapport from collection of inschrijvingen at neighborhood
@@ -118,37 +155,17 @@ def make_rapport(inschrijvingen):
 
     l1 = Counter()
 
-    sbi_counts = Counter()
     sbi_description = {}
 
-    vestigingen = 0
-    maatschappelijkeactiviteiten = 0
-
-    # find sbi codes
-    for h in inschrijvingen:
-        if not h.data:
-            continue
-        # convert sbicodes to valid
-        sbi_codes = h.data.get('SBI-code', '')
-        if not sbi_codes:
-            continue
-
-        int_sbi_codes = []
-        for sbi in sbi_codes.split('|'):
-            # sometime there is a 'geen' value.
-            if sbi.strip().isdigit():
-                # values can be 01 != 1
-                # store as string!
-                int_sbi_codes.append(sbi)
-
-        sbi_counts.update(int_sbi_codes)
-
+    sbi_counts = extract_sbi_codes(inschrijvingen)
     # find meta sbi information
     sbi_meta = SBIcodes.objects.filter(code__in=sbi_counts.keys())
 
     for sbi in sbi_meta:
+        count = sbi_counts[sbi.code]
         l1key = sbi.sbi_tree.get(f'l1', [0, ''])
         l1key = l1key[1].lower()
+
         l1.update([l1key])
 
         if not sbi.qa_tree:
@@ -163,16 +180,14 @@ def make_rapport(inschrijvingen):
 
         sbi_description[sbi.code] = sbi.title
 
-    # q1.update(l2)
-
     # make rapport
     return {
         'inschrijvingen': count,
         'q1': q1,
         'l1': l1,
-        #'qa3': q3,
-        #'sbi_counts': sbi_counts,
-        #'sbi_description': sbi_description,
+        # 'qa3': q3,
+        # 'sbi_counts': sbi_counts,
+        # 'sbi_description': sbi_description,
     }
 
 
@@ -191,8 +206,12 @@ def create_tabledata_hr_per_buurt():
 
         new_rapport = make_rapport(inschrijvingen)
 
-        # 'dataselectie_url':
-        log.debug('%s %s', buurt.naam, (new_rapport['q1'].most_common(2)))
+        log.debug(
+            '%s %s %s',
+            buurt.naam,
+            new_rapport['q1'].most_common(2),
+            new_rapport['l1'].most_common(2)
+        )
 
         hb = HandelsregisterBuurt.objects.create(
             buurt_id=buurt.id,
