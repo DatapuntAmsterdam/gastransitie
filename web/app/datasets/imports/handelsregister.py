@@ -6,6 +6,7 @@ import logging
 import requests
 from datasets.models import bag
 from datasets.models.handelsregister import Handelsregister
+from datasets.models.handelsregister import SBIcodes
 
 from .datapunt_auth import auth
 
@@ -18,13 +19,12 @@ log = logging.getLogger(__name__)
 
 headers = {'Authorization': f'Bearer {auth.token_employee_plus}'}
 
-url_hr = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/"
+URL_HR = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/"
+URL_SBI = "https://acc.api.data.amsterdam.nl/handelsregister/sbicodes/"
 
-params = {
+PARAMS = {
     'buurt_naam': 'AMC',
     'shape': [],
-    # 'dataset'=ves
-    # 'access_token=eyJhbGciOiJFUzI1NiIsImtpZCI6IjM4OWE5ZjY4LWUyNGUtNDcxNi1hMTFjLTFlZWY0NzgwNGNjNiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kYXRhLmFtc3RlcmRhbS5ubC9vYXV0aDIvYXV0aG9yaXplIiwic3ViIjoiTWVkZXdlcmtlciIsImlhdCI6MTUxOTgxMDM1OSwibmJmIjoxNTE5ODEwMzQ5LCJleHAiOjE1MTk4NDYzNTksImp0aSI6IjRjZDRmZmQzLWRmZjctNDcwMy05NjZkLTJkNzI5ODA5MGNhNSIsInNjb3BlcyI6WyJIUi9SIiwiQlJLL1JTIiwiQlJLL1JPIiwiV0tQQi9SQkRVIiwiTU9OL1JCQyIsIk1PTi9SRE0iXX0.SXNkP3ujvKjYavNa6CC0jnkXGv-nVoXv9hbBbnDqEflXEmJZRLt3lxzgJ4A6XeIp3-DWWwLRk9ui6YsiQ5EPeQ'
 }
 
 
@@ -32,13 +32,16 @@ def get_hr_for_all_buurten():
 
     Handelsregister.objects.all().delete()
 
-    for b in bag.BagBuurt.objects.all().order_by('naam'): # .filter(naam='Amerikahaven'):
-        params['buurt_naam'] = b.naam
-        response = requests.get(url_hr, params=params, headers=headers)
+    for b in bag.BagBuurt.objects.all().order_by('naam'):
+        PARAMS['buurt_naam'] = b.naam
+        response = requests.get(URL_HR, params=PARAMS, headers=headers)
 
-        log.debug(response.status_code)
+        if not response.status_code == 200:
+            raise ValueError(
+                f"API FAILED: {response.status_code}:{response.url}")
+
         csv = response.text
-        inschrijvingen = csv.split('\n')
+        inschrijvingen = csv.split('\n')[1:]
 
         csvheaders = inschrijvingen[0]
         data = {}
@@ -56,6 +59,34 @@ def get_hr_for_all_buurten():
 
         log.debug(f'{b.naam}: {len(inschrijvingen)}')
 
+    assert bag.BagBuurt.objects.count() > 0
 
-# get_hr_for_all_buurten()
-# return response
+
+def get_sbi_code_meta():
+    """
+    Load sbi codes from api
+    """
+    params = {
+        'page_size': 2000,
+        'detailed': True,
+    }
+
+    response = requests.get(URL_SBI, params=params, headers=headers)
+
+    if not response.status_code == 200:
+        raise ValueError(f"API SBI codes FAILED: {response.status_code}")
+
+    json = response.json()
+    SBIcodes.objects.all().delete()
+
+    for sbi in json['results']:
+
+        db_sbi = SBIcodes.objects.create(
+            code=sbi['code'],
+            title=sbi['title'],
+            sbi_tree=sbi['sbi_tree'],
+            qa_tree=sbi.get('qa_tree', None),
+        )
+        db_sbi.save()
+
+    assert SBIcodes.objects.count() > 0

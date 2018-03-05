@@ -16,10 +16,18 @@ class Command(BaseCommand):
             '--handelsregister', default=False, action='store_true',
             help='Load handelsregister data for all neighborhoods')
 
+        parser.add_argument(
+            '--sbicodes', default=False, action='store_true',
+            help='Load sbi data')
+
     def handle(self, *args, **options):
 
         if options['handelsregister']:
             handelsregister.get_hr_for_all_buurten()
+            return
+
+        if options['sbicodes']:
+            handelsregister.get_sbi_code_meta()
             return
 
         self.stdout.write('First stage of import process beginning:')

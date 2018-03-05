@@ -30,8 +30,11 @@ dc run importer /deploy/docker-wait.sh
 echo "Downloading raw datafiles from object store"
 dc run --rm importer ls /data
 dc run --rm importer python manage.py download_data
+dc run --rm importer ls /data
 
 echo "Importing data into database"
+dc run --rm importer python manane.py run_import --handelsregister
+dc run --rm importer python manane.py run_import --sbicodes
 dc run --rm importer python manage.py run_import
 dc run --rm importer python manage.py fix_tables
 

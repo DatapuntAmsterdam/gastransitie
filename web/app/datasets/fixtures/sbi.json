@@ -1,0 +1,62 @@
+{
+    "_links": {
+        "self": {
+            "href": "http://127.0.0.1:8000/handelsregister/sbicodes/?page_size=1000&detailed=true"
+        },
+        "next": {
+            "href": "http://127.0.0.1:8000/handelsregister/sbicodes/?detailed=true&page=2&page_size=1000"
+        },
+        "previous": {
+            "href": null
+        }
+    },
+    "count": 1457,
+    "results": [
+        {
+            "_display": "SBICodeHierarchy object (01)",
+            "_links": {
+                "self": {
+                    "href": "http://127.0.0.1:8000/handelsregister/sbicodes/01/"
+                }
+            },
+            "title": "Landbouw, jacht en dienstverlening voor de landbouw en jacht",
+            "code": "01",
+            "sbi_tree": {
+                "l1": [
+                    "A",
+                    "LANDBOUW, BOSBOUW EN VISSERIJ"
+                ],
+                "l2": [
+                    "01",
+                    "Landbouw, jacht en dienstverlening voor de landbouw en jacht"
+                ]
+            },
+            "qa_tree": null
+        },
+        {
+            "_display": "SBICodeHierarchy object (011)",
+            "_links": {
+                "self": {
+                    "href": "http://127.0.0.1:8000/handelsregister/sbicodes/011/"
+                }
+            },
+            "title": "Teelt van eenjarige gewassen",
+            "code": "011",
+            "sbi_tree": {
+                "l1": [
+                    "A",
+                    "LANDBOUW, BOSBOUW EN VISSERIJ"
+                ],
+                "l2": [
+                    "01",
+                    "Landbouw, jacht en dienstverlening voor de landbouw en jacht"
+                ],
+                "l3": [
+                    "011",
+                    "Teelt van eenjarige gewassen"
+                ]
+            },
+            "qa_tree": null
+        }
+    ]
+}
