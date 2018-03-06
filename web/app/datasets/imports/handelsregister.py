@@ -101,8 +101,6 @@ def extract_sbi_codes(inschrijvingen):
     """
     sbi_counts = Counter()
 
-    # vestigingen = 0
-    # maatschappelijkeactiviteiten = 0
     fail = 0
     seen = 0
 
@@ -127,7 +125,7 @@ def extract_sbi_codes(inschrijvingen):
                 int_sbi_codes.append(sbi)
 
         sbi_counts.update(int_sbi_codes)
-    log.debug("FAIL %s SEEN %s", fail, seen)
+
     return sbi_counts
 
 
@@ -158,11 +156,12 @@ def make_rapport(inschrijvingen):
     sbi_meta = SBIcodes.objects.filter(code__in=sbi_counts.keys())
 
     for sbi in sbi_meta:
-        sbicount += sbi_counts[sbi.code]
+        newcount = sbi_counts[sbi.code]
+        sbicount += newcount
         l1key = sbi.sbi_tree.get(f'l1', [0, ''])
         l1key = l1key[1].lower()
 
-        l1.update([l1key])
+        l1.update({l1key: newcount})
 
         if not sbi.qa_tree:
             # use the sbi tree.
@@ -172,15 +171,26 @@ def make_rapport(inschrijvingen):
             key = sbi.qa_tree.get(f'q{i+1}', '')
             if not key:
                 continue
-            c.update([key])
+            c.update({key: newcount})
 
         sbi_description[sbi.code] = sbi.title
+
+    sum_q1 = sum(q1.values())
+    sum_l1 = sum(l1.values())
+
+    if sum_q1 != sbicount:
+        log.error('sum_q1 mismatch %s %s', sum_q1, sbicount)
+
+    if sum_l1 != sbicount:
+        log.error('sum_l1 mismatch %s %s', sum_l1, sbicount)
 
     # make rapport
     return {
         'inschrijvingen': count,
         'activiteiten': sbicount,
         'q1': q1,
+        'sum_q1': sum_q1,
+        'sim_l1': sum_l1,
         'l1': l1,
         # 'qa3': q3,
         # 'sbi_counts': sbi_counts,
@@ -206,8 +216,7 @@ def create_tabledata_hr_per_buurt():
         new_rapport = make_rapport(inschrijvingen)
 
         log.debug(
-            '%s %s %s',
-            buurt.naam,
+            '%s %s %s', buurt.naam,
             new_rapport['q1'].most_common(2),
             new_rapport['l1'].most_common(2)
         )

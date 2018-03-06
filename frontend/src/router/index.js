@@ -19,7 +19,7 @@ export default new Router({
     },
     {
       path: '/factsheet/:buurt',
-      name: 'Refactor',
+      name: 'BuurtFactsheet',
       component: BuurtFactsheet
     },
     {
