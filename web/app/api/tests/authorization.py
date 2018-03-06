@@ -35,7 +35,7 @@ class AuthorizationSetup(object):
 
         token_scope_gas = jwt.encode({
             'scopes': ['GAS/R'],
-            'iat': now, 'exp': now + 600}, key.key, algorithm=key.alg,
+            'iat': now, 'exp': now + 3600}, key.key, algorithm=key.alg,
              headers={'kid': kid})
 
         self.token_scope_gas = str(token_scope_gas, 'utf-8')
