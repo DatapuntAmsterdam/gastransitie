@@ -2,6 +2,7 @@
 Download per buurt alle vestigingen van dataselectie.
 """
 import logging
+import urllib.parse
 # import argparse
 import requests
 from datasets.models import bag
@@ -12,16 +13,11 @@ from datasets.models import BagBuurt
 
 from collections import Counter
 
-from django import db
-
 from .datapunt_auth import auth
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-
-# setup auth tokens!
-# log.debug(auth.token_employee_plus)
 
 headers = {'Authorization': f'Bearer {auth.token_employee_plus}'}
 
@@ -132,7 +128,6 @@ def extract_sbi_codes(inschrijvingen):
 
         sbi_counts.update(int_sbi_codes)
     log.debug("FAIL %s SEEN %s", fail, seen)
-    log.debug(sbi_counts)
     return sbi_counts
 
 
@@ -147,6 +142,7 @@ def make_rapport(inschrijvingen):
     - link to dataselectie
     """
     count = inschrijvingen.count()
+    sbicount = 0
 
     # csb question answers tree
     q1 = Counter()
@@ -162,7 +158,7 @@ def make_rapport(inschrijvingen):
     sbi_meta = SBIcodes.objects.filter(code__in=sbi_counts.keys())
 
     for sbi in sbi_meta:
-        count = sbi_counts[sbi.code]
+        sbicount += sbi_counts[sbi.code]
         l1key = sbi.sbi_tree.get(f'l1', [0, ''])
         l1key = l1key[1].lower()
 
@@ -183,6 +179,7 @@ def make_rapport(inschrijvingen):
     # make rapport
     return {
         'inschrijvingen': count,
+        'activiteiten': sbicount,
         'q1': q1,
         'l1': l1,
         # 'qa3': q3,
@@ -201,6 +198,8 @@ def create_tabledata_hr_per_buurt():
 
     HandelsregisterBuurt.objects.all().delete()
 
+    dataselectie_url = 'https://data.amsterdam.nl/#?dsd=hr&dsp=1&dsv=TABLE&dsf=buurt_naam::'   # noqa
+
     for buurt in BagBuurt.objects.all():
         inschrijvingen = Handelsregister.objects.filter(buurt_id=buurt.id)
 
@@ -212,6 +211,9 @@ def create_tabledata_hr_per_buurt():
             new_rapport['q1'].most_common(2),
             new_rapport['l1'].most_common(2)
         )
+
+        buurt_naam = urllib.parse.quote_plus(buurt.naam)
+        new_rapport['dataselectie'] = f'{dataselectie_url}{buurt_naam}'
 
         hb = HandelsregisterBuurt.objects.create(
             buurt_id=buurt.id,
