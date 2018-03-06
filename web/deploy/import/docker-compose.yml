@@ -18,6 +18,7 @@ services:
       DATABASE_USER: gastransitie
       DATABASE_PASSWORD: insecure
       GASTRANSITIE_OBJECTSTORE_PASSWORD:
+      PUB_JWKS:
     volumes:
       - gastransitie_import_cache:/data
     command: >
