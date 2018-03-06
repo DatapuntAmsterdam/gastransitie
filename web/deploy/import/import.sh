@@ -35,6 +35,8 @@ dc run --rm importer ls /data
 dc run --rm importer python manage.py download_data
 dc run --rm importer ls /data
 
+dc -T exec database update-table.sh bag bag_buurt public gastransitie
+
 echo "Importing data into database"
 
 dc run --rm importer python manage.py migrate
