@@ -5,19 +5,18 @@
       <div class="col-6"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
       <div class="col-6"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>
     </div>
-    <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
     <div class="row">
       <div class="mt-2 col-12"><h3>Corporatie bezit</h3></div>
       <div class="col-6"></div>
       <div class="col-6"><amsterdam-map :config="afwcMapConfig" :buurt="buurt"></amsterdam-map></div>
     </div>
-
     <div class="row" v-if="buurten.length">
       <div class="mt-2 col-12"><h3>Meerjaren Investerings Programma</h3></div>
       <div class="col-6"></div>
       <div class="col-6"><amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map></div>
     </div>
-
+    <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
+    <handelsregister-info-table v-if="buurten.length" :buurt="buurt"></handelsregister-info-table>
   </div>
 
 </template>
@@ -34,6 +33,8 @@ import buurtMapConfig from '../../static/buurt-map-config'
 import BagInfoTable from './BagInfoTable'
 import BBGAInfoTable from './BBGAInfoTable.vue'
 
+import HandelsRegisterTable from './HandelsRegisterTable.vue'
+
 export default {
   data () {
     return {
@@ -47,6 +48,7 @@ export default {
     'amsterdam-map': AmsterdamMap,
     'bag-info-table': BagInfoTable,
     'bbga-info-table': BBGAInfoTable,
+    'handelsregister-info-table': HandelsRegisterTable,
     'oauth': OAuth
   },
   methods: {
