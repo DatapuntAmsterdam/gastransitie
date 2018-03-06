@@ -36,6 +36,8 @@ dc run --rm importer python manage.py download_data
 dc run --rm importer ls /data
 
 echo "Importing data into database"
+
+dc run --rm importer python manage.py migrate
 dc run --rm importer python manage.py run_import --handelsregister
 dc run --rm importer python manage.py run_import --sbicodes
 dc run --rm importer python manage.py run_import
