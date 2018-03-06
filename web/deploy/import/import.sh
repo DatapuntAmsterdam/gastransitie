@@ -38,10 +38,11 @@ dc run --rm importer ls /data
 echo "Importing data into database"
 
 dc run --rm importer python manage.py migrate
-dc run --rm importer python manage.py run_import --handelsregister
-dc run --rm importer python manage.py run_import --sbicodes
 dc run --rm importer python manage.py run_import
 dc run --rm importer python manage.py fix_tables
+
+dc run --rm importer python manage.py run_import --handelsregister
+dc run --rm importer python manage.py run_import --sbicodes
 
 echo "Running backups"
 dc exec -T database backup-db.sh gastransitie
