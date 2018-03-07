@@ -40,6 +40,7 @@ async function getEnergieLabel (buurt) {
   return energieLabelCache[buurt]
 }
 
+// Meerjarig Investerings Programma
 async function getMip (buurt) {
   if (!mipCache[buurt]) {
     mipCache[buurt] = readGeojson(getUrl('/mip/') + `?buurt=${buurt}`)

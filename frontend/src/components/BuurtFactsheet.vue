@@ -12,7 +12,7 @@
     </div>
     <div class="row" v-if="buurten.length">
       <div class="mt-2 col-12"><h3>Meerjaren Investerings Programma</h3></div>
-      <div class="col-6"></div>
+      <div class="col-6"><amsterdam-mip-table v-if="buurten.length" :buurt="buurt"></amsterdam-mip-table></div>
       <div class="col-6"><amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map></div>
     </div>
     <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
@@ -34,6 +34,7 @@ import BagInfoTable from './BagInfoTable'
 import BBGAInfoTable from './BBGAInfoTable.vue'
 
 import HandelsRegisterTable from './HandelsRegisterTable.vue'
+import MeerjarigInvesteringsProgrammaTable from './MeerjarigInvesteringsProgrammaTable.vue'
 
 export default {
   data () {
@@ -49,6 +50,7 @@ export default {
     'bag-info-table': BagInfoTable,
     'bbga-info-table': BBGAInfoTable,
     'handelsregister-info-table': HandelsRegisterTable,
+    'amsterdam-mip-table': MeerjarigInvesteringsProgrammaTable,
     'oauth': OAuth
   },
   methods: {
