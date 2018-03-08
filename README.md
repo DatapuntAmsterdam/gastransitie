@@ -51,6 +51,14 @@ access to the relevant credentials.
     docker-compose up web
 ```
 
+You can now run the tests for the `web` container (that does both the imports
+and serve the API) using the following command:
+
+```
+docker-compose run web python manage.py test --nomigrations
+```
+
+
 ### Data sources
 Currently all these are backed-up on the object store.
 * Planned renovations of social housing - non-public, source AFWC
