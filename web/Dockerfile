@@ -19,3 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 USER datapunt
 COPY ./app/ /app/
 COPY ./deploy/ /deploy/
+
+RUN python manage.py collectstatic --noinput
+
+# Production no waits / migrates etc.
+CMD ["/deploy/docker-run.sh"]
