@@ -31,11 +31,6 @@ services:
               && /deploy/docker-migrate.sh \
               && python manage.py runserver 0.0.0.0:8000"
 
-  frontend:
-    build: frontend
-    ports:
-      - "8080:80"
-
   swaggerui:
     image: amsterdam/oauth2swaggerui
     ports:
