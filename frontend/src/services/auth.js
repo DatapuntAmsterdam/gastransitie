@@ -4,11 +4,15 @@ const CLIENT_ID = 'energietransitie_factsheet'
 const SCOPES = ['GAS/R']
 
 // Infer authorization URL
-var authzHost = document.location.origin
-if (document.location.hostname === 'localhost' ||
-  document.location.hostname === '127.0.0.1') {
+var authzHost = ''
+if (document.location.hostname === 'localhost' || document.location.hostname === '127.0.0.1') {
   authzHost = 'http://' + document.location.hostname + ':8686'
+} else if (document.location.hostname === 'acc.data.amsterdam.nl') {
+  authzHost = 'https://acc.api.data.amsterdam.nl'
+} else if (document.location.hostname === 'data.amsterdam.nl') {
+  authzHost = 'https://api.data.amsterdam.nl'
 }
+
 const AUTHZ_URL = authzHost + '/oauth2/authorize?idp_id=datapunt'
 
 // Infer redirect_uri
