@@ -65,8 +65,12 @@ export default {
           d => d.vollcode === buurt
         )
         const url = 'http://127.0.0.1:8000/gastransitie/api/handelsregisterbuurt/?buurt_id=' + buurtId.landelijk
-        let resultset = await util.readData(url)
-        this.hrData = resultset.results[0]
+        let resultset = await util.readProtectedPaginatedData(
+          url,
+          util.getPaginatedData,
+          util.getNextPage
+        )
+        this.hrData = resultset[0]
         let q1 = this.hrData.data.q1
         this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
       }
