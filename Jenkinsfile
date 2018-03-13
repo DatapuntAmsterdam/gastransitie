@@ -30,7 +30,8 @@ node {
 
     stage("Build image") {
         tryStep "build", {
-            def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${env.BUILD_NUMBER}", "web")
+            def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/gastransitie:${env.BUILD_NUMBER}")
+:vps .
             image.push()
         }
     }
