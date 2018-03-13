@@ -6,7 +6,8 @@ import BuurtFactsheet from '@/components/BuurtFactsheet'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history', // we should use this, but more server settings are needed
+  base: process.env.ROUTER_BASE,
   routes: [
     {
       path: '/',

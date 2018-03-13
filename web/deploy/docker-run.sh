@@ -9,5 +9,4 @@ set -x
 
 # run uwsgi
 cd /app/
-exec uwsgi
-
+exec uwsgi --static-map /gastransitie/dash/=/vue_static --static-map /gastransitie/static=/static

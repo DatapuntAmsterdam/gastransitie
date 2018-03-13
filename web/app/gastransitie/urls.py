@@ -4,7 +4,7 @@ from django.urls import include, path
 urlpatterns = [
     path('status/', include('health.urls')),
     path('gastransitie/api/', include('api.urls')),
-    path('gastransitie/dash/', include('web.urls')),
+    path('gastransitie/', include('web.urls')),
 ]
 
 if settings.DEBUG:

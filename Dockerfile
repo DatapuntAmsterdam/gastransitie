@@ -38,7 +38,7 @@ USER datapunt
 COPY ./web/app/ /app/
 COPY ./web/deploy/ /deploy/
 
-RUN export DJANGO_SETTINGS_MODULE=onderwijs.settings
+RUN export DJANGO_SETTINGS_MODULE=gastransitie.settings
 RUN python manage.py collectstatic
 
 # Now deal with the Vue app
