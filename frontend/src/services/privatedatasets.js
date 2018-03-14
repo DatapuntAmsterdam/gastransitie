@@ -27,7 +27,7 @@ function getPrivateApiHost () {
     case 'acc.data.amsterdam.nl':
       privateApiHost = 'https://acc.data.amsterdam.nl'
       break
-    case 'api.data.amsterdam.nl':
+    case 'data.amsterdam.nl':
       privateApiHost = 'https://data.amsterdam.nl'
       break
     default:
