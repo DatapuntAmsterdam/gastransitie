@@ -29,6 +29,7 @@
 <script>
 import util from '../services/util'
 import { mapGetters } from 'vuex'
+import privatedatasets from '../services/privatedatasets'
 
 import _ from 'lodash'
 
@@ -64,7 +65,7 @@ export default {
         let buurtId = this.buurten.find(
           d => d.vollcode === buurt
         )
-        const url = 'http://127.0.0.1:8000/gastransitie/api/handelsregisterbuurt/?buurt_id=' + buurtId.landelijk
+        const url = privatedatasets.PRIVATE_DATA_HOST + `/gastransitie/api/handelsregisterbuurt/?buurt_id=${buurtId.landelijk}`
         let resultset = await util.readProtectedPaginatedData(
           url,
           util.getPaginatedData,

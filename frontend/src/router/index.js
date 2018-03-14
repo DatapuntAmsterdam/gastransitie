@@ -24,8 +24,8 @@ export default new Router({
       component: BuurtFactsheet
     },
     {
-      path: '/factsheet',
-      redirect: 'refactor/A08d'
+      path: '/access_token=:access_token',
+      redirect: '/buurten'
     }
   ]
 })

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { getToken } from './auth'
+import privateDataSets from './privatedatasets'
 
 // Helper function to access next link (used with readData)
 const getNoNext = r => null
@@ -61,14 +62,14 @@ function resultsAsGeoJSON (features) {
 }
 
 async function loadBbox (buurt) {
-  const url = 'http://localhost:8000/gastransitie/api/buurtbbox/?vollcode=' + buurt
+  const url = privateDataSets.PRIVATE_DATA_HOST + `/gastransitie/api/buurtbbox/?vollcode=${buurt}`
   return resultsAsGeoJSON(
     await readProtectedPaginatedData(url, getGeoJSONData, getNextPage)
   )
 }
 
 async function loadBuurten () {
-  const url = 'http://localhost:8000/gastransitie/api/buurt/'
+  const url = privateDataSets.PRIVATE_DATA_HOST + '/gastransitie/api/buurt/'
   let results = await readProtectedPaginatedData(
     url,
     getGeoJSONData,
