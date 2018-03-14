@@ -15,12 +15,15 @@ if (document.location.hostname === 'localhost' || document.location.hostname ===
 } else if (document.location.hostname === 'data.amsterdam.nl') {
   authzHost = 'https://api.data.amsterdam.nl'
   redirectUri = 'https://data.amsterdam.nl/gastransitie/dash/'
+} else {
+  console.log('Unexpected: document.location.hostname', document.location.hostname)
 }
 
 const AUTHZ_URL = authzHost + '/oauth2/authorize?idp_id=datapunt'
 
 // Infer redirect_uri
 const REDIRECT_URI = redirectUri
+console.log('REDIRECT_URI (must not be empty):', REDIRECT_URI)
 
 // provider
 const datapuntProvider = new OAuth.Provider({
