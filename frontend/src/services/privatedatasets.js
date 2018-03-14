@@ -12,8 +12,27 @@ let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
 
+function getPrivateDataHost () {
+  let private_api_host = ''
+  switch (document.location.hostname) {
+    case 'localhost':
+    case '127.0.0.1':
+      private_api_host = 'http://' + document.location.hostname + ':8000'
+      break
+    case 'acc.data.amsterdam.nl':
+      private_api_host = 'https://acc.data.amsterdam.nl'
+      break
+    case 'api.data.amsterdam.nl':
+      private_api_host = 'https://data.amsterdam.nl'
+      break
+    default:
+      throw 'Frontend running on unknown host.'
+  }
+  return private_api_host
+} 
+
 function getUrl (endpoint, buurt = null) {
-  return `http://localhost:8000/gastransitie/api${endpoint}`
+  return getPrivateDataHost() + `/gastransitie/api${endpoint}`
 }
 
 async function readGeojson (url) {
