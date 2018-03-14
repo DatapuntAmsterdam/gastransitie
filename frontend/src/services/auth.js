@@ -5,18 +5,22 @@ const SCOPES = ['GAS/R']
 
 // Infer authorization URL
 var authzHost = ''
+var redirectUri = ''
 if (document.location.hostname === 'localhost' || document.location.hostname === '127.0.0.1') {
   authzHost = 'http://' + document.location.hostname + ':8686'
+  redirectUri = document.location.origin + '/'
 } else if (document.location.hostname === 'acc.data.amsterdam.nl') {
   authzHost = 'https://acc.api.data.amsterdam.nl'
+  redirectUri = 'https://acc.data.amsterdam.nl/gastransitie/dash/'
 } else if (document.location.hostname === 'data.amsterdam.nl') {
   authzHost = 'https://api.data.amsterdam.nl'
+  redirectUri = 'https://data.amsterdam.nl/gastransitie/dash/'
 }
 
 const AUTHZ_URL = authzHost + '/oauth2/authorize?idp_id=datapunt'
 
 // Infer redirect_uri
-const REDIRECT_URI = document.location.origin + '/'
+const REDIRECT_URI = redirectUri
 
 // provider
 const datapuntProvider = new OAuth.Provider({
