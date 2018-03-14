@@ -12,27 +12,34 @@ let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
 
-function getPrivateDataHost () {
-  let private_api_host = ''
+function UnknownHostException (message) {
+  this.message = message
+  this.name = 'uknownHostException'
+}
+
+function getPrivateApiHost () {
+  let privateApiHost = ''
   switch (document.location.hostname) {
     case 'localhost':
     case '127.0.0.1':
-      private_api_host = 'http://' + document.location.hostname + ':8000'
+      privateApiHost = 'http://' + document.location.hostname + ':8000'
       break
     case 'acc.data.amsterdam.nl':
-      private_api_host = 'https://acc.data.amsterdam.nl'
+      privateApiHost = 'https://acc.data.amsterdam.nl'
       break
     case 'api.data.amsterdam.nl':
-      private_api_host = 'https://data.amsterdam.nl'
+      privateApiHost = 'https://data.amsterdam.nl'
       break
     default:
-      throw 'Frontend running on unknown host.'
+      throw new UnknownHostException('Frontend is running on unknown host, cannot access data.')
   }
-  return private_api_host
-} 
+  return privateApiHost
+}
+
+const PRIVATE_DATA_HOST = getPrivateApiHost()
 
 function getUrl (endpoint, buurt = null) {
-  return getPrivateDataHost() + `/gastransitie/api${endpoint}`
+  return PRIVATE_DATA_HOST + `/gastransitie/api${endpoint}`
 }
 
 async function readGeojson (url) {
@@ -121,5 +128,6 @@ export default {
   getRenovatie,
   getGeojsonByName,
   getBuurtBounds,
-  getBuurt
+  getBuurt,
+  PRIVATE_DATA_HOST
 }
