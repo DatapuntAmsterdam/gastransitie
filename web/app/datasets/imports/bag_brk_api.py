@@ -3,18 +3,17 @@ Download per BRK / BAG informatie per buurt / per coorporatie.
 """
 
 import logging
-import urllib.parse
+# import urllib.parse
 # import argparse
 import requests
 from datasets.models import bag
-from datasets.models.handelsregister import Handelsregister
-from datasets.models.handelsregister import SBIcodes
-from datasets.models.handelsregister import HandelsregisterBuurt
-from datasets.models import BagBuurt
 
-from collections import Counter
+# from collections import Counter
 
 from .datapunt_auth import auth
+
+from django.db import connections
+cursor = connections['bag'].cursor()
 
 # logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -150,8 +149,6 @@ def get_bag_brk_for_all_buurten():
     - bouwblok/geo van vbo's?
     """
 
-    buurt_rapport = {}
-
     for b in bag.BagBuurt.objects.all().order_by('naam')[:3]:
         # Totaal VBO's
         parameters = {'buurt': b.id}
@@ -178,4 +175,21 @@ def get_bag_brk_for_all_buurten():
         log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NIET N', nn_sub_count)
 
         # Corporatie bezit
-        make_corporatie_rapport(b)
+        c_rapport = make_corporatie_rapport(b)
+
+        buurt_rapport = {
+            'vbo_count': vbo_count,
+            'subjecten_count': sub_count,
+            'natuurlijke_subjecten': n_sub_count,
+            'niet_natuurlijke_subjecten': nn_sub_count,
+            'corporaties': c_rapport,
+        }
+
+        # Create Buurt BAG / corporatie rapport
+        bag.BagRapport.createa(
+            id=b.id,
+            code=b.code,
+            vollcode=b.vollcode,
+            naam=b.naam,
+            data=buurt_rapport,
+        )

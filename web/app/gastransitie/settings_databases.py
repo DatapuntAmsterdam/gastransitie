@@ -40,6 +40,7 @@ class LocationKey:
     local = 'local'
     docker = 'docker'
     override = 'override'
+    bag = 'bag'
 
 
 def get_database_key():
