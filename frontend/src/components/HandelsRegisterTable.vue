@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import util from '../services/util'
 import { mapGetters } from 'vuex'
 import privatedatasets from '../services/privatedatasets'
 
@@ -65,7 +64,7 @@ export default {
         let buurtId = this.buurten.find(
           d => d.vollcode === buurt
         )
-        const resultset = await privatedatasets.getGeojsonByName('handelsregisterbuurt', buurtId.landelijk)
+        const resultset = await privatedatasets.getJsonByName('handelsregisterbuurt', buurtId.landelijk)
         this.hrData = resultset[0]
         let q1 = this.hrData.data.q1
         this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))

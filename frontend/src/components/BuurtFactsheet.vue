@@ -15,6 +15,7 @@
       <div class="col-6"><amsterdam-mip-table v-if="buurten.length" :buurt="buurt"></amsterdam-mip-table></div>
       <div class="col-6"><amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map></div>
     </div>
+    <renovatie-table :buurt="buurt"></renovatie-table>
     <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
     <handelsregister-info-table v-if="buurten.length" :buurt="buurt"></handelsregister-info-table>
   </div>
@@ -32,6 +33,7 @@ import buurtMapConfig from '../../static/buurt-map-config'
 
 import BagInfoTable from './BagInfoTable'
 import BBGAInfoTable from './BBGAInfoTable.vue'
+import renovatieTable from './RenovatieTable.vue'
 
 import HandelsRegisterTable from './HandelsRegisterTable.vue'
 import MeerjarigInvesteringsProgrammaTable from './MeerjarigInvesteringsProgrammaTable.vue'
@@ -51,7 +53,8 @@ export default {
     'bbga-info-table': BBGAInfoTable,
     'handelsregister-info-table': HandelsRegisterTable,
     'amsterdam-mip-table': MeerjarigInvesteringsProgrammaTable,
-    'oauth': OAuth
+    'oauth': OAuth,
+    'renovatie-table': renovatieTable
   },
   methods: {
     ...mapActions({
