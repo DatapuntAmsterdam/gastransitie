@@ -12,6 +12,9 @@ let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
 
+let hrCache = {}
+let hrBuurtCache = {}
+
 function UnknownHostException (message) {
   this.message = message
   this.name = 'uknownHostException'
@@ -49,6 +52,15 @@ async function readGeojson (url) {
     util.getNextPage
   )
   return util.resultsAsGeoJSON(results)
+}
+
+async function readJson (url) {
+  const results = await util.readProtectedPaginatedData(
+    url,
+    util.getPaginatedData,
+    util.getNextPage
+  )
+  return results
 }
 
 // Energie transitie specific data endpoints (all paginated GeoJSON)
@@ -108,14 +120,32 @@ async function getBuurt (buurt) {
   return buurtCache[buurt]
 }
 
-async function getGeojsonByName (name, buurt) {
+async function getHr (buurt) {
+  // Note: takes landelijk id not Amsterdam style ones
+  if (!hrCache[buurt]) {
+    hrCache[buurt] = readJson(getUrl('/handelsregister/') + `?buurt_id=${buurt}`)
+  }
+  return hrCache[buurt]
+}
+
+async function getHrBuurt (buurt) {
+  // Note: takes landelijk id not Amsterdam style ones
+  if (!hrBuurtCache[buurt]) {
+    hrBuurtCache[buurt] = readJson(getUrl('/handelsregisterbuurt/') + `?buurt_id=${buurt}`)
+  }
+  return hrBuurtCache[buurt]
+}
+
+async function getJsonByName (name, buurt) {
   let getters = new Map([
     ['afwc', getAfwc],
     ['energielabel', getEnergieLabel],
     ['mip', getMip],
     ['renovatie', getRenovatie],
     ['buurtbounds', getBuurtBounds],
-    ['buurt', getBuurt]
+    ['buurt', getBuurt],
+    ['handelsregister', getHr],
+    ['handelsregisterbuurt', getHrBuurt]
   ])
 
   return getters.get(name)(buurt)
@@ -126,7 +156,7 @@ export default {
   getEnergieLabel,
   getMip,
   getRenovatie,
-  getGeojsonByName,
+  getJsonByName,
   getBuurtBounds,
   getBuurt,
   PRIVATE_DATA_HOST

@@ -65,12 +65,7 @@ export default {
         let buurtId = this.buurten.find(
           d => d.vollcode === buurt
         )
-        const url = privatedatasets.PRIVATE_DATA_HOST + `/gastransitie/api/handelsregisterbuurt/?buurt_id=${buurtId.landelijk}`
-        let resultset = await util.readProtectedPaginatedData(
-          url,
-          util.getPaginatedData,
-          util.getNextPage
-        )
+        const resultset = await privatedatasets.getGeojsonByName('handelsregisterbuurt', buurtId.landelijk)
         this.hrData = resultset[0]
         let q1 = this.hrData.data.q1
         this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
