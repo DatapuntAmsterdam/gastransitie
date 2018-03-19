@@ -3,6 +3,7 @@ from rest_framework.serializers import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 from datasets.models import GasAfwc2017
 from datasets.models import BagBuurt
+from datasets.models import BagRapport
 from datasets.models import Mip2016
 from datasets.models import EnergieLabel
 from datasets.models import Renovatie
@@ -26,6 +27,12 @@ class BagBuurtSerializer(GeoFeatureModelSerializer):
         geo_field = 'geometrie'
 
 
+class BagBuurtRapportSerializer(ModelSerializer):
+    class Meta:
+        model = BagRapport
+        fields = '__all__'
+
+
 class HandelsregisterSerializer(ModelSerializer):
     class Meta:
         model = Handelsregister
@@ -34,7 +41,7 @@ class HandelsregisterSerializer(ModelSerializer):
 
 class HandelsregisterBuurtSerializer(ModelSerializer):
     class Meta:
-        model = Handelsregister
+        model = HandelsregisterBuurt
         fields = '__all__'
 
 
@@ -67,7 +74,7 @@ class BagBuurtBboxSerializer(GeoFeatureModelSerializer):
 
     class Meta:
         model = BagBuurt
-        fields = ('vollcode','bbox')
+        fields = ('vollcode', 'bbox')
 
         geo_field = 'bbox'
 

@@ -6,9 +6,11 @@ from .serializers import Mip2016Serializer
 from .serializers import EnergieLabelSerializer
 from .serializers import RenovatieSerializer
 from .serializers import BagBuurtBboxSerializer
+from .serializers import BagBuurtRapportSerializer
 
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
+from datasets.models.bag import BagRapport
 from datasets.models.mip import Mip2016
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
@@ -108,6 +110,12 @@ class RenovatieViewSet(viewsets.ModelViewSet):
     serializer_class = RenovatieSerializer
     queryset = Renovatie.objects.all().order_by('ogc_fid')
     filter_class = RenovatieFilter
+
+
+class BagBuurtRapportViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BagBuurtRapportSerializer
+    queryset = BagRapport.objects.all().order_by('id')
+    filter_fields = ('vollcode', 'code', 'naam')
 
 
 class BagBuurtViewSet(viewsets.ReadOnlyModelViewSet):
