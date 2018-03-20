@@ -28,7 +28,7 @@ class Command(BaseCommand):
     # object store statische bronnen
     bronnen = {
         'renovaties': import_renovaties,
-        'mip': import_mip,
+        'mip': import_mip,  # meerjarig investerings plan
         'corporatie_bezit': import_corporatie_bezit,
         'energielabels': import_energie_labels,
         'alliander': import_alliander,
