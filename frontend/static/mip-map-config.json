@@ -28,6 +28,10 @@
         {
             "dataset": "renovatie",
             "color": "goldenrod"
+        },
+        {
+            "dataset": "warmtekoude",
+            "color": "goldenrod"
         }
     ]
 }

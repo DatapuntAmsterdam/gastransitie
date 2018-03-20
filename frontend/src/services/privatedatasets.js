@@ -11,6 +11,7 @@ let afwcCache = {}
 let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
+let warmtekoudeCache = {}
 
 let hrCache = {}
 let hrBuurtCache = {}
@@ -136,6 +137,13 @@ async function getHrBuurt (buurt) {
   return hrBuurtCache[buurt]
 }
 
+async function getWarmtekoude (buurt) {
+  if (!warmtekoudeCache[buurt]) {
+    warmtekoudeCache[buurt] = readGeojson(getUrl('/warmtekoude/') + `?buurt=${buurt}`)
+  }
+  return warmtekoudeCache[buurt]
+}
+
 async function getJsonByName (name, buurt) {
   let getters = new Map([
     ['afwc', getAfwc],
@@ -145,7 +153,8 @@ async function getJsonByName (name, buurt) {
     ['buurtbounds', getBuurtBounds],
     ['buurt', getBuurt],
     ['handelsregister', getHr],
-    ['handelsregisterbuurt', getHrBuurt]
+    ['handelsregisterbuurt', getHrBuurt],
+    ['warmtekoude', getWarmtekoude]
   ])
 
   return getters.get(name)(buurt)

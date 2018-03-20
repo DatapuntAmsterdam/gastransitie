@@ -7,6 +7,7 @@ from datasets.imports import cbs
 from datasets.imports import mip
 from datasets.imports import energie_labels
 from datasets.imports import renovaties
+from datasets.imports import warmtekoude
 from datasets.imports.util import run_sql
 
 
@@ -38,6 +39,7 @@ def main():
     mip.fix_tables()
     energie_labels.fix_tables()
     renovaties.fix_tables()
+    warmtekoude.fix_tables()
     fix_bag_buurt()
 
 

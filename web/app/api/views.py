@@ -6,12 +6,14 @@ from .serializers import Mip2016Serializer
 from .serializers import EnergieLabelSerializer
 from .serializers import RenovatieSerializer
 from .serializers import BagBuurtBboxSerializer
+from .serializers import WarmtekoudeSerializer
 
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
 from datasets.models.mip import Mip2016
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
+from datasets.models.warmtekoude import Warmtekoude
 
 
 from django_filters.rest_framework import filters
@@ -120,3 +122,21 @@ class BagBuurtBboxViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = BagBuurtBboxSerializer
     queryset = BagBuurt.objects.all().order_by('id')
     filter_fields = ('vollcode',)
+
+
+class WarmtekoudeFilter(FilterSet, BuurtFilter):
+
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
+
+    class Meta:
+        model = Warmtekoude
+        fields = (
+            'buurt',
+        )
+
+class WarmtekoudeViewSet(viewsets.ModelViewSet):
+    serializer_class = WarmtekoudeSerializer
+    queryset = Warmtekoude.objects.all().order_by('ogc_fid')
+    filter_class = WarmtekoudeFilter
+

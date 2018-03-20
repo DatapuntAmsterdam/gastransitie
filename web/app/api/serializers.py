@@ -8,6 +8,7 @@ from datasets.models import EnergieLabel
 from datasets.models import Renovatie
 from datasets.models import Handelsregister
 from datasets.models import HandelsregisterBuurt
+from datasets.models import Warmtekoude
 
 
 class GasAfwc2017Serializer(GeoFeatureModelSerializer):
@@ -67,10 +68,18 @@ class BagBuurtBboxSerializer(GeoFeatureModelSerializer):
 
     class Meta:
         model = BagBuurt
-        fields = ('vollcode','bbox')
+        fields = ('vollcode', 'bbox')
 
         geo_field = 'bbox'
 
     def get_bbox(self, obj):
         if obj.geometrie:
             return obj.geometrie.extent
+
+
+class WarmtekoudeSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Warmtekoude
+        fields = '__all__'
+
+        geo_field = 'wkb_geometry'
