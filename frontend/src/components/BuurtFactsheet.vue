@@ -4,6 +4,7 @@
     <div class="row">
       <div class="col-6"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
       <div class="col-6"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>
+      <div class="col-6"><bag-brk-table v-if="buurten.length" :buurt="buurt"></bag-brk-table></div>
     </div>
     <div class="row">
       <div class="mt-2 col-12"><h3>Corporatie bezit</h3></div>
@@ -31,6 +32,7 @@ import mipMapConfig from '../../static/mip-map-config'
 import buurtMapConfig from '../../static/buurt-map-config'
 
 import BagInfoTable from './BagInfoTable'
+import BagBrkTable from './BagBrkTable'
 import BBGAInfoTable from './BBGAInfoTable.vue'
 
 import HandelsRegisterTable from './HandelsRegisterTable.vue'
@@ -48,6 +50,7 @@ export default {
   components: {
     'amsterdam-map': AmsterdamMap,
     'bag-info-table': BagInfoTable,
+    'bag-brk-table': BagBrkTable,
     'bbga-info-table': BBGAInfoTable,
     'handelsregister-info-table': HandelsRegisterTable,
     'amsterdam-mip-table': MeerjarigInvesteringsProgrammaTable,

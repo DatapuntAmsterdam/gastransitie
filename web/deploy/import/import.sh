@@ -46,6 +46,7 @@ dc run --rm importer python manage.py fix_tables
 dc run --rm importer python manage.py run_import --handelsregister
 dc run --rm importer python manage.py run_import --sbicodes
 dc run --rm importer python manage.py run_import --hrrapport
+dc run --rm importer python manage.py run_import --brkbag
 
 echo "Running backups"
 dc exec -T database backup-db.sh gastransitie

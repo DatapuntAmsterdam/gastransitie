@@ -7,6 +7,7 @@ We use the BAG API, and SQL for the more compliated data.
 """
 
 import logging
+import time
 # import urllib.parse
 # import argparse
 import requests
@@ -24,7 +25,7 @@ log = logging.getLogger(__name__)
 STATUS_LINE = '%4s %20s %6d'
 STATUS_LINE_C = '%4s %20s %6d %-20s'
 
-# ROOT = "http://127.0.0.1:8000"
+# ROOT = "http://127.0.0.1:8081"
 ROOT = "https://acc.api.data.amsterdam.nl"
 
 headers = {'Authorization': f'Bearer {auth.token_employee_plus}'}
@@ -78,12 +79,16 @@ WONING_CORPORATIES = [
 
 def get_json(url, params):
 
+    start = time.time()
     response = requests.get(url, params=params, headers=headers)
 
     if not response.status_code == 200:
         raise ValueError(
             f"API FAILED: {response.status_code}:{response.url}")
 
+    delta = time.time() - start
+    if delta > 6:
+        log.error('SLOW %.2f %s %s', delta, url, params)
     return response.json()
 
 
