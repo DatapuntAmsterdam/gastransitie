@@ -20,7 +20,7 @@ export default {
   },
   async mounted () {
     console.assert(this.config !== null && this.config !== undefined, 'A config entry is needed to render this layer.')
-    this.geojson = await datasets.getGeojsonByName(this.config.dataset, this.buurt)
+    this.geojson = await datasets.getJsonByName(this.config.dataset, this.buurt)
   },
   watch: {
     geojson (to, from) {

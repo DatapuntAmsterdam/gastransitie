@@ -61,13 +61,6 @@ function resultsAsGeoJSON (features) {
   }
 }
 
-async function loadBbox (buurt) {
-  const url = privateDataSets.PRIVATE_DATA_HOST + `/gastransitie/api/buurtbbox/?vollcode=${buurt}`
-  return resultsAsGeoJSON(
-    await readProtectedPaginatedData(url, getGeoJSONData, getNextPage)
-  )
-}
-
 async function loadBuurten () {
   const url = privateDataSets.PRIVATE_DATA_HOST + '/gastransitie/api/buurt/'
   let results = await readProtectedPaginatedData(
@@ -103,7 +96,6 @@ export default {
   readPaginatedData,
   readProtectedPaginatedData,
   readData,
-  loadBbox,
   loadBuurten,
   resultsAsGeoJSON,
   // helper functions:

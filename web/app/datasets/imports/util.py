@@ -78,6 +78,8 @@ def shp2psql(shp_filename, pg_str, layer_name, **kwargs):
     cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
     if 't_srs' in kwargs:
         cmd.extend(['-t_srs', kwargs['t_srs']])
+    if 's_srs' in kwargs:
+        cmd.extend(['-s_srs', kwargs['s_srs']])
     if 'nlt' in kwargs:
         cmd.extend(['-nlt', kwargs['nlt']])
     if 'where' in kwargs:

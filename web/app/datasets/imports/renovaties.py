@@ -59,7 +59,8 @@ def import_renovaties(datadir):
             datadir, 'renovaties', 'renovatiesperbuurtvanaf2017_region.shp'),
         pg_str,
         'renovaties_raw',
-        t_srs=SRS_TO_STORE
+        t_srs=SRS_TO_STORE,
+        s_srs='EPSG:28992'
     )
 
 

@@ -40,7 +40,7 @@ export default {
   },
 
   async mounted () {
-    this.geojson = await datasets.getGeojsonByName('mip', this.buurt)
+    this.geojson = await datasets.getJsonByName('mip', this.buurt)
   },
   created () {
     this.setBuurtData(this.buurt)

@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async setMapBounds (buurt) {
-      const bounds = await datasets.getBuurtBounds(buurt)
+      const bounds = await datasets.getJsonByName('buurtbounds', buurt)
       this.map.fitBounds(bounds)
     }
   },
