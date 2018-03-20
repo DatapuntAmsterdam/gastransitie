@@ -75,7 +75,10 @@ def run_command_sync(cmd, allow_fail=False):
 
 
 def shp2psql(shp_filename, pg_str, layer_name, **kwargs):
-    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+    cmd = [
+        'ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL',
+        '-overwrite', '--config', 'PG_USE_COPY', 'YES',
+    ]
     if 't_srs' in kwargs:
         cmd.extend(['-t_srs', kwargs['t_srs']])
     if 's_srs' in kwargs:
@@ -102,7 +105,11 @@ def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
         shp_filename = os.path.join(tempdir, tab_filename[:-4] + '.shp')
 
         # Convert from Mapinfo file format to shapefile:
-        cmd = ['ogr2ogr', '-F', 'ESRI Shapefile', shp_filename, tab_filename]
+        cmd = ['ogr2ogr', '-F',
+               '-overwrite',
+               '-lco', 'ENCODING', 'UTF-8',
+               'ESRI Shapefile', shp_filename, tab_filename]
+
         run_command_sync(cmd)
 
         # Import shapefile into PostgreSQL:
@@ -111,6 +118,7 @@ def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
             '-nln', layer_name,
             '-F', 'PostgreSQL',
             pg_str,
+            '-overwrite', '--config', 'PG_USE_COPY', 'YES',
             shp_filename
         ]
         run_command_sync(cmd)
@@ -119,7 +127,9 @@ def tab2psql(tab_filename, pg_str, layer_name, **kwargs):
 def esri_json2psql(json_filename, pg_str, layer_name, **kwargs):
     # first attempt:
     # https://gis.stackexchange.com/questions/13029/converting-arcgis-server-json-to-geojson
-    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL']
+    cmd = ['ogr2ogr', '-nln', layer_name, '-F', 'PostgreSQL',
+           '-overwrite',
+           '--config', 'PG_USE_COPY', 'YES']
     if 't_srs' in kwargs:
         cmd.extend(['-t_srs', kwargs['t_srs']])
     else:

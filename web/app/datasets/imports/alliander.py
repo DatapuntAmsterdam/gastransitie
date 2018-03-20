@@ -30,7 +30,7 @@ def _load_stoplicht_alliander(filename):
 def import_alliander(datadir):
     # stoplicht data
     fn = '20170829 - Stoplicht Amsterdam DISTRIBUTIELEIDINGEN (deelbaar) v0.02.xlsx'
-    _load_stoplicht_alliander(os.path.join(datadir, 'alliander', fn))
+    # _load_stoplicht_alliander(os.path.join(datadir, 'alliander', fn))
 
     # Alliander data for gas mains
     pg_str = get_ogr2ogr_pgstr()

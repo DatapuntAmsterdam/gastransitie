@@ -16,7 +16,11 @@ def _load_eigendomskaart_mapinfo(
         # Load mapinfo file, we have an encoding problem here -skipfailures
         # allows us to continue in the presence of these encoding errors (about
         # 20 out of a total number of records of 500000.
-        cmd = ['ogr2ogr', '-skipfailures', '-nln', layer_name]
+        cmd = [
+            'ogr2ogr', '-skipfailures', '-nln', layer_name,
+            '-overwrite', '--config', 'PG_USE_COPY', 'YES',
+            # '-lco', 'ENCODING', 'UTF-8'
+        ]
         if 't_srs' in kwargs:
             cmd.extend(['-t_srs', kwargs['t_srs']])
 
