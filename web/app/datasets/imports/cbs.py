@@ -25,7 +25,3 @@ def import_cbs(datadir):
         nlt='PROMOTE_TO_MULTI',
         where='"gm_code"=\'GM0363\''  # only load Amsterdam
     )
-
-
-def fix_tables():
-    pass

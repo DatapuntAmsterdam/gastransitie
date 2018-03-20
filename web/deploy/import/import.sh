@@ -41,9 +41,10 @@ dc exec -T database update-db.sh bag
 echo "Importing data into database"
 
 dc run --rm importer python manage.py migrate
+# import alle objectstore bronnen
 dc run --rm importer python manage.py run_import
-dc run --rm importer python manage.py fix_tables
 
+dc run --rm importer python manage.py run_import --indexgebied
 dc run --rm importer python manage.py run_import --handelsregister
 dc run --rm importer python manage.py run_import --sbicodes
 dc run --rm importer python manage.py run_import --hrrapport

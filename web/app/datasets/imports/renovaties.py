@@ -52,6 +52,9 @@ def import_renovaties(datadir):
     """
     Import maps.amsterdam.nl derived map of housing corporation property.
     """
+
+    run_sql("DROP TABLE IF EXISTS public.renovaties_raw;")
+
     pg_str = get_ogr2ogr_pgstr()
 
     shp2psql(
@@ -63,7 +66,4 @@ def import_renovaties(datadir):
         s_srs='EPSG:28992'
     )
 
-
-def fix_tables():
     run_sql(_CUSTOM_SQL)
-    run_sql("""VACUUM ANALYZE public.renovaties_clean;""")
