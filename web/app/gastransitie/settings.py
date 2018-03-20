@@ -79,7 +79,8 @@ DATABASE_OPTIONS = {
         'NAME': os.getenv('DATABASE_NAME', 'bag'),
         'USER': os.getenv('DATABASE_USER', 'gastransitie'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
-        'HOST': get_docker_host(),
+        # 'HOST': get_docker_host(),
+        'HOST': 'database',
         'PORT': '5432',
     }
 }
