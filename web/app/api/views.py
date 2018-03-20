@@ -94,15 +94,15 @@ class EnergieLabelViewSet(viewsets.ModelViewSet):
     filter_class = EnergieLabelFilter
 
 
-class RenovatieFilter(FilterSet):
+class RenovatieFilter(FilterSet, BuurtFilter):
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = Renovatie
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
