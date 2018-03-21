@@ -45,10 +45,10 @@ dc run --rm importer python manage.py migrate
 dc run --rm importer python manage.py run_import
 
 dc run --rm importer python manage.py run_import --indexgebied
+dc run --rm importer python manage.py run_import --brkbag
 dc run --rm importer python manage.py run_import --handelsregister
 dc run --rm importer python manage.py run_import --sbicodes
 dc run --rm importer python manage.py run_import --hrrapport
-dc run --rm importer python manage.py run_import --brkbag
 
 echo "Running backups"
 dc exec -T database backup-db.sh gastransitie

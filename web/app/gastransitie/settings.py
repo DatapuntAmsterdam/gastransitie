@@ -74,12 +74,13 @@ DATABASE_OPTIONS = {
         'HOST': os.getenv(OVERRIDE_HOST_ENV_VAR),
         'PORT': os.getenv(OVERRIDE_PORT_ENV_VAR, '5432'),
     },
+
+    # only used during imports
     'bag': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.getenv('DATABASE_NAME', 'bag'),
         'USER': os.getenv('DATABASE_USER', 'gastransitie'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
-        # 'HOST': get_docker_host(),
         'HOST': 'database',
         'PORT': '5432',
     }
