@@ -15,6 +15,7 @@ let warmtekoudeCache = {}
 
 let hrCache = {}
 let hrBuurtCache = {}
+let bagBrkCache = {}
 
 function UnknownHostException (message) {
   this.message = message
@@ -139,9 +140,17 @@ async function getHrBuurt (buurt) {
 
 async function getWarmtekoude (buurt) {
   if (!warmtekoudeCache[buurt]) {
-    warmtekoudeCache[buurt] = readGeojson(getUrl('/warmtekoude/') + `?buurt=${buurt}`)
+    warmtekoudeCache[buurt] = readGeojson(getUrl('/warmtekoude/') + `?buurt=${buurt}&page_size=2000`)
   }
   return warmtekoudeCache[buurt]
+}
+
+async function getBagBrk (landelijkeCode) {
+  if (!bagBrkCache[landelijkeCode]) {
+    let url = PRIVATE_DATA_HOST + `/gastransitie/ap/bag/${landelijkeCode}/`
+    bagBrkCache[landelijkeCode] = readJson(url)
+  }
+  return bagBrkCache[landelijkeCode]
 }
 
 async function getJsonByName (name, buurt) {
@@ -154,7 +163,8 @@ async function getJsonByName (name, buurt) {
     ['buurt', getBuurt],
     ['handelsregister', getHr],
     ['handelsregisterbuurt', getHrBuurt],
-    ['warmtekoude', getWarmtekoude]
+    ['warmtekoude', getWarmtekoude],
+    ['bagbrk', getBagBrk]
   ])
 
   return getters.get(name)(buurt)
@@ -168,5 +178,6 @@ export default {
   getJsonByName,
   getBuurtBounds,
   getBuurt,
+  getBagBrk,
   PRIVATE_DATA_HOST
 }

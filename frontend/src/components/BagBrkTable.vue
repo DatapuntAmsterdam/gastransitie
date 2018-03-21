@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import util from '../services/util'
 import { mapGetters } from 'vuex'
 
 import _ from 'lodash'
+import privatedatasets from '../services/privatedatasets'
 
 export default {
   props: [
@@ -106,9 +106,9 @@ export default {
         let tmp = this.buurten.find(
           d => d.vollcode === buurt
         )
-        // const url = 'https://api.data.amsterdam.nl/gebieden/buurt/' + tmp.landelijk
-        const url = 'http://127.0.0.1:8000/gastransitie/api/bag/' + tmp.landelijk + '/'
-        this.buurtData = await util.readData(url)
+
+        this.buurtData = await privatedatasets.getBagBrk(tmp.landelijk)
+
         this.gebruik = this.buurtData['data']['gebruik']
         let c1 = this.buurtData['data']['corporaties']
         this.corporaties = Object.entries(c1).map(([k, v]) => ({'key': k, 'count': v}))
