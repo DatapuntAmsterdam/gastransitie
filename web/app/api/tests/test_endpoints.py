@@ -190,6 +190,8 @@ class BrowseDatasetsTestCase(APITestCase, authorization.AuthorizationSetup):
         """
         params = {'buurt': self.b1.vollcode}
         url = 'gastransitie/api/mip'
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer {}'.format(self.token_scope_gas))
         response = self.client.get(f'/{url}/', params)
 
         self.assertEqual(response.status_code, 200)
