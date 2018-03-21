@@ -20,7 +20,7 @@ class BagBuurt(models.Model):
     date_modified = models.DateTimeField()
     begin_geldigheid = models.DateField(blank=True, null=True)
     einde_geldigheid = models.DateField(blank=True, null=True)
-    geometrie = models.MultiPolygonField(srid=28992, blank=True, null=True)
+    geometrie = models.MultiPolygonField(srid=4326, blank=True, null=True)
 
     class Meta:
         managed = False

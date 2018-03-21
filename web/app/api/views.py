@@ -19,6 +19,10 @@ from datasets.models.renovaties import Renovatie
 from django_filters.rest_framework import filters
 from django_filters.rest_framework import FilterSet
 
+import logging
+
+LOG = logging.getLogger(__name__)
+
 
 class BuurtFilter():
     """
@@ -26,6 +30,7 @@ class BuurtFilter():
     """
 
     def buurtcode_filter(self, qs, _name, value):
+
         try:
             buurt = BagBuurt.objects.get(vollcode=value)
         except BagBuurt.DoesNotExist:

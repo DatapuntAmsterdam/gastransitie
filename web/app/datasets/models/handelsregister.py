@@ -5,18 +5,19 @@ from django.contrib.postgres.fields import JSONField
 
 
 class Handelsregister(models.Model):
-    """
-    HR summary information for each neighborhood
-    """
+    """HR summary information for each neighbourhood
 
+    Stores CSV download data from dataselectie
+    of all vestigingen and maatschappelijke activiteiten
+    from Dataselectie API.
+    """
     buurt_id = models.CharField(max_length=14)
     buurt_naam = models.CharField(max_length=40)
     data = JSONField()
 
 
 class SBIcodes(models.Model):
-    """
-    SBI codes from cbs.
+    """SBI codes from cbs.
     """
 
     code = models.CharField(
@@ -31,8 +32,10 @@ class SBIcodes(models.Model):
 
 
 class HandelsregisterBuurt(models.Model):
-    """
-    Summary Information for each buurt
+    """Summary Information for each buurt
+
+    Stores a aggegated HR summary rapport of all
+    vestigingen and activiteiten in a neighbourhood.
     """
     buurt_id = models.CharField(max_length=14)
     buurt_naam = models.CharField(max_length=40)

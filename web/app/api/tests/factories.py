@@ -10,11 +10,15 @@ import factory
 from factory import fuzzy
 
 from datasets.models.corporatie_bezit import GasAfwc2017
+from datasets.models.bag import BagRapport
 from datasets.models.bag import BagBuurt
 from datasets.models.cbs import CBSBuurt
 from datasets.models.mip import Mip2016
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
+from datasets.models.handelsregister import Handelsregister
+#  from datasets.models.handelsregister import SBIcodes
+from datasets.models.handelsregister import HandelsregisterBuurt
 
 
 class RenovatieFactory(factory.DjangoModelFactory):
@@ -96,6 +100,22 @@ class Mip2016Factory(factory.DjangoModelFactory):
     # wkb_geometry = fuzzy.GeometryField()
 
 
+class BagRapportFactory(factory.DjangoModelFactory):
+    """
+    Contains json doc with information about owners ship and
+    other counts
+    """
+
+    class Meta:
+        model = BagRapport
+
+    id = fuzzy.FuzzyText(length=14)
+    code = fuzzy.FuzzyText(length=3)
+    vollcode = fuzzy.FuzzyText(length=4)
+    naam = fuzzy.FuzzyText(length=40)
+    data = dict(empty=True)
+
+
 class EnergieLabelFactory(factory.DjangoModelFactory):
 
     class Meta:
@@ -104,3 +124,23 @@ class EnergieLabelFactory(factory.DjangoModelFactory):
     ogc_fid = fuzzy.FuzzyInteger(low=0)
     energielabel = fuzzy.FuzzyText(length=1)
     # wkb_geometry = fuzzy.GeometryField()
+
+
+class HandelsregisterBuurtFactory(factory.DjangoModelFactory):
+
+    class Meta:
+        model = HandelsregisterBuurt
+
+    buurt_id = fuzzy.FuzzyText(length=14, chars=string.digits)
+    buurt_naam = fuzzy.FuzzyText(length=40)
+    data = dict(empty=True)
+
+
+class HandelsregisterFactory(factory.DjangoModelFactory):
+
+    class Meta:
+        model = Handelsregister
+
+    buurt_id = fuzzy.FuzzyText(length=14, chars=string.digits)
+    buurt_naam = fuzzy.FuzzyText(length=40)
+    data = dict(empty=True)
