@@ -94,8 +94,14 @@ class EnergieLabelViewSet(viewsets.ModelViewSet):
     filter_class = EnergieLabelFilter
 
 
-class RenovatieFilter(FilterSet, BuurtFilter):
+class BuurtNaamFilter():
+    def buurtcode_filter(self, qs, _name, value):
+        if value is not None:
+            qs = qs.filter(buurt=value)
+        return qs
 
+
+class RenovatieFilter(FilterSet, BuurtNaamFilter):
     buurt = filters.CharFilter(
         label='buurt', method='buurtcode_filter')
 

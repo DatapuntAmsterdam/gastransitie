@@ -13,6 +13,7 @@ CREATE TABLE
 AS (
     SELECT
         ogc_fid,
+        cast(buurt as varchar(4)),
         cast(alliantie as int),
         cast(de_key as int),
         cast(eigen_haar as int),
