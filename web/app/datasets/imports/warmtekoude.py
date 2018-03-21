@@ -39,7 +39,4 @@ def import_warmtekoude(datadir):
         t_srs=SRS_TO_STORE
     )
 
-
-def fix_tables():
     run_sql(_CUSTOM_SQL)
-    run_sql("""VACUUM ANALYZE public.warmtekoude_clean;""")

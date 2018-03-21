@@ -34,7 +34,4 @@ def import_energie_labels(datadir):
         t_srs=SRS_TO_STORE
     )
 
-
-def fix_tables():
     run_sql(_CUSTOM_SQL)
-    run_sql("""VACUUM ANALYZE public.energie_labels_clean;""")

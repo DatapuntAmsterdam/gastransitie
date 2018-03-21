@@ -1,8 +1,8 @@
 from django.contrib.gis.db import models
 
-
 class Renovatie(models.Model):
     ogc_fid = models.IntegerField(primary_key=True)
+    buurt = models.CharField(max_length=4, blank=True, null=True)
     alliantie = models.IntegerField(blank=True, null=True)
     de_key = models.IntegerField(blank=True, null=True)
     eigen_haar = models.IntegerField(blank=True, null=True)

@@ -1,20 +1,23 @@
 """
 Download per BRK / BAG informatie per buurt / per coorporatie.
+
+We use the BAG API, and SQL for the more compliated data.
+
+
 """
 
 import logging
-import urllib.parse
+import time
+# import urllib.parse
 # import argparse
 import requests
 from datasets.models import bag
-from datasets.models.handelsregister import Handelsregister
-from datasets.models.handelsregister import SBIcodes
-from datasets.models.handelsregister import HandelsregisterBuurt
-from datasets.models import BagBuurt
 
-from collections import Counter
+# from collections import Counter
 
 from .datapunt_auth import auth
+
+from django.db import connections
 
 # logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -22,7 +25,8 @@ log = logging.getLogger(__name__)
 STATUS_LINE = '%4s %20s %6d'
 STATUS_LINE_C = '%4s %20s %6d %-20s'
 
-ROOT = "http://127.0.0.1:8000"
+# ROOT = "http://127.0.0.1:8081"
+ROOT = "https://acc.api.data.amsterdam.nl"
 
 headers = {'Authorization': f'Bearer {auth.token_employee_plus}'}
 
@@ -75,13 +79,18 @@ WONING_CORPORATIES = [
 
 def get_json(url, params):
 
+    start = time.time()
     response = requests.get(url, params=params, headers=headers)
 
     if not response.status_code == 200:
         raise ValueError(
             f"API FAILED: {response.status_code}:{response.url}")
 
+    delta = time.time() - start
+    if delta > 6:
+        log.error('SLOW %.2f %s %s', delta, url, params)
     return response.json()
+
 
 """
 ?verblijfsobjecten__landelijk_id=&verblijfsobjecten__id=
@@ -98,31 +107,80 @@ def make_corporatie_rapport(buurt):
         params = {
             'verblijfsobjecten__buurt': buurt.id,
             'kadastraal_subject': c_persoon,
-            'aard_zakelijk_recht': 2 # eigenaars rechten
+            'aard_zakelijk_recht': 2  # eigenaars rechten
         }
 
         c_json = get_json(URL_RECHT, params)
         c_count = c_json['count']
 
-        log.debug(
-            STATUS_LINE_C,
-            buurt.vollcode, 'C', c_count, c_naam)
+        if c_count:
+            log.debug(
+                STATUS_LINE_C,
+                buurt.vollcode, 'C', c_count, c_naam)
 
         if not c_count:
             continue
 
-        corportatie_rapport['c_naam'] = c_count
+        corportatie_rapport[c_naam] = c_count
 
     return corportatie_rapport
 
 
-def bewoners_per_buurt():
+def corporatie_sql(persoon_id, buurt):
+    """Corporatie vbo's sql
+
+    Achterhaal hoeveel bezit coorporaties hebben in de buurt
     """
-    Stel de bewoners per buurt vast.
-    ze hebben eigendoms recht op hun adres.
+
+    sql = f"""
+SELECT count(*)
+FROM
+     bag_verblijfsobject v,
+     brk_zakelijkrechtverblijfsobjectrelatie zr,
+     brk_zakelijkrecht r
+WHERE
+    r.kadastraal_subject_id = '{persoon_id}'
+AND r.aard_zakelijk_recht_id = '2'
+AND zr.zakelijk_recht_id = r.id
+AND v.id = zr.verblijfsobject_id
+AND v.buurt_id = '{buurt.id}'
     """
-    sql = """
-SELECT count(distinct(v.id))  /*, s.id, s.naam, a.openbareruimte_naam, a.huisnummer, a.toevoeging */  # noqa
+
+    with connections['bag'].cursor() as cursor:
+        cursor.execute(sql)
+        data = dictfetchall(cursor)
+        return data[0]['count']
+
+
+def make_corporatie_rapport_sql(buurt):
+
+    corportatie_rapport = {}
+
+    for c_persoon, c_naam in WONING_CORPORATIES:
+        c_count = corporatie_sql(c_persoon, buurt)
+        if c_count:
+            corportatie_rapport[c_naam] = c_count
+
+    return corportatie_rapport
+
+
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
+
+
+def bewoners_per_buurt(buurt) -> int:
+    """Stel de bewoners per buurt vast.
+
+    Bewoners hebben eigendoms recht op hun woonadres.
+    """
+
+    sql = f"""
+SELECT count(distinct(v.id))
 FROM brk_kadastraalsubject s,
      brk_zakelijkrechtverblijfsobjectrelatie zr ,
      brk_zakelijkrecht r,
@@ -138,7 +196,70 @@ AND v."_openbare_ruimte_naam" = a.openbareruimte_naam
 AND v."_huisnummer" = a.huisnummer
 AND v."_huisletter" = a.huisletter
 AND v."_huisnummer_toevoeging" = a.toevoeging
+AND v."buurt_id" = '{buurt.id}'
     """
+
+    with connections['bag'].cursor() as cursor:
+        cursor.execute(sql)
+        data = dictfetchall(cursor)
+        log.debug('Bewoners %s: %s', data[0]['count'], buurt.naam)
+        return data[0]['count']
+
+
+def gebruik_per_buurt(buurt) -> dict:
+    """Gebruik van verblijfsobjecten in de buurt.
+    """
+
+    sql = f"""
+        SELECT count(v.id), g.omschrijving, g.code
+        FROM bag_verblijfsobject v , bag_gebruik g
+        WHERE v.gebruik_id = g.code
+        AND v."buurt_id" = '{buurt.id}'
+        GROUP BY (g.omschrijving, g.code)
+    """
+
+    with connections['bag'].cursor() as cursor:
+        cursor.execute(sql)
+        data = dictfetchall(cursor)
+        # log.debug('Gebruik %s: %s', data, buurt.naam)
+        return data
+
+
+def bouwkundige_verdeling(buurt) -> dict:
+    """Bouwkundige samenstelling
+
+    Deze cijfers staan ook in BBGA.
+    """
+
+    ranges = [
+        (0, 40),
+        (40, 50),
+        (50, 60),
+        (60, 70),
+        (70, 80),
+        (80, 90),
+        (90, 99999999),
+    ]
+
+    groote_verdeling = {}
+
+    for _min, _max in ranges:
+
+        sql = f"""
+            SELECT count(v.id)
+            FROM bag_verblijfsobject v
+            WHERE v."buurt_id" = '{buurt.id}'
+            AND v.oppervlakte > {_min}
+            AND v.oppervlakte <= {_max}
+        """
+        with connections['bag'].cursor() as cursor:
+            cursor.execute(sql)
+            data = dictfetchall(cursor)
+            groote_verdeling[f'{_min}-{_max}'] = data[0]['count']
+
+    assert len(ranges) == len(groote_verdeling)
+    log.debug('Grootte: %s', groote_verdeling)
+    return groote_verdeling
 
 
 def get_bag_brk_for_all_buurten():
@@ -149,10 +270,14 @@ def get_bag_brk_for_all_buurten():
     - geometrie per vbo
     - bouwblok/geo van vbo's?
     """
+    bag.BagRapport.objects.all().delete()
 
-    buurt_rapport = {}
+    for b in bag.BagBuurt.objects.all().order_by('naam'):
+        # bewoners
+        bewoner_count = bewoners_per_buurt(b)
+        bag_gebruik = gebruik_per_buurt(b)
+        bouwkundige_groote = bouwkundige_verdeling(b)
 
-    for b in bag.BagBuurt.objects.all().order_by('naam')[:3]:
         # Totaal VBO's
         parameters = {'buurt': b.id}
         vbo_json = get_json(URL_VBO, parameters)
@@ -178,4 +303,29 @@ def get_bag_brk_for_all_buurten():
         log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NIET N', nn_sub_count)
 
         # Corporatie bezit
-        make_corporatie_rapport(b)
+        # c_rapport = make_corporatie_rapport(b)
+        # print(c_rapport)
+        c2_rapport = make_corporatie_rapport_sql(b)
+        print(c2_rapport)
+
+        buurt_rapport = {
+            'vbo_count': vbo_count,
+            'subjecten_count': sub_count,
+            'natuurlijke_subjecten': n_sub_count,
+            'niet_natuurlijke_subjecten': nn_sub_count,
+            'corporaties': c2_rapport,
+            'bewoners_count': bewoner_count,
+            'gebruik': bag_gebruik,
+            'bouwkundige_groote': bouwkundige_groote,
+        }
+
+        # Create Buurt BAG / corporatie rapport
+        r = bag.BagRapport(
+            id=b.id,
+            code=b.code,
+            vollcode=b.vollcode,
+            naam=b.naam,
+            data=buurt_rapport,
+        )
+
+        r.save()

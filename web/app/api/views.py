@@ -7,9 +7,11 @@ from .serializers import EnergieLabelSerializer
 from .serializers import RenovatieSerializer
 from .serializers import BagBuurtBboxSerializer
 from .serializers import WarmtekoudeSerializer
+from .serializers import BagBuurtRapportSerializer
 
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
+from datasets.models.bag import BagRapport
 from datasets.models.mip import Mip2016
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
@@ -94,15 +96,21 @@ class EnergieLabelViewSet(viewsets.ModelViewSet):
     filter_class = EnergieLabelFilter
 
 
-class RenovatieFilter(FilterSet):
+class BuurtNaamFilter():
+    def buurtcode_filter(self, qs, _name, value):
+        if value is not None:
+            qs = qs.filter(buurt=value)
+        return qs
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+
+class RenovatieFilter(FilterSet, BuurtNaamFilter):
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = Renovatie
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
@@ -110,6 +118,12 @@ class RenovatieViewSet(viewsets.ModelViewSet):
     serializer_class = RenovatieSerializer
     queryset = Renovatie.objects.all().order_by('ogc_fid')
     filter_class = RenovatieFilter
+
+
+class BagBuurtRapportViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BagBuurtRapportSerializer
+    queryset = BagRapport.objects.all().order_by('id')
+    filter_fields = ('vollcode', 'code', 'naam')
 
 
 class BagBuurtViewSet(viewsets.ReadOnlyModelViewSet):

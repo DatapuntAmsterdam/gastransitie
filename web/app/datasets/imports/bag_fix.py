@@ -2,16 +2,10 @@
 """
 This is where SQL queries that must be run after import go.
 """
-from datasets.imports import corporatie_bezit
-from datasets.imports import cbs
-from datasets.imports import mip
-from datasets.imports import energie_labels
-from datasets.imports import renovaties
-from datasets.imports import warmtekoude
 from datasets.imports.util import run_sql
 
 
-def fix_bag_buurt():
+def reindex_bag_buurt():
     """
     Run additional SQL after restoring BAG buurt table.
 
@@ -28,20 +22,3 @@ def fix_bag_buurt():
     """
     run_sql(sql)
     run_sql("""VACUUM ANALYZE public.bag_buurt;""")
-
-
-def main():
-    """
-    Create final tables that will be used by Django.
-    """
-    corporatie_bezit.fix_tables()
-    cbs.fix_tables()
-    mip.fix_tables()
-    energie_labels.fix_tables()
-    renovaties.fix_tables()
-    warmtekoude.fix_tables()
-    fix_bag_buurt()
-
-
-if __name__ == '__main__':
-    main()

@@ -2,6 +2,7 @@
 Models for restored database tables (from BAG imports).
 """
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import JSONField
 
 
 class BagBuurt(models.Model):
@@ -24,3 +25,11 @@ class BagBuurt(models.Model):
     class Meta:
         managed = False
         db_table = 'bag_buurt'
+
+
+class BagRapport(models.Model):
+    id = models.CharField(max_length=14, primary_key=True)
+    code = models.CharField(max_length=3)
+    vollcode = models.CharField(max_length=4)
+    naam = models.CharField(max_length=40)
+    data = JSONField()

@@ -1,12 +1,41 @@
-from django.core.management.base import BaseCommand, CommandError
+import logging
 
-from datasets.imports import load_data
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
+
 from datasets.imports import handelsregister
 from datasets.imports import bag_brk_api
+from datasets.imports import bag_fix
+
+from datasets.imports.alliander import import_alliander
+from datasets.imports.corporatie_bezit import import_corporatie_bezit
+from datasets.imports.renovaties import import_renovaties
+
+from datasets.imports.warmtekoude import import_warmtekoude
+from datasets.imports.mip import import_mip
+from datasets.imports.eigendomskaart import import_eigendomskaart
+from datasets.imports.energie_labels import import_energie_labels
+
+# from datasets.imports.cbs import import_cbs
+
+
+log = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
     help = 'Import datasets relevant for Energie transitie project'
+
+    # object store statische bronnen
+    bronnen = {
+        'renovaties': import_renovaties,
+        'mip': import_mip,  # meerjarig investerings plan
+        'corporatie_bezit': import_corporatie_bezit,
+        'energielabels': import_energie_labels,
+        'alliander': import_alliander,
+        'eigendomskaart': import_eigendomskaart,
+        'warmtekoude': import_warmtekoude
+        # 'cbs': import_cbs
+    }
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -29,6 +58,20 @@ class Command(BaseCommand):
             '--brkbag', default=False, action='store_true',
             help='Load brk bag')
 
+        parser.add_argument(
+            '--indexgebied', default=False, action='store_true',
+            help='Index bag gebied 4326')
+
+        parser.add_argument(
+            '--warmtekoude', default=False, action='store_true',
+            help='Stadswarmte en koude netwerk')
+
+        # for every bron add flag.
+        for key in self.bronnen.keys():
+            parser.add_argument(
+                f'--{key}', default=False,
+                action='store_true', help=f'Load {key}')
+
     def handle(self, *args, **options):
 
         if options['handelsregister']:
@@ -47,10 +90,18 @@ class Command(BaseCommand):
             bag_brk_api.get_bag_brk_for_all_buurten()
             return
 
-        self.stdout.write('First stage of import process beginning:')
-        self.stdout.write('(Assumes data files have been downloaded!')
+        if options['indexgebied']:
+            bag_fix.reindex_bag_buurt()
 
         target_dir = options['dir'] if options['dir'] is not None else '/data'
-        load_data.main(target_dir)
+        log.info('Downloading / Importing from %s', target_dir)
 
-        self.stdout.write('Done')
+        # import single bron
+        for bron, import_function in self.bronnen.items():
+            if options.get(bron):
+                import_function(target_dir)
+                return
+
+        # if no aguments is given load ALL static sources
+        for bron, import_function in self.bronnen.items():
+                import_function(target_dir)

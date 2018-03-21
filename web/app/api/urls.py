@@ -8,6 +8,8 @@ from .views import EnergieLabelViewSet
 from .views import RenovatieViewSet
 from .views import BagBuurtBboxViewSet
 from .views import WarmtekoudeViewSet
+from .views import BagBuurtRapportViewSet
+
 from .hr_views import HandelsregisterViewSet
 from .hr_views import HandelsregisterBuurtViewSet
 
@@ -40,6 +42,7 @@ router = ApiRouter()
 
 router.register('afwc', GasAfwc2017ViewSet, base_name='afwc')
 router.register('buurt', BagBuurtViewSet, base_name='buurt')
+router.register('bag', BagBuurtRapportViewSet, base_name='bag')
 router.register('mip', Mip2016ViewSet, base_name='mip')
 router.register('energielabel', EnergieLabelViewSet, base_name='enegielabel')
 router.register('renovatie', RenovatieViewSet, base_name='renovatie')
