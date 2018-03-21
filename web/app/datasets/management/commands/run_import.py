@@ -11,7 +11,7 @@ from datasets.imports.alliander import import_alliander
 from datasets.imports.corporatie_bezit import import_corporatie_bezit
 from datasets.imports.renovaties import import_renovaties
 
-# from datasets.imports.warmtekoude import import_warmtekoude
+from datasets.imports.warmtekoude import import_warmtekoude
 from datasets.imports.mip import import_mip
 from datasets.imports.eigendomskaart import import_eigendomskaart
 from datasets.imports.energie_labels import import_energie_labels
@@ -33,6 +33,7 @@ class Command(BaseCommand):
         'energielabels': import_energie_labels,
         'alliander': import_alliander,
         'eigendomskaart': import_eigendomskaart,
+        'warmtekoude': import_warmtekoude
         # 'cbs': import_cbs
     }
 

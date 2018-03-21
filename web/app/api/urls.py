@@ -7,7 +7,9 @@ from .views import Mip2016ViewSet
 from .views import EnergieLabelViewSet
 from .views import RenovatieViewSet
 from .views import BagBuurtBboxViewSet
+from .views import WarmtekoudeViewSet
 from .views import BagBuurtRapportViewSet
+
 from .hr_views import HandelsregisterViewSet
 from .hr_views import HandelsregisterBuurtViewSet
 
@@ -48,5 +50,6 @@ router.register('buurtbbox', BagBuurtBboxViewSet, base_name='buurtbbox')
 
 router.register('handelsregister', HandelsregisterViewSet)
 router.register('handelsregisterbuurt', HandelsregisterBuurtViewSet)
+router.register('warmtekoude', WarmtekoudeViewSet)
 
 urlpatterns = router.urls

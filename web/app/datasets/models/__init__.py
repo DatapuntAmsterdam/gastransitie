@@ -8,3 +8,4 @@ from .renovaties import Renovatie
 from .handelsregister import Handelsregister
 from .handelsregister import SBIcodes
 from .handelsregister import HandelsregisterBuurt
+from .warmtekoude import Warmtekoude
