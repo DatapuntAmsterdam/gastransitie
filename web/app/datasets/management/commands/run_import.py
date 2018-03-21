@@ -62,10 +62,6 @@ class Command(BaseCommand):
             '--indexgebied', default=False, action='store_true',
             help='Index bag gebied 4326')
 
-        parser.add_argument(
-            '--warmtekoude', default=False, action='store_true',
-            help='Stadswarmte en koude netwerk')
-
         # for every bron add flag.
         for key in self.bronnen.keys():
             parser.add_argument(
