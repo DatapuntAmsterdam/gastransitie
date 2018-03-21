@@ -108,6 +108,7 @@ export default {
         )
 
         this.buurtData = await privatedatasets.getBagBrk(tmp.landelijk)
+        this.buurtData = this.buurtData[0]
 
         this.gebruik = this.buurtData['data']['gebruik']
         let c1 = this.buurtData['data']['corporaties']

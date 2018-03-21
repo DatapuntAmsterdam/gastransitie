@@ -65,6 +65,16 @@ async function readJson (url) {
   return results
 }
 
+async function readDataJson (url) {
+  const results = await util.readProtectedPaginatedData(
+    url,
+    util.getNormalData,
+    util.getNextPage
+  )
+  // debugger
+  return results
+}
+
 // Energie transitie specific data endpoints (all paginated GeoJSON)
 async function getAfwc (buurt) {
   if (!afwcCache[buurt]) {
@@ -147,8 +157,8 @@ async function getWarmtekoude (buurt) {
 
 async function getBagBrk (landelijkeCode) {
   if (!bagBrkCache[landelijkeCode]) {
-    let url = PRIVATE_DATA_HOST + `/gastransitie/ap/bag/${landelijkeCode}/`
-    bagBrkCache[landelijkeCode] = readJson(url)
+    let url = PRIVATE_DATA_HOST + `/gastransitie/api/bag/${landelijkeCode}/`
+    bagBrkCache[landelijkeCode] = readDataJson(url)
   }
   return bagBrkCache[landelijkeCode]
 }
