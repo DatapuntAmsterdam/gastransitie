@@ -1,19 +1,39 @@
 <template>
   <div>
     <h3>Geplande werkzaamheden per woningcorporatie</h3>
-    <table>
+    <table v-if="data && data.features.length" class="table-bordered" style="width:100%">
       <thead>
         <tr>
-          <th>Datum</th>
-          <th>Organisatie</th>
-          <th>Omschrijving</th>
+          <th>Alliantie</th>
+          <th>De Key</th>
+          <th>Eigen Haard</th>
+          <th>Rochdale</th>
+          <th>Stadgenoot</th>
+          <th>Ymere</th>
+          <th>2017</th>
+          <th>2018</th>
+          <th>2019</th>
+          <th>2020</th>
+          <th>2021</th>
+          <th>2022</th>
+          <th>2023</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>t</td>
-          <td>b</td>
-          <td>d</td>
+          <td>{{data.features[0].properties.alliantie}}</td>
+          <td>{{data.features[0].properties.de_key}}</td>
+          <td>{{data.features[0].properties.eigen_haar}}</td>
+          <td>{{data.features[0].properties.rochdale}}</td>
+          <td>{{data.features[0].properties.stadgenoot}}</td>
+          <td>{{data.features[0].properties.ymere}}</td>
+          <td>{{data.features[0].properties.jaar_2017}}</td>
+          <td>{{data.features[0].properties.jaar_2018}}</td>
+          <td>{{data.features[0].properties.jaar_2019}}</td>
+          <td>{{data.features[0].properties.jaar_2020}}</td>
+          <td>{{data.features[0].properties.jaar_2021}}</td>
+          <td>{{data.features[0].properties.jaar_2022}}</td>
+          <td>{{data.features[0].properties.jaar_2023}}</td>
         </tr>
       </tbody>
     </table>
