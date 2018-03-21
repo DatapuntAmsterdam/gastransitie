@@ -182,7 +182,7 @@ class BrowseDatasetsTestCase(APITestCase, authorization.AuthorizationSetup):
         for url in self.datasets:
 
             response = self.client.get('/{}/?format=api'.format(url))
-            self.assertEqual(response.status_code, 401)
+            self.assertEqual(response.status_code, 401, url)
 
     def test_filtering(self):
         """
