@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-    <oauth></oauth>
     <table v-if="buurten.length" class="table table-sm table-striped table-bordered">
       <thead>
         <tr>
@@ -32,7 +31,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import OAuth from './OAuth'
 
 export default {
   computed: {
@@ -41,7 +39,6 @@ export default {
     ])
   },
   components: {
-    'oauth': OAuth
   }
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-    <oauth></oauth>
     <div class="row">
       <div class="col-6"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
       <div class="col-6"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>
@@ -27,7 +26,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import OAuth from './OAuth'
 
 import AmsterdamMap from './AmsterdamMap'
 import afwcMapConfig from '../../static/afwc-map-config'
@@ -58,7 +56,6 @@ export default {
     'bbga-info-table': BBGAInfoTable,
     'handelsregister-info-table': HandelsRegisterTable,
     'amsterdam-mip-table': MeerjarigInvesteringsProgrammaTable,
-    'oauth': OAuth,
     'renovatie-table': renovatieTable
   },
   methods: {

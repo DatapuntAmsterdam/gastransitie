@@ -43,22 +43,21 @@
                   <div class="grid-inside">
                     <nav>
                       <ul class="links horizontal right ">
-                        <li class="">
-                          <a href="#Amsterdam" class="">
-                            <span class="linklabel">
-                              Contact
-                            </span>
-                          </a>
-                        </li>
-
-                        <li class="">
-                          <a href="#Amsterdam" class="">
+                        <li class="" v-if="!token" @click="login()">
+                          <a href="javascript:void(0)" class="">
                             <span class="linklabel">
                               Login
                             </span>
                           </a>
                         </li>
 
+                        <li class="" v-if="token" @click="logout()">
+                          <a href="javascript:void(0)" class="">
+                            <span class="linklabel">
+                              Logout
+                            </span>
+                          </a>
+                        </li>
                       </ul>
                     </nav>
 
@@ -101,6 +100,31 @@
     </div>
   </div>
 </template>
+
+<script>
+import { authorize, logout, getToken } from '../services/auth'
+
+export default {
+  created () {
+    this.token = getToken()
+  },
+
+  data () {
+    return {
+      token: null
+    }
+  },
+
+  methods: {
+    login: function () {
+      authorize()
+    },
+    logout: function () {
+      logout()
+    }
+  }
+}
+</script>
 
 <style>
   .mainlogo {
