@@ -182,7 +182,7 @@ def bewoners_per_buurt(buurt) -> int:
     sql = f"""
 SELECT count(distinct(v.id))
 FROM brk_kadastraalsubject s,
-     brk_zakelijkrechtverblijfsobjectrelatie zr ,
+     brk_zakelijkrechtverblijfsobjectrelatie zr,
      brk_zakelijkrecht r,
      bag_verblijfsobject v,
      brk_adres a
