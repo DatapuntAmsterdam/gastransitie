@@ -32,7 +32,7 @@ class Command(BaseCommand):
         'corporatie_bezit': import_corporatie_bezit,
         'energielabels': import_energie_labels,
         'alliander': import_alliander,
-        'eigendomskaart': import_eigendomskaart,
+        # 'eigendomskaart': import_eigendomskaart,
         'warmtekoude': import_warmtekoude
         # 'cbs': import_cbs
     }

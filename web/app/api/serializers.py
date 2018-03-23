@@ -24,8 +24,9 @@ class BagBuurtSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = BagBuurt
         fields = '__all__'
-
         geo_field = 'geometrie'
+        auto_bbox = True
+        # bbox_geo_field = 'bbox_geometry'
 
 
 class BagBuurtRapportSerializer(ModelSerializer):

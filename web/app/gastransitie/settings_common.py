@@ -131,6 +131,13 @@ LOGGING = {
             'propagate': False,
         },
 
+        'authorization_django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+
+
         'factory.containers': {
             'handlers': ['console'],
             'level': 'INFO',
