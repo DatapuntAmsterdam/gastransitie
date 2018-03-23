@@ -51,7 +51,7 @@ async function readGeojson (url) {
   const results = await util.readProtectedPaginatedData(
     url,
     util.getGeoJSONData,
-    util.getNextPage
+    util.getNextPageHAL
   )
   return util.resultsAsGeoJSON(results)
 }
@@ -60,7 +60,7 @@ async function readJson (url) {
   const results = await util.readProtectedPaginatedData(
     url,
     util.getPaginatedData,
-    util.getNextPage
+    util.getNextPageHAL
   )
   return results
 }
@@ -69,7 +69,7 @@ async function readDataJson (url) {
   const results = await util.readProtectedPaginatedData(
     url,
     util.getNormalData,
-    util.getNextPage
+    util.getNextPageHAL
   )
   // debugger
   return results

@@ -5,7 +5,7 @@ import privateDataSets from './privatedatasets'
 // Helper function to access next link (used with readData)
 const getNoNext = r => null
 const getNextPage = r => r.data.next
-const getNextPageHAL = r => r._links.next.href
+const getNextPageHAL = r => r.data._links.next.href
 
 const getNormalData = r => r.data
 const getPaginatedData = r => r.data.results
@@ -24,6 +24,7 @@ async function readPaginatedData (
     try {
       let response = await Vue.axios.get(next, { headers })
       next = getNext(response)
+      console.log('Next page', next)
       results = results.concat(getData(response))
     } catch (e) {
       console.error('Request failed', e)
@@ -66,7 +67,7 @@ async function loadBuurten () {
   let results = await readProtectedPaginatedData(
     url,
     getGeoJSONData,
-    getNextPage
+    getNextPageHAL
   )
   let tmp = results.map(function (d, i) {
     return {
