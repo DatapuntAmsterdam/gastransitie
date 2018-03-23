@@ -61,6 +61,16 @@
                 <div class="grid-edge">
                   <div class="grid-inside">
                     <nav>
+                      <ul class="links horizontal">
+                        <li v-if="$route.name !== 'Buurten'">
+                          <router-link :to="{name: 'Buurten'}">
+                            <span class="linklabel">
+                              Buurten
+                            </span>
+                          </router-link>
+                        </li>
+
+                      </ul>
                       <ul class="links horizontal right ">
                         <li class="" v-if="!token" @click="login()">
                           <a href="javascript:void(0)" class="">
