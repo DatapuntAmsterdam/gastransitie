@@ -102,11 +102,13 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { authorize, logout, getToken } from '../services/auth'
 
 export default {
   created () {
     this.token = getToken()
+    this.setToken(this.token)
   },
 
   data () {
@@ -116,9 +118,14 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setToken: 'setToken',
+    }),
+
     login: function () {
       authorize()
     },
+
     logout: function () {
       logout()
     }

@@ -1,32 +1,29 @@
 <template>
-  <div class="container-fluid">
-    <table v-if="buurten.length" class="table table-sm table-striped table-bordered">
+  <div>
+    <table v-if="buurten" width="100%">
+      <caption></caption>
       <thead>
-        <tr>
-          <th scope="col">Buurt</th>
-          <th scope="col">vollcode</th>
-          <th scope="col">Landelijke code</th>
-        </tr>
+      <tr>
+        <th>Naam</th>
+        <th>Code</th>
+        <th>Landelijke code</th>
+      </tr>
       </thead>
       <tbody>
-        <tr v-for="buurt in buurten" :key="buurt.vollcode">
-          <td>
-            <router-link :to="{path: '/factsheet/' + buurt.vollcode}">{{buurt.naam}}</router-link>
-          </td>
-          <td>
-            {{buurt.vollcode}}
-          </td>
-          <td>
-            {{buurt.landelijk}}
-          </td>
-        </tr>
+      <tr v-for="buurt in buurten" :key="buurt.vollcode">
+        <td>
+          <router-link :to="{path: '/factsheet/' + buurt.vollcode}">{{buurt.naam}}</router-link>
+        </td>
+        <td>
+          {{buurt.vollcode}}
+        </td>
+        <td>
+          {{buurt.landelijk}}
+        </td>
+      </tr>
       </tbody>
     </table>
-    <div v-else>
-      Loading...
-    </div>
   </div>
-
 </template>
 
 <script>
