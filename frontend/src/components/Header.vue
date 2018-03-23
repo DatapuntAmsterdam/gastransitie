@@ -119,7 +119,7 @@ export default {
 
   methods: {
     ...mapActions({
-      setToken: 'setToken',
+      setToken: 'setToken'
     }),
 
     login: function () {

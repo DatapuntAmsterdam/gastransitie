@@ -1,12 +1,12 @@
 <template>
   <div class="outer-wrapper">
     <div class="grid-wrapper wrapper_12 contents-wrapper">
-      <div class="grid-container container_12 grid-columns ">
-        <div class="grid-zone grid_12 z-columns ">
+      <div class="grid-container container_12">
+        <div class="grid-zone grid_12">
           <section>
             <h1>{{$route.name}}</h1>
 
-            <div class="grid-blok grid_12 type-columns ">
+            <div class="grid-blok grid_12">
               <div class="grid-element">
                 <div class="grid-edge">
                   <div class="grid-inside">
