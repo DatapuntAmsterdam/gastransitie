@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'leaflet/dist/leaflet.css'
 
 import 'stijl/css/ams-stijl.css'
+import '../static/app.scss'
 
 import util from './services/util'
 

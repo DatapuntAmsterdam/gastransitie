@@ -12,6 +12,7 @@
 
         <button class="action primary" @click="clearFilter()">Clear</button>
       </div>
+
     <table width="100%">
       <caption></caption>
       <thead>
@@ -24,13 +25,12 @@
       <tbody>
       <tr v-for="buurt in filteredList" :key="buurt.vollcode">
         <td>
-          <router-link :to="{path: '/factsheet/' + buurt.vollcode}">{{buurt.naam}}</router-link>
+          <router-link :to="{path: '/factsheet/' + buurt.vollcode}">
+            <span v-html="filteredText(buurt.naam, filterText)"></span>
+          </router-link>
         </td>
-        <td>
-          {{buurt.vollcode}}
-        </td>
-        <td>
-          {{buurt.landelijk}}
+        <td v-for="attr in ['vollcode', 'landelijk']" :key="attr">
+          <span v-html="filteredText(buurt[attr], filterText)"></span>
         </td>
       </tr>
       </tbody>
@@ -44,6 +44,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import util from '../services/util'
 
 const buurtText = v => ['naam', 'vollcode', 'landelijk'].map(key => v[key].toLowerCase()).join('.')
 
@@ -68,7 +69,9 @@ export default {
     filter () {
       const filterText = this.filterText.toLowerCase()
       this.filteredList = this.buurten.filter(v => buurtText(v).includes(filterText))
-    }
+    },
+
+    filteredText: util.filteredText
   },
   computed: {
     ...mapGetters([
