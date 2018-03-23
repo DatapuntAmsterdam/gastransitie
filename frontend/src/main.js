@@ -10,7 +10,7 @@ import { mapActions } from 'vuex'
 
 import store from './store'
 
-// import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'leaflet/dist/leaflet.css'
 

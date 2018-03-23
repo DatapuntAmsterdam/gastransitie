@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div>
     <div class="row">
       <div class="col-6"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
       <div class="col-6"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>

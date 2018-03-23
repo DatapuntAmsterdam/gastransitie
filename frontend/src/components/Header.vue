@@ -41,25 +41,6 @@
               <div class="grid-element">
                 <div class="grid-edge">
                   <div class="grid-inside">
-                    <nav>
-                      <ul class="links horizontal right ">
-                        <li class="" v-if="!token" @click="login()">
-                          <a href="javascript:void(0)" class="">
-                            <span class="linklabel">
-                              Login
-                            </span>
-                          </a>
-                        </li>
-
-                        <li class="" v-if="token" @click="logout()">
-                          <a href="javascript:void(0)" class="">
-                            <span class="linklabel">
-                              Logout
-                            </span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
 
                   </div>
 
@@ -79,10 +60,25 @@
               <div class="grid-element">
                 <div class="grid-edge">
                   <div class="grid-inside">
-                    <a aria-expanded="" href="#" class="toggle- ">
-                      <b class="caret" aria-hidden="true"></b>
-                      <span class="toggle-text visuallyhidden"></span>
-                    </a>
+                    <nav>
+                      <ul class="links horizontal right ">
+                        <li class="" v-if="!token" @click="login()">
+                          <a href="javascript:void(0)" class="">
+                            <span class="linklabel">
+                              Login
+                            </span>
+                          </a>
+                        </li>
+
+                        <li class="" v-if="token" @click="logout()">
+                          <a href="javascript:void(0)" class="">
+                            <span class="linklabel">
+                              Logout
+                            </span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
 
                   </div>
 
