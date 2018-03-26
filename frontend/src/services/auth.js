@@ -38,7 +38,7 @@ try {
 function hasCorrectScopes () {
   var token = datapuntProvider.getAccessToken()
   var payloadB64 = token.split('.')[1]
-  var payload = atob(payloadB64 + '='.repeat((4 - payloadB64.length % 4) % 4)
+  var payload = atob(payloadB64 + '='.repeat((4 - payloadB64.length % 4) % 4))
   var decoded = JSON.parse(payload)
   if (SCOPES.some(function (e) { return decoded.scopes.indexOf(e) === -1 })) {
     return false
