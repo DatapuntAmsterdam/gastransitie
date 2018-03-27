@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1>{{$route.name}}</h1>
+  <div class="container mt-2">
+    <h2>{{$route.name}}</h2>
     <slot></slot>
   </div>
 </template>

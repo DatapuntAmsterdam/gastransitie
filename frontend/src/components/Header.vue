@@ -1,17 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container mt-2">
     <header>
       <img class="logo" src="../../static/logo-short.svg">
-      <h1><slot></slot></h1>
+      <h2><slot></slot></h2>
     </header>
   </div>
 </template>
 
 <style lang="scss" scoped>
-header {
-  margin-top: 10px;
-}
-
 .logo {
   height: 45px;
   margin-left: -18px;

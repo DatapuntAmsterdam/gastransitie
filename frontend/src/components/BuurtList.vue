@@ -16,7 +16,7 @@
         </button>
       </div>
 
-    <table class="table">
+    <table class="table table-hover">
       <caption></caption>
       <thead>
       <tr>
