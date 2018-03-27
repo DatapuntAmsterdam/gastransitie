@@ -1,20 +1,22 @@
 <template>
   <div v-if="buurtData">
-    <h3>Factsheet {{buurtData.naam}}</h3>
-
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
+      <tr>
+        <td>Naam buurt:</td>
+        <td>{{buurtData.naam}}</td>
+      </tr>
         <tr>
-          <td style="width:50%">Naam wijk:</td>
-          <td style="width:50%">{{buurtData.buurtcombinatie.naam}}</td>
+          <td>Naam wijk:</td>
+          <td>{{buurtData.buurtcombinatie.naam}}</td>
         </tr>
         <tr>
-          <td style="width:50%">Naam stadsdeel:</td>
-          <td style="width:50%">{{buurtData.stadsdeel.naam}}</td>
+          <td>Naam stadsdeel:</td>
+          <td>{{buurtData.stadsdeel.naam}}</td>
         </tr>
         <tr>
-          <td style="width:50%">Buurtcode:</td>
-          <td style="width:50%">{{buurt}}</td>
+          <td>Buurtcode:</td>
+          <td>{{buurt}}</td>
         </tr>
       </tbody>
     </table>

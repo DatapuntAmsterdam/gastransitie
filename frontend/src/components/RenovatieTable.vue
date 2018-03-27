@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Geplande werkzaamheden per woningcorporatie</h3>
-    <table v-if="data && data.features.length" class="table-bordered" style="width:100%">
+    <table v-if="data && data.features.length" class="table table-hover">
       <thead>
         <tr>
           <th>Alliantie</th>

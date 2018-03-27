@@ -2,23 +2,23 @@
   <div v-if="hrData">
     <h3>Handelsregister informatie voor {{hrData.buurt_naam}}</h3>
 
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
-          <td style="width:50%">Activiteiten:</td>
-          <td style="width:50%">{{hrData.data.activiteiten}}</td>
+          <td>Activiteiten:</td>
+          <td>{{hrData.data.activiteiten}}</td>
         </tr>
         <tr>
-          <td style="width:50%">Inschijvingen / Vestigingen:</td>
-          <td style="width:50%">{{hrData.data.inschrijvingen}}</td>
+          <td>Inschijvingen / Vestigingen:</td>
+          <td>{{hrData.data.inschrijvingen}}</td>
         </tr>
         <tr>
-          <td style="width:50%"></td>
-          <td style="width:50%"></td>
+          <td></td>
+          <td></td>
         </tr>
         <tr v-for="item in orderedHR" :key="item.key">
-          <td style="width:50%"> {{item.key}} </td>
-          <td style="width:50%"> {{item.value}} </td>
+          <td> {{item.key}} </td>
+          <td> {{item.value}} </td>
         </tr>
 
       </tbody>

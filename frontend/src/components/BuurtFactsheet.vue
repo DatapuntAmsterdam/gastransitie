@@ -1,31 +1,47 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-6"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
-      <div class="col-6"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>
-    </div>
-    <div class="row">
-      <div class="mt-2 col-12"><h3>Corporatie bezit</h3></div>
-      <div class="col-6"></div>
-      <div class="col-6"><amsterdam-map :config="afwcMapConfig" :buurt="buurt"></amsterdam-map></div>
-    </div>
-    <div class="row" v-if="buurten.length">
-      <div class="mt-2 col-12"><h3>Meerjaren Investerings Programma</h3></div>
-      <div class="col-6"><amsterdam-mip-table v-if="buurten.length" :buurt="buurt"></amsterdam-mip-table></div>
-      <div class="col-6"><amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map></div>
-    </div>
-    <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
-    <div class="row">
-      <div class="col-6"><bag-brk-table v-if="buurten.length" :buurt="buurt"></bag-brk-table></div>
-      <div class="col-6"><handelsregister-info-table v-if="buurten.length" :buurt="buurt"></handelsregister-info-table></div>
-    </div>
-    <renovatie-table :buurt="buurt"></renovatie-table>
+    <card title="Algemene gegevens">
+      <div class="row">
+        <div class="col-lg-6 col-md-12"><bag-info-table v-if="buurten.length" :buurt="buurt"></bag-info-table></div>
+        <div class="col-lg-6 col-md-12"><amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map></div>
+      </div>
+      <bbga-info-table v-if="buurten.length" :buurt="buurt"></bbga-info-table>
+    </card>
+
+    <card title="Corporatie bezit">
+      <div class="row">
+        <div class="col-lg-6 col-md-12"></div>
+        <div class="col-lg-6 col-md-12"><amsterdam-map :config="afwcMapConfig" :buurt="buurt"></amsterdam-map></div>
+      </div>
+    </card>
+
+    <card title="Meerjaren Investerings Programma">
+      <div class="row">
+        <div class="col-12"><amsterdam-mip-table v-if="buurten.length" :buurt="buurt"></amsterdam-mip-table></div>
+        <div class="col-12"><amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map></div>
+      </div>
+    </card>
+
+    <card title="Kadaster">
+      <div class="row">
+        <div class="col-lg-6 col-md-12"><bag-brk-table v-if="buurten.length" :buurt="buurt"></bag-brk-table></div>
+        <div class="col-lg-6 col-md-12"><handelsregister-info-table v-if="buurten.length" :buurt="buurt"></handelsregister-info-table></div>
+      </div>
+    </card>
+
+    <card title="Renovatie">
+      <renovatie-table :buurt="buurt"></renovatie-table>
+    </card>
+
+
   </div>
 
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
+import card from './Card'
 
 import AmsterdamMap from './AmsterdamMap'
 import afwcMapConfig from '../../static/afwc-map-config'
@@ -50,6 +66,7 @@ export default {
     }
   },
   components: {
+    'card': card,
     'amsterdam-map': AmsterdamMap,
     'bag-info-table': BagInfoTable,
     'bag-brk-table': BagBrkTable,
