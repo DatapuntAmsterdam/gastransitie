@@ -1,19 +1,22 @@
 <template>
   <div>
     <div v-if="buurten">
-      <div class="rij mode_input text rij_verplicht">
-        <div class="invoer">
-          <input v-model="filterText"
-                 type="text"
-                 id="formInput"
-                 class="input"
-                 placeholder="Filtertekst">
-        </div>
+      <div class="form-group">
+        <input v-model="filterText"
+               type="text"
+               id="formInput"
+               class="form-control"
+               placeholder="Filtertekst">
 
-        <button class="action primary" @click="clearFilter()">Clear</button>
+        <button type="button"
+                class="btn btn-primary mt-1"
+                :disabled="!filterText"
+                @click="clearFilter()">
+          Wis filter
+        </button>
       </div>
 
-    <table width="100%">
+    <table class="table">
       <caption></caption>
       <thead>
       <tr>
