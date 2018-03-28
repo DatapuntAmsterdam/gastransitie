@@ -47,7 +47,7 @@ export default {
   },
   data () {
     return {
-      title: 'City Deal Aardgasloos'
+      title: 'City Deal Energietransitie'
     }
   }
 }

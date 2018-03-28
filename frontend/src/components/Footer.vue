@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      author: 'Datalab Amsterdam',
+      author: 'Datapunt Amsterdam',
       visible: 'invisible'
     }
   },
