@@ -1,19 +1,21 @@
 <template>
   <div v-if="geojson">
+    <div class="tableHeader">Geplande werkzaamheden Meerjarig Investeringsplan</div>
+
     <table class="table table-hover">
       <tbody>
         <tr>
-          <th>organisatie</th>
-          <th>datum</th>
-          <th>nummer</th>
-          <th>opdrachtgever</th>
-          <th>omschrijving</th>
+          <th>Datum</th>
+          <th>Organisatie</th>
+          <th>Opdrachtgever</th>
+          <th>Nummer</th>
+          <th>Omschrijving</th>
         </tr>
-        <tr v-for="item in orderedMIP" :key="item.nummer">
-          <td > {{item.organisatie}} </td>
+        <tr v-for="item in mipData" :key="item.nummmer">
           <td > {{item.datum}} </td>
-          <td > {{item.nummer}} </td>
+          <td > {{item.organisatie}} </td>
           <td > {{item.opdrachtgever}} </td>
+          <td > {{item.nummer}} </td>
           <td > {{item.omschrijving}} </td>
         </tr>
       </tbody>
@@ -41,6 +43,7 @@ export default {
 
   async mounted () {
     this.geojson = await datasets.getJsonByName('mip', this.buurt)
+    this.mipData = this.orderedMIP()
   },
   created () {
     this.setBuurtData(this.buurt)
@@ -48,13 +51,7 @@ export default {
   computed: {
     ...mapGetters([
       'buurten'
-    ]),
-    orderedMIP: function () {
-      let featuredata = this.geojson.features.map(mip => mip.properties)
-      // filter duplicates
-      let uniqueFeatures = _.uniqBy(featuredata, 'datum')
-      return _.orderBy(uniqueFeatures, 'datum', ['desc'])
-    }
+    ])
   },
   methods: {
     async setBuurtData (buurt) {
@@ -62,6 +59,12 @@ export default {
         // this function can only be called meaningfully when the buurten are in the store
         console.error('buurten is not available from the Vuex store')
       }
+    },
+    orderedMIP: function () {
+      let featuredata = this.geojson.features.map(mip => mip.properties)
+      // filter duplicates
+      let uniqueFeatures = _.uniqBy(featuredata, 'datum')
+      return _.orderBy(uniqueFeatures, 'datum', ['desc'])
     }
   }
 }
