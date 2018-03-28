@@ -1,7 +1,7 @@
 <template>
-  <div v-if="buurten && buurten.length">
+  <div v-if="buurtData">
 
-    <card title="Algemeen">
+    <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <bag-info-table :buurt="buurt"></bag-info-table>
@@ -14,7 +14,7 @@
       <migratie-achtergrond :buurt="buurt"></migratie-achtergrond>
     </card>
 
-    <card title="Woning bezit">
+    <card :title="`Woning bezit in ${buurtData.naam}`">
       <woningen-naar-eigendom :buurt="buurt"></woningen-naar-eigendom>
       <woningen-per-corporatie :buurt="buurt"></woningen-per-corporatie>
       <div class="row">
@@ -26,11 +26,11 @@
       </div>
     </card>
 
-    <card title="Bouwkundige kenmerken">
+    <card :title="`Bouwkundige kenmerken ${buurtData.naam}`">
       <woning-oppervlakten :buurt="buurt"></woning-oppervlakten>
     </card>
 
-    <card title="Bedrijvigheid">
+    <card :title="`Bedrijvigheid in ${buurtData.naam}`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <gebruiks-overzicht :buurt="buurt"></gebruiks-overzicht>
@@ -41,7 +41,7 @@
       </div>
     </card>
 
-    <card title="Werkzaamheden">
+    <card :title="`Werkzaamheden in ${buurtData.naam}`">
       <gepland-per-corporatie :buurt="buurt"></gepland-per-corporatie>
       <gepland-per-jaar :buurt="buurt"></gepland-per-jaar>
       <div class="row">
@@ -63,6 +63,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
+import util from '@/services/util'
 
 import card from './Layout/Card'
 
@@ -87,7 +89,6 @@ import GebruiksOverzicht from './GebruiksOverzicht'
 export default {
   data () {
     return {
-      buurt: this.$route.params.buurt,
       afwcMapConfig,
       mipMapConfig,
       buurtMapConfig
@@ -110,18 +111,38 @@ export default {
   },
   methods: {
     ...mapActions({
-      setBuurt: 'setBuurt'
-    })
+      setBuurt: 'setBuurt',
+      setBuurtData: 'setBuurtData'
+    }),
+    async loadBuurt (buurt) {
+      this.setBuurt(buurt)
+      if (this.buurten) {
+        const buurtDetail = this.buurten.find(b => b.vollcode === buurt)
+        const url = 'https://api.data.amsterdam.nl/gebieden/buurt/' + buurtDetail.landelijk
+        const buurtData = await util.readData(url)
+        this.setBuurtData(buurtData)
+      } else {
+        this.setBuurtData(null)
+      }
+    }
   },
   computed: {
     ...mapGetters([
-      'buurten'
+      'buurten',
+      'buurt',
+      'buurtData'
     ])
   },
   watch: {
-    '$route' (to, from) {
-      this.buurt = to.params.buurt
+    '$route' (to) {
+      this.loadBuurt(to.params.buurt)
+    },
+    'buurten' () {
+      this.loadBuurt(this.buurt)
     }
+  },
+  mounted () {
+    this.loadBuurt(this.$route.params.buurt)
   }
 }
 </script>

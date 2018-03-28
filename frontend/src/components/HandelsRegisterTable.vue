@@ -2,9 +2,6 @@
   <div v-if="hrData">
     <div class="tableHeader">Gevestigde bedrijven naar hoofdfunctie</div>
 
-    <!--<td>Inschijvingen / Vestigingen:</td>-->
-    <!--<td>{{hrData.data.inschrijvingen}}</td>-->
-
     <table class="table table-hover">
       <tbody>
       <tr>
@@ -18,6 +15,10 @@
       <tr>
         <th>Totaal</th>
         <th>{{q1Sum}}</th>
+      </tr>
+      <tr>
+        <th>Inschijvingen / Vestigingen</th>
+        <th>{{hrData.data.inschrijvingen}}</th>
       </tr>
       </tbody>
     </table>

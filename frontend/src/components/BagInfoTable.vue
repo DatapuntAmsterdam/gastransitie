@@ -1,6 +1,6 @@
 <template>
   <div v-if="buurtData">
-    <div class="tableHeader">{{buurtData.naam}}</div>
+    <div class="tableHeader">Buurt</div>
 
     <table class="table table-hover">
       <tbody>
