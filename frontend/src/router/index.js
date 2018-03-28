@@ -20,7 +20,7 @@ export default new Router({
     },
     {
       path: '/factsheet/:buurt',
-      name: 'BuurtFactsheet',
+      name: 'Buurt Factsheet',
       component: BuurtFactsheet
     },
     {

@@ -4,11 +4,11 @@
       <div class="col-6">
         <h3>Sociaal</h3>
 
-        <table class="statstable">
+        <table class="table table-hover">
           <tbody>
             <tr>
-              <td style="width:50%">Aantal inwoners:</td>
-              <td style="width:50%">{{BBGAData.BEVTOTAAL}}</td>
+              <td>Aantal inwoners:</td>
+              <td>{{BBGAData.BEVTOTAAL}}</td>
             </tr>
           </tbody>
         </table>
@@ -16,8 +16,8 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <h4>Bevolking naar migratie achtergrond:</h4>
-        <table style="width:100%" class="table-bordered">
+        <h4>Bevolking naar migratie achtergrond</h4>
+        <table class="table table-hover">
           <thead>
             <tr>
               <th>Nederlands</th>
@@ -96,10 +96,4 @@ export default {
 </script>
 
 <style scoped>
-.statstable {
-  width: 100%
-}
-.statstable > td {
-  width: 50%
-}
 </style>

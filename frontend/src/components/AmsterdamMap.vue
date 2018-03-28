@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="map" style="height:400px"></div>
+    <div class="map"></div>
     <map-layer
       v-for="layerconfig in config.layers"
       v-bind:key="layerconfig.dataset"
@@ -66,6 +66,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scope>
+.map {
+  height: 400px;
+}
 </style>

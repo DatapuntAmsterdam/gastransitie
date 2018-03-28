@@ -1,0 +1,12 @@
+//
+//  Application specific styling
+//  specific
+//
+
+@import "custom";
+@import "~bootstrap/scss/bootstrap";
+
+.filterText {
+  font-weight: bolder;
+  color: $ams-rood;
+}

@@ -3,60 +3,60 @@
 
     <h3>Kadaster Facts voor {{buurtData.naam}}</h3>
 
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
-          <td style="width:50%">Verblijfsobjecten:</td>
-          <td style="width:50%">{{buurtData.data.vbo_count}}</td>
+          <td>Verblijfsobjecten:</td>
+          <td>{{buurtData.data.vbo_count}}</td>
         </tr>
         <tr>
-          <td style="width:50%">Bewoners en Eigenaar:</td>
-          <td style="width:50%">{{buurtData.data.bewoners_count}}</td>
+          <td>Bewoners en Eigenaar:</td>
+          <td>{{buurtData.data.bewoners_count}}</td>
         </tr>
       </tbody>
     </table>
 
     <h3>Gebruik {{buurtData.naam}}</h3>
 
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
-          <th style="width:50%">Gebruik</th>
-          <th style="width:50%">Aantal</th>
+          <th>Gebruik</th>
+          <th>Aantal</th>
         </tr>
         <tr v-for="item in orderedGebruik" :key="item.code">
-          <td style="width:50%"> {{item.omschrijving}} </td>
-          <td style="width:50%"> {{item.count}} </td>
+          <td> {{item.omschrijving}} </td>
+          <td> {{item.count}} </td>
         </tr>
       </tbody>
     </table>
 
     <h3>Corporatie Tellingen {{buurtData.naam}}</h3>
 
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
-          <th style="width:50%">Corporatie</th>
-          <th style="width:50%">Aantal</th>
+          <th>Corporatie</th>
+          <th>Aantal</th>
         </tr>
         <tr v-for="item in orderedCorporatie" :key="item.key">
-          <td style="width:50%"> {{item.key}} </td>
-          <td style="width:50%"> {{item.count}} </td>
+          <td> {{item.key}} </td>
+          <td> {{item.count}} </td>
         </tr>
       </tbody>
     </table>
 
     <h3>Bouwkundige samenstelling {{buurtData.naam}}</h3>
 
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
-          <th style="width:50%">Grootte</th>
-          <th style="width:50%">Aantal</th>
+          <th>Grootte</th>
+          <th>Aantal</th>
         </tr>
         <tr v-for="item in groote" :key="item.groote">
-          <td style="width:50%"> {{item.groote}} </td>
-          <td style="width:50%"> {{item.count}} </td>
+          <td> {{item.groote}} </td>
+          <td> {{item.count}} </td>
         </tr>
       </tbody>
     </table>

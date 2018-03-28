@@ -1,6 +1,6 @@
 <template>
   <div v-if="geojson">
-    <table style="width:100%">
+    <table class="table table-hover">
       <tbody>
         <tr>
           <th>organisatie</th>

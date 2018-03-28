@@ -92,6 +92,11 @@ async function readData (url) {
   return response.data
 }
 
+const filteredText = (text, filterText) => {
+  // $& Inserts the matched substring
+  return filterText ? text.replace(RegExp(filterText, 'ig'), `<span class="filterText">$&</span>`) : text
+}
+
 export default {
   readPaginatedData,
   readProtectedPaginatedData,
@@ -104,5 +109,6 @@ export default {
   getNextPageHAL,
   getNormalData,
   getPaginatedData,
-  getGeoJSONData
+  getGeoJSONData,
+  filteredText
 }
