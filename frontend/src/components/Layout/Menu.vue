@@ -30,7 +30,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { authorize, logout, getToken } from '../services/auth'
+import { authorize, logout, getToken } from '../../services/auth'
 
 export default {
   created () {
@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~stijl/scss/ams-colorpalette";
+@import "../../../node_modules/stijl/scss/ams-colorpalette";
 
 .menu {
   background-color: $ams-lichtgrijs;

@@ -19,6 +19,10 @@ Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 
+Vue.filter('percentage', x => {
+  return String((x * 100).toFixed(2)) + '%'
+})
+
 /* eslint-disable no-new */
 let vueApp = new Vue({
   el: '#app',

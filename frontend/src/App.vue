@@ -27,10 +27,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import header from './components/Header'
-import menu from './components/Menu'
-import content from './components/Content'
-import footer from './components/Footer'
+import header from './components/Layout/Header'
+import menu from './components/Layout/Menu'
+import content from './components/Layout/Content'
+import footer from './components/Layout/Footer'
 
 export default {
   name: 'App',

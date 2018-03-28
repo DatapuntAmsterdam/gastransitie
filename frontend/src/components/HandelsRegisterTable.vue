@@ -1,26 +1,24 @@
 <template>
   <div v-if="hrData">
-    <h3>Handelsregister informatie voor {{hrData.buurt_naam}}</h3>
+    <div class="tableHeader">Gevestigde bedrijven naar hoofdfunctie</div>
+
+    <!--<td>Inschijvingen / Vestigingen:</td>-->
+    <!--<td>{{hrData.data.inschrijvingen}}</td>-->
 
     <table class="table table-hover">
       <tbody>
-        <tr>
-          <td>Activiteiten:</td>
-          <td>{{hrData.data.activiteiten}}</td>
-        </tr>
-        <tr>
-          <td>Inschijvingen / Vestigingen:</td>
-          <td>{{hrData.data.inschrijvingen}}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr v-for="item in orderedHR" :key="item.key">
-          <td> {{item.key}} </td>
-          <td> {{item.value}} </td>
-        </tr>
-
+      <tr>
+        <th>Activiteit</th>
+        <th>Aantal</th>
+      </tr>
+      <tr v-for="item in orderedHR" :key="item.key">
+        <td> {{item.key}}</td>
+        <td> {{item.value}}</td>
+      </tr>
+      <tr>
+        <th>Totaal</th>
+        <th>{{q1Sum}}</th>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -39,7 +37,8 @@ export default {
   data () {
     return {
       hrData: null,
-      q1: null
+      q1: null,
+      q1Sum: null
     }
   },
   created () {
@@ -50,7 +49,6 @@ export default {
       'buurten'
     ]),
     orderedHR: function () {
-      // console.log(this.q1)
       return _.orderBy(this.q1, 'value', ['desc'])
     }
 
@@ -68,6 +66,7 @@ export default {
         this.hrData = resultset[0]
         let q1 = this.hrData.data.q1
         this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
+        this.q1Sum = Object.keys(q1).reduce((tot, key) => q1[key] + tot, 0)
       }
     }
   }

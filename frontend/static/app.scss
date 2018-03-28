@@ -10,3 +10,8 @@
   font-weight: bolder;
   color: $ams-rood;
 }
+
+.tableHeader {
+  @extend h5;
+  font-weight: bold;
+}
