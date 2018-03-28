@@ -29,35 +29,35 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { authorize, logout, getToken } from '../services/auth'
+import { mapActions } from 'vuex'
+import { authorize, logout, getToken } from '../services/auth'
 
-  export default {
-    created () {
-      this.token = getToken()
-      this.setToken(this.token)
+export default {
+  created () {
+    this.token = getToken()
+    this.setToken(this.token)
+  },
+
+  data () {
+    return {
+      token: null
+    }
+  },
+
+  methods: {
+    ...mapActions({
+      setToken: 'setToken'
+    }),
+
+    login: function () {
+      authorize()
     },
 
-    data () {
-      return {
-        token: null
-      }
-    },
-
-    methods: {
-      ...mapActions({
-        setToken: 'setToken'
-      }),
-
-      login: function () {
-        authorize()
-      },
-
-      logout: function () {
-        logout()
-      }
+    logout: function () {
+      logout()
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

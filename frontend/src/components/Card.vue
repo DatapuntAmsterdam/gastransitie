@@ -8,12 +8,12 @@
 </template>
 
 <script>
-	export default {
-		name: 'card',
-    props: [
-      'title'
-    ]
-	}
+export default {
+  name: 'card',
+  props: [
+    'title'
+  ]
+}
 </script>
 
 <style scoped>

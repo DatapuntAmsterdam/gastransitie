@@ -33,7 +33,6 @@
       <renovatie-table :buurt="buurt"></renovatie-table>
     </card>
 
-
   </div>
 
 </template>
