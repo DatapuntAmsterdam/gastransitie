@@ -16,28 +16,28 @@
         </button>
       </div>
 
-    <table class="table table-hover">
-      <caption></caption>
-      <thead>
-      <tr>
-        <th>Naam</th>
-        <th>Code</th>
-        <th>Landelijke code</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="buurt in filteredList" :key="buurt.vollcode">
-        <td>
-          <router-link :to="{path: '/factsheet/' + buurt.vollcode}">
-            <span v-html="filteredText(buurt.naam, filterText)"></span>
-          </router-link>
-        </td>
-        <td v-for="attr in ['vollcode', 'landelijk']" :key="attr">
-          <span v-html="filteredText(buurt[attr], filterText)"></span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+      <table class="table table-hover">
+        <caption></caption>
+        <thead>
+        <tr>
+          <th>Naam</th>
+          <th>Code</th>
+          <th>Landelijke code</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="buurt in filteredList" :key="buurt.vollcode">
+          <td>
+            <router-link :to="{path: '/factsheet/' + buurt.vollcode}">
+              <span v-html="filteredText(buurt.naam, filterText)"></span>
+            </router-link>
+          </td>
+          <td v-for="attr in ['vollcode', 'landelijk']" :key="attr">
+            <span v-html="filteredText(buurt[attr], filterText)"></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
     <div v-else>
       Laden...

@@ -1,19 +1,27 @@
 <template>
   <div>
-    <ams-header>City Deal Aardgasloos</ams-header>
+    <div class="header">
+      <ams-header :title="title"></ams-header>
 
-    <ams-menu>Menu</ams-menu>
-
-    <ams-content>
-      <router-view v-if="token"/>
-      <div v-else>
-        Deze pagina is alleen beschikbaar als u bent ingelogd.
+      <div>
+        <ams-menu>Menu</ams-menu>
       </div>
-    </ams-content>
+    </div>
 
-    <!--<ams-footer>Footer</ams-footer>-->
+    <div class="content">
+      <ams-content>
+        <router-view v-if="token"/>
+        <div v-else>
+          Deze pagina is alleen beschikbaar als u bent ingelogd.
+        </div>
+      </ams-content>
+    </div>
 
-    <loading-component></loading-component>
+    <div class="footer">
+      <ams-footer :title="title"></ams-footer>
+    </div>
+
+    <!--<loading-component></loading-component>-->
   </div>
 </template>
 
@@ -22,22 +30,40 @@ import { mapGetters } from 'vuex'
 import header from './components/Header'
 import menu from './components/Menu'
 import content from './components/Content'
+import footer from './components/Footer'
 
 export default {
   name: 'App',
   components: {
     'ams-header': header,
     'ams-menu': menu,
-    'ams-content': content
+    'ams-content': content,
+    'ams-footer': footer
   },
   computed: {
     ...mapGetters([
       'token'
     ])
+  },
+  data () {
+    return {
+      title: 'City Deal Aardgasloos'
+    }
   }
 }
 </script>
 
 <!-- Global styling -->
-<style>
+<style scoped>
+.content {
+  min-height: calc(100vh - 348px);
+}
+
+.header {
+
+}
+
+.footer {
+  min-height: 226px;
+}
 </style>

@@ -1,9 +1,11 @@
 <template>
   <div class="card mt-2">
-    <div class="card-header">
-      <h3>{{title}}</h3>
+    <h3 class="card-header">
+      {{title}}
+    </h3>
+    <div class="card-body">
+      <slot></slot>
     </div>
-    <slot></slot>
   </div>
 </template>
 
@@ -17,5 +19,9 @@ export default {
 </script>
 
 <style scoped>
-
+@media print {
+  .card {
+    page-break-after: always;
+  }
+}
 </style>

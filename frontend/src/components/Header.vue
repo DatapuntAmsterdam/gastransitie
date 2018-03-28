@@ -2,10 +2,18 @@
   <div class="container mt-2">
     <header>
       <img class="logo" src="../../static/logo-short.svg">
-      <h2><b><slot></slot></b></h2>
+      <h2><b>{{title}}</b></h2>
     </header>
   </div>
 </template>
+
+<script>
+export default {
+  props: [
+    'title'
+  ]
+}
+</script>
 
 <style lang="scss" scoped>
 .logo {
