@@ -53,7 +53,7 @@ export default {
     }
   },
   watch: {
-    buurt (to, from) {
+    'buurt': function () {
       this.getData()
     }
   }

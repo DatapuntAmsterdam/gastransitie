@@ -37,7 +37,9 @@ export default {
     this.setBuurtData()
   },
   watch: {
-    'buurt': () => this.setBuurtData()
+    'buurt': function () {
+      this.setBuurtData()
+    }
   },
   computed: {
     ...mapGetters([

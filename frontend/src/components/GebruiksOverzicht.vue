@@ -39,7 +39,9 @@ export default {
     }
   },
   watch: {
-    'buurt': () => this.setBuurtData()
+    'buurt': function () {
+      this.setBuurtData()
+    }
   },
   created () {
     this.setBuurtData()

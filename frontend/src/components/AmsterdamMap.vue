@@ -52,20 +52,18 @@ export default {
     }
 
     if (this.buurt && !this.config.noZoom) {
-      this.setMapBounds(this.buurt)
+      this.setMapBounds()
     }
   },
   methods: {
-    async setMapBounds (buurt) {
-      const bounds = await datasets.getJsonByName('buurtbounds', buurt)
+    async setMapBounds () {
+      const bounds = await datasets.getJsonByName('buurtbounds', this.buurt)
       this.map.fitBounds(bounds)
     }
   },
   watch: {
-    buurt (to, from) {
-      if (to) {
-        this.setMapBounds(to)
-      }
+    'buurt': function () {
+      this.setMapBounds()
     }
   }
 }

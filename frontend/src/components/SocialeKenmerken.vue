@@ -31,7 +31,9 @@ export default {
     ])
   },
   watch: {
-    'buurt': () => this.setBBGAData()
+    'buurt': function () {
+      this.setBBGAData()
+    }
   },
   data () {
     return {

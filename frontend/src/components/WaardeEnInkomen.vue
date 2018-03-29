@@ -6,7 +6,8 @@
     <tbody>
     <tr v-for="v in Object.keys(variables)" :key="v">
       <td>{{variables[v]}}</td>
-      <td>&euro; {{BBGAData[v] | amount}}</td>
+      <td v-if="BBGAData[v]">&euro; {{BBGAData[v] | amount}}</td>
+      <td v-else>Geen gegevens</td>
     </tr>
     </tbody>
   </table>
@@ -24,7 +25,7 @@ import { getBBGAVariables } from '../services/bbga'
 const variables = {
   'WWOZ_GEM': 'Gemiddelde WOZ Waarde woningen',
   'WWOZ_M2': 'Gemiddelde WOZ Waarde per m2',
-  'IHHINK_GEM':  'Gemiddeld besteedbaar inkomen per huishouden'
+  'IHHINK_GEM': 'Gemiddeld besteedbaar inkomen per huishouden'
 }
 
 export default {
@@ -35,7 +36,9 @@ export default {
     ])
   },
   watch: {
-    'buurt': () => this.setBBGAData()
+    'buurt': function () {
+      this.setBBGAData()
+    }
   },
   data () {
     return {

@@ -42,7 +42,9 @@ export default {
     ])
   },
   watch: {
-    'buurt': () => this.setBuurtData()
+    'buurt': function () {
+      this.setBuurtData()
+    }
   },
   methods: {
     async setBuurtData (buurt) {

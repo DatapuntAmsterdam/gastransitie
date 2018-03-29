@@ -31,7 +31,12 @@ export default {
     }
   },
   created () {
-    this.setBuurtData(this.buurt)
+    this.setBuurtData()
+  },
+  watch: {
+    'buurt': function () {
+      this.setBuurtData()
+    }
   },
   computed: {
     ...mapGetters([
@@ -40,7 +45,7 @@ export default {
     ])
   },
   methods: {
-    async setBuurtData (buurt) {
+    async setBuurtData () {
       const buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
 
       const grootte = buurtData.data.bouwkundige_groote
