@@ -4,7 +4,7 @@
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
-          <bag-info-table :buurt="buurt"></bag-info-table>
+          <buurt-info :buurt="buurt"></buurt-info>
           <sociale-kenmerken :buurt="buurt"></sociale-kenmerken>
         </div>
         <div class="col-lg-6 col-md-12">
@@ -36,7 +36,7 @@
           <gebruiks-overzicht :buurt="buurt"></gebruiks-overzicht>
         </div>
         <div class="col-lg-6 col-md-12">
-          <handelsregister-info-table :buurt="buurt"></handelsregister-info-table>
+          <gevestigde-bedrijven :buurt="buurt"></gevestigde-bedrijven>
         </div>
       </div>
     </card>
@@ -46,7 +46,7 @@
       <gepland-per-jaar :buurt="buurt"></gepland-per-jaar>
       <div class="row">
         <div class="col-12">
-          <amsterdam-mip-table :buurt="buurt"></amsterdam-mip-table>
+          <meerjarig-investerings-plan :buurt="buurt"></meerjarig-investerings-plan>
         </div>
         <div class="col-12">
           <amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map>
@@ -73,18 +73,18 @@ import afwcMapConfig from '../../../static/afwc-map-config'
 import mipMapConfig from '../../../static/mip-map-config'
 import buurtMapConfig from '../../../static/buurt-map-config'
 
-import BagInfoTable from '../BuurtInfo'
 import socialeKenmerken from '../SocialeKenmerken'
 import migratieAchtergrond from '../MigratieAchtergrond'
 
-import HandelsRegisterTable from '../GevestigdeBedrijven.vue'
-import MeerjarigInvesteringsProgrammaTable from '../MeerjarigInvesteringsProgrammaTable.vue'
 import GeplandPerJaar from '../GeplandPerJaar'
 import GeplandPerCorporatie from '../GeplandPerCorporatie'
 import WoningenPerCorporatie from '../WoningenPerCorporatie'
 import WoningOppervlakten from '../WoningOppervlakten'
 import WoningenNaarEigendom from '../WoningenNaarEigendom'
 import GebruiksOverzicht from '../GebruiksOverzicht'
+import BuurtInfo from '../BuurtInfo'
+import GevestigdeBedrijven from '../GevestigdeBedrijven'
+import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
 
 export default {
   data () {
@@ -95,6 +95,9 @@ export default {
     }
   },
   components: {
+    MeerjarigInvesteringsPlan,
+    GevestigdeBedrijven,
+    BuurtInfo,
     GebruiksOverzicht,
     WoningenNaarEigendom,
     WoningOppervlakten,
@@ -103,11 +106,8 @@ export default {
     GeplandPerJaar,
     'card': card,
     'amsterdam-map': AmsterdamMap,
-    'bag-info-table': BagInfoTable,
     'sociale-kenmerken': socialeKenmerken,
-    'migratie-achtergrond': migratieAchtergrond,
-    'handelsregister-info-table': HandelsRegisterTable,
-    'amsterdam-mip-table': MeerjarigInvesteringsProgrammaTable
+    'migratie-achtergrond': migratieAchtergrond
   },
   methods: {
     ...mapActions({
