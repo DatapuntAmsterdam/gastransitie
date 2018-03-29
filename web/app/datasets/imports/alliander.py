@@ -41,7 +41,8 @@ def import_alliander(datadir):
         pg_str,
         'gas_alliander_gas_groen_raw',
         t_srs=SRS_TO_STORE,
-        nlt='PROMOTE_TO_MULTI'
+        nlt='PROMOTE_TO_MULTI',
+        s_srs='EPSG:28992'
     )
 
     zipped_shp2psql(
@@ -49,5 +50,6 @@ def import_alliander(datadir):
         'Oranje_Amsterdam.shp',
         pg_str,
         'gas_alliander_gas_oranje_raw',
-        t_srs=SRS_TO_STORE
+        t_srs=SRS_TO_STORE,
+        s_srs='EPSG:28992'
     )
