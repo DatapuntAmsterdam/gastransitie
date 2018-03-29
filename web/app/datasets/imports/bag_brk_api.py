@@ -225,7 +225,7 @@ def gebruik_per_buurt(buurt) -> dict:
         return data
 
 
-def bouwkundige_verdeling(buurt) -> dict:
+def get_bouwkundige_verdeling(buurt) -> dict:
     """Bouwkundige samenstelling
 
     Deze cijfers staan ook in BBGA.
@@ -244,7 +244,9 @@ def bouwkundige_verdeling(buurt) -> dict:
         (300, 400),
         (400, 1000),
         (1000, 2000),
-        (2000, 999999),
+        (2000, 3000),
+        (3000, 5000),
+        (5000, 999999),
     ]
 
     groote_verdeling = {}
@@ -268,6 +270,51 @@ def bouwkundige_verdeling(buurt) -> dict:
     return groote_verdeling
 
 
+def get_bouwjaar_verdeling(buurt) -> dict:
+    """Bouwjaar verdeling in buurt.
+    """
+
+    ranges = [
+        (-10000, 1850),
+        (1850, 1900),
+        (1900, 1920),
+        (1920, 1930),
+        (1930, 1940),
+        (1940, 1950),
+        (1950, 1960),
+        (1960, 1970),
+        (1970, 1980),
+        (1980, 1990),
+        (1990, 2000),
+        (2000, 2010),
+        (2010, 2020),
+        (2020, 2030),
+    ]
+
+    bouwjaar_verdeling = {}
+
+    for _min, _max in ranges:
+        sql = f"""
+            SELECT count(v.id)
+            FROM bag_verblijfsobject v,
+                 bag_pand p,
+                 bag_verblijfsobjectpandrelatie vp
+            WHERE v."buurt_id" = '{buurt.id}'
+            AND p.id = vp."pand_id"
+            AND v.id = vp."verblijfsobject_id"
+            AND p.bouwjaar > {_min}
+            AND p.bouwjaar <= {_max}
+        """  # noqa
+        with connections['bag'].cursor() as cursor:
+            cursor.execute(sql)
+            data = dictfetchall(cursor)
+            bouwjaar_verdeling[f'{_min}-{_max}'] = data[0]['count']
+
+    assert len(ranges) == len(bouwjaar_verdeling)
+    log.debug('Bouwjaren: %s', bouwjaar_verdeling)
+    return bouwjaar_verdeling
+
+
 def get_bag_brk_for_all_buurten():
     """
     - totaal VBO
@@ -278,11 +325,12 @@ def get_bag_brk_for_all_buurten():
     """
     bag.BagRapport.objects.all().delete()
 
-    for b in bag.BagBuurt.objects.all().order_by('naam'):
+    for b in bag.BagBuurt.objects.using('bag').all().order_by('naam'):
         # bewoners
         bewoner_count = bewoners_per_buurt(b)
         bag_gebruik = gebruik_per_buurt(b)
-        bouwkundige_groote = bouwkundige_verdeling(b)
+        bouwkundige_groote = get_bouwkundige_verdeling(b)
+        bouwjaar_verdeling = get_bouwjaar_verdeling(b)
 
         # Totaal VBO's
         parameters = {'buurt': b.id}
@@ -323,6 +371,7 @@ def get_bag_brk_for_all_buurten():
             'bewoners_count': bewoner_count,
             'gebruik': bag_gebruik,
             'bouwkundige_groote': bouwkundige_groote,
+            'bouwjaar_verdeling': bouwjaar_verdeling,
         }
 
         # Create Buurt BAG / corporatie rapport
