@@ -13,10 +13,7 @@ from datasets.imports.renovaties import import_renovaties
 
 from datasets.imports.warmtekoude import import_warmtekoude
 from datasets.imports.mip import import_mip
-from datasets.imports.eigendomskaart import import_eigendomskaart
 from datasets.imports.energie_labels import import_energie_labels
-
-# from datasets.imports.cbs import import_cbs
 
 
 log = logging.getLogger(__name__)

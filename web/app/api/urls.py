@@ -9,6 +9,8 @@ from .views import RenovatieViewSet
 from .views import BagBuurtBboxViewSet
 from .views import WarmtekoudeViewSet
 from .views import BagBuurtRapportViewSet
+from .views import GasOranjeViewSet
+from .views import GasGroenViewSet
 
 from .hr_views import HandelsregisterViewSet
 from .hr_views import HandelsregisterBuurtViewSet
@@ -51,5 +53,7 @@ router.register('buurtbbox', BagBuurtBboxViewSet, base_name='buurtbbox')
 router.register('handelsregister', HandelsregisterViewSet)
 router.register('handelsregisterbuurt', HandelsregisterBuurtViewSet)
 router.register('warmtekoude', WarmtekoudeViewSet)
+router.register('gasoranje', GasOranjeViewSet)
+router.register('gasgroen', GasGroenViewSet)
 
 urlpatterns = router.urls
