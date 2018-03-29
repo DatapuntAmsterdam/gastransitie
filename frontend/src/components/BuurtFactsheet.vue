@@ -73,11 +73,11 @@ import afwcMapConfig from '../../static/afwc-map-config'
 import mipMapConfig from '../../static/mip-map-config'
 import buurtMapConfig from '../../static/buurt-map-config'
 
-import BagInfoTable from './BagInfoTable'
+import BagInfoTable from './BuurtInfo'
 import socialeKenmerken from './SocialeKenmerken'
 import migratieAchtergrond from './MigratieAchtergrond'
 
-import HandelsRegisterTable from './HandelsRegisterTable.vue'
+import HandelsRegisterTable from './GevestigdeBedrijven.vue'
 import MeerjarigInvesteringsProgrammaTable from './MeerjarigInvesteringsProgrammaTable.vue'
 import GeplandPerJaar from './GeplandPerJaar'
 import GeplandPerCorporatie from './GeplandPerCorporatie'
