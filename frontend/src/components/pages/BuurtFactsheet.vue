@@ -1,5 +1,16 @@
 <template>
   <div v-if="buurten && buurten.length && buurtData">
+    <div class="float-right">
+      <pano></pano>
+    </div>
+    <div>
+      <h2>
+        Factsheet {{buurtData.naam}}
+      </h2>
+      <p>Peildatum: {{new Date().toLocaleDateString("NL")}}</p>
+    </div>
+
+    <div class="clearfix"></div>
 
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
@@ -83,6 +94,7 @@ import BuurtInfo from '../BuurtInfo'
 import GevestigdeBedrijven from '../GevestigdeBedrijven'
 import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
 import WaardeEnInkomen from '../WaardeEnInkomen'
+import Pano from '../Pano'
 
 export default {
   data () {
@@ -103,6 +115,7 @@ export default {
     WoningenPerCorporatie,
     GeplandPerCorporatie,
     GeplandPerJaar,
+    Pano,
     'card': card,
     'amsterdam-map': AmsterdamMap,
     'sociale-kenmerken': socialeKenmerken,

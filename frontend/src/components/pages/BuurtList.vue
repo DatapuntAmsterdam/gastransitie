@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2>Buurten</h2>
+
     <div v-if="buurten">
       <div class="form-group">
         <input v-model="filterText"
