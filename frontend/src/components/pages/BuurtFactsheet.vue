@@ -12,6 +12,7 @@
         </div>
       </div>
       <migratie-achtergrond></migratie-achtergrond>
+      <waarde-en-inkomen></waarde-en-inkomen>
     </card>
 
     <card :title="`Woning bezit in ${buurtData.naam}`">
@@ -81,6 +82,7 @@ import GebruiksOverzicht from '../GebruiksOverzicht'
 import BuurtInfo from '../BuurtInfo'
 import GevestigdeBedrijven from '../GevestigdeBedrijven'
 import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
+import WaardeEnInkomen from '../WaardeEnInkomen'
 
 export default {
   data () {
@@ -91,6 +93,7 @@ export default {
     }
   },
   components: {
+    WaardeEnInkomen,
     MeerjarigInvesteringsPlan,
     GevestigdeBedrijven,
     BuurtInfo,

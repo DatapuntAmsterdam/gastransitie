@@ -6,7 +6,7 @@
       <tbody>
         <tr>
           <td>Aantal inwoners:</td>
-          <td>{{BBGAData.BEVTOTAAL || 0}}</td>
+          <td>{{(BBGAData.BEVTOTAAL || 0) | amount}}</td>
         </tr>
       </tbody>
     </table>
