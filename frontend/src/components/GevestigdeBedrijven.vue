@@ -32,9 +32,6 @@ import privatedatasets from '../services/privatedatasets'
 import _ from 'lodash'
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
       hrData: null,
@@ -43,11 +40,15 @@ export default {
     }
   },
   created () {
-    this.setBuurtData(this.buurt)
+    this.setBuurtData()
+  },
+  watch: {
+    'buurt': () => this.setBuurtData()
   },
   computed: {
     ...mapGetters([
-      'buurten'
+      'buurten',
+      'buurt'
     ]),
     orderedHR: function () {
       return _.orderBy(this.q1, 'value', ['desc'])
@@ -55,20 +56,13 @@ export default {
 
   },
   methods: {
-    async setBuurtData (buurt) {
-      if (!this.buurten.length) {
-        // this function can only be called meaningfully when the buurten are in the store
-        console.error('buurten is not available from the Vuex store')
-      } else {
-        let buurtId = this.buurten.find(
-          d => d.vollcode === buurt
-        )
-        const resultset = await privatedatasets.getJsonByName('handelsregisterbuurt', buurtId.landelijk)
-        this.hrData = resultset[0]
-        let q1 = this.hrData.data.q1
-        this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
-        this.q1Sum = Object.keys(q1).reduce((tot, key) => q1[key] + tot, 0)
-      }
+    async setBuurtData () {
+      let buurtId = this.buurten.find(b => b.vollcode === this.buurt)
+      const resultset = await privatedatasets.getJsonByName('handelsregisterbuurt', buurtId.landelijk)
+      this.hrData = resultset[0]
+      let q1 = this.hrData.data.q1
+      this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
+      this.q1Sum = Object.keys(q1).reduce((tot, key) => q1[key] + tot, 0)
     }
   }
 }

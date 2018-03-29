@@ -36,7 +36,7 @@
           <gebruiks-overzicht></gebruiks-overzicht>
         </div>
         <div class="col-lg-6 col-md-12">
-          <gevestigde-bedrijven :buurt="buurt"></gevestigde-bedrijven>
+          <gevestigde-bedrijven></gevestigde-bedrijven>
         </div>
       </div>
     </card>
