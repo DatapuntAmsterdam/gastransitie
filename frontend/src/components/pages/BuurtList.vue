@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import util from '../services/util'
+import util from '../../services/util'
 
 const buurtText = v => ['naam', 'vollcode', 'landelijk'].map(key => v[key].toLowerCase()).join('.')
 

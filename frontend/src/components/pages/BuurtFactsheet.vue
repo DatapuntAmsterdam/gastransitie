@@ -66,25 +66,25 @@ import { mapGetters, mapActions } from 'vuex'
 
 import util from '@/services/util'
 
-import card from './Layout/Card'
+import card from '../Layout/Card'
 
-import AmsterdamMap from './AmsterdamMap'
-import afwcMapConfig from '../../static/afwc-map-config'
-import mipMapConfig from '../../static/mip-map-config'
-import buurtMapConfig from '../../static/buurt-map-config'
+import AmsterdamMap from '../AmsterdamMap'
+import afwcMapConfig from '../../../static/afwc-map-config'
+import mipMapConfig from '../../../static/mip-map-config'
+import buurtMapConfig from '../../../static/buurt-map-config'
 
-import BagInfoTable from './BuurtInfo'
-import socialeKenmerken from './SocialeKenmerken'
-import migratieAchtergrond from './MigratieAchtergrond'
+import BagInfoTable from '../BuurtInfo'
+import socialeKenmerken from '../SocialeKenmerken'
+import migratieAchtergrond from '../MigratieAchtergrond'
 
-import HandelsRegisterTable from './GevestigdeBedrijven.vue'
-import MeerjarigInvesteringsProgrammaTable from './MeerjarigInvesteringsProgrammaTable.vue'
-import GeplandPerJaar from './GeplandPerJaar'
-import GeplandPerCorporatie from './GeplandPerCorporatie'
-import WoningenPerCorporatie from './WoningenPerCorporatie'
-import WoningOppervlakten from './WoningOppervlakten'
-import WoningenNaarEigendom from './WoningenNaarEigendom'
-import GebruiksOverzicht from './GebruiksOverzicht'
+import HandelsRegisterTable from '../GevestigdeBedrijven.vue'
+import MeerjarigInvesteringsProgrammaTable from '../MeerjarigInvesteringsProgrammaTable.vue'
+import GeplandPerJaar from '../GeplandPerJaar'
+import GeplandPerCorporatie from '../GeplandPerCorporatie'
+import WoningenPerCorporatie from '../WoningenPerCorporatie'
+import WoningOppervlakten from '../WoningOppervlakten'
+import WoningenNaarEigendom from '../WoningenNaarEigendom'
+import GebruiksOverzicht from '../GebruiksOverzicht'
 
 export default {
   data () {

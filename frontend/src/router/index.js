@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import BuurtList from '@/components/BuurtList'
-import BuurtFactsheet from '@/components/BuurtFactsheet'
+import BuurtList from '@/components/pages/BuurtList'
+import BuurtFactsheet from '@/components/pages/BuurtFactsheet'
 
 Vue.use(Router)
 
