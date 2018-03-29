@@ -155,12 +155,14 @@ async function getWarmtekoude (buurt) {
   return warmtekoudeCache[buurt]
 }
 
-async function getBagBrk (landelijkeCode) {
-  if (!bagBrkCache[landelijkeCode]) {
+async function getBagBrk (buurten, buurt) {
+  if (!bagBrkCache[buurt]) {
+    const buurtDetail = buurten.find(b => b.vollcode === buurt)
+    const landelijkeCode = buurtDetail.landelijk
     let url = PRIVATE_DATA_HOST + `/gastransitie/api/bag/${landelijkeCode}/`
-    bagBrkCache[landelijkeCode] = readDataJson(url)
+    bagBrkCache[buurt] = await readDataJson(url)
   }
-  return bagBrkCache[landelijkeCode]
+  return bagBrkCache[buurt][0]
 }
 
 async function getJsonByName (name, buurt) {

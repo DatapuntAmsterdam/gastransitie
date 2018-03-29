@@ -25,12 +25,8 @@ import { mapGetters } from 'vuex'
 import privatedatasets from '../services/privatedatasets'
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
-      buurtData: null,
       grootte: null
     }
   },
@@ -39,34 +35,32 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'buurten'
+      'buurten',
+      'buurt'
     ])
   },
   methods: {
     async setBuurtData (buurt) {
-      if (this.buurten.length) {
-        const buurtDetail = this.buurten.find(b => b.vollcode === buurt)
-        this.buurtData = await privatedatasets.getBagBrk(buurtDetail.landelijk)
+      const buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
 
-        const grootte = this.buurtData[0].data.bouwkundige_groote
+      const grootte = buurtData.data.bouwkundige_groote
 
-        // Convert results to std categories
-        const oppervlakte = {}
-        Object.keys(grootte).forEach(key => {
-          const [, from] = key.match(/^(\d+)-(\d+)$/)
-          if (from < 90) {
-            oppervlakte[key] = grootte[key]
-          } else {
-            oppervlakte['90+'] = (oppervlakte['90+'] || 0) + grootte[key]
-          }
-        })
+      // Convert results to std categories
+      const oppervlakte = {}
+      Object.keys(grootte).forEach(key => {
+        const [, from] = key.match(/^(\d+)-(\d+)$/)
+        if (from < 90) {
+          oppervlakte[key] = grootte[key]
+        } else {
+          oppervlakte['90+'] = (oppervlakte['90+'] || 0) + grootte[key]
+        }
+      })
 
-        // Convert figures to percentages
-        const totaal = Object.values(oppervlakte).reduce((i, t) => i + t)
-        Object.keys(oppervlakte).forEach(key => { oppervlakte[key] = oppervlakte[key] / totaal })
+      // Convert figures to percentages
+      const totaal = Object.values(oppervlakte).reduce((i, t) => i + t)
+      Object.keys(oppervlakte).forEach(key => { oppervlakte[key] = oppervlakte[key] / totaal })
 
-        this.grootte = oppervlakte
-      }
+      this.grootte = oppervlakte
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="buurtData">
+  <div v-if="buurten && buurtData">
 
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
@@ -15,8 +15,8 @@
     </card>
 
     <card :title="`Woning bezit in ${buurtData.naam}`">
-      <woningen-naar-eigendom :buurt="buurt"></woningen-naar-eigendom>
-      <woningen-per-corporatie :buurt="buurt"></woningen-per-corporatie>
+      <woningen-naar-eigendom></woningen-naar-eigendom>
+      <woningen-per-corporatie></woningen-per-corporatie>
       <div class="row">
         <div class="col-lg-6 col-md-12">
         </div>
@@ -27,13 +27,13 @@
     </card>
 
     <card :title="`Bouwkundige kenmerken ${buurtData.naam}`">
-      <woning-oppervlakten :buurt="buurt"></woning-oppervlakten>
+      <woning-oppervlakten></woning-oppervlakten>
     </card>
 
     <card :title="`Bedrijvigheid in ${buurtData.naam}`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
-          <gebruiks-overzicht :buurt="buurt"></gebruiks-overzicht>
+          <gebruiks-overzicht></gebruiks-overzicht>
         </div>
         <div class="col-lg-6 col-md-12">
           <gevestigde-bedrijven :buurt="buurt"></gevestigde-bedrijven>

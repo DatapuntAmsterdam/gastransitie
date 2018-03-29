@@ -27,33 +27,27 @@ import { mapGetters } from 'vuex'
 import privatedatasets from '../services/privatedatasets'
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
       buurtData: null
     }
   },
   created () {
-    this.setBuurtData(this.buurt)
+    this.setBuurtData()
   },
   computed: {
     ...mapGetters([
+      'buurt',
       'buurten'
     ])
   },
+  watch: {
+    'buurt': () => this.setBuurtData()
+  },
   methods: {
     async setBuurtData (buurt) {
-      if (this.buurten.length) {
-        const buurtDetail = this.buurten.find(b => b.vollcode === buurt)
-        this.buurtData = await privatedatasets.getBagBrk(buurtDetail.landelijk)
-        this.buurtData = this.buurtData[0]
-      }
+      this.buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
     }
   }
 }
 </script>
-
-<style scoped>
-</style>
