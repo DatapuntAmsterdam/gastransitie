@@ -1,0 +1,26 @@
+{
+    "wms": {
+        "url": "https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png",
+        "settings": {
+            "minZoom": 11,
+            "maxZoom": 21,
+            "subdomains": ["t1", "t2", "t3", "t4"],
+            "attribution": "Datapunt Amsterdam"
+        }
+    },
+    "layers": [
+        {
+            "dataset": "gasgroen",
+            "color": "green"
+        },
+        {
+            "dataset": "gasoranje",
+            "color": "orange"
+        },
+        {
+            "dataset": "buurt",
+            "color": "black"
+        }
+    ],
+    "noZoom": false
+}

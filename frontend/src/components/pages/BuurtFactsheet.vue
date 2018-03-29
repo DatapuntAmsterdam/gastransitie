@@ -66,6 +66,14 @@
       </div>
     </card>
 
+    <card :title="`Gasleidingen Alliander in ${buurtData.naam}`">
+      <div class="row">
+        <div class="col-12">
+          <amsterdam-map :config="gasAllianderMapConfig"></amsterdam-map>
+        </div>
+      </div>
+    </card>
+
   </div>
 </template>
 
@@ -80,6 +88,7 @@ import AmsterdamMap from '../AmsterdamMap'
 import afwcMapConfig from '../../../static/afwc-map-config'
 import mipMapConfig from '../../../static/mip-map-config'
 import buurtMapConfig from '../../../static/buurt-map-config'
+import gasAllianderMapConfig from '../../../static/gas-alliander-map-config'
 
 import socialeKenmerken from '../SocialeKenmerken'
 import migratieAchtergrond from '../MigratieAchtergrond'
@@ -101,7 +110,8 @@ export default {
     return {
       afwcMapConfig,
       mipMapConfig,
-      buurtMapConfig
+      buurtMapConfig,
+      gasAllianderMapConfig
     }
   },
   components: {
