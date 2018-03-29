@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import axios from 'axios'
 
 /**
  * Register HTTP status
@@ -33,7 +32,6 @@ export async function get (url, headers = null, nTries = 5) {
   do {
     try {
       HTTPStatus.pending++ // Track pending requests
-      console.log('get', url, headers)
       result = await (headers ? Vue.axios.get(url, headers) : Vue.axios.get(url))
     } catch (error) {
       console.error('Retry...', url)
