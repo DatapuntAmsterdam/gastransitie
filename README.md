@@ -69,7 +69,7 @@ relevant credentials and your SSH key is known).
   ```
   docker-compose run --rm web python manage.py download_data
   docker-compose exec -T database update-table.sh bag bag_buurt public gastransitie <username>
-  docker-compose exec -T database update-db.sh bag
+  docker-compose exec -T database update-db.sh bag <username>
   ```
   Note that downloading these database backups and restoring them is time
   consuming (but the BAG database is needed to generate some of the
