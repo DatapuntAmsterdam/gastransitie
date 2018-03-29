@@ -39,9 +39,6 @@
         </tbody>
       </table>
     </div>
-    <div v-else>
-      Laden...
-    </div>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="buurten && buurtData">
+  <div v-if="buurten && buurten.length && buurtData">
 
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
@@ -55,10 +55,6 @@
     </card>
 
   </div>
-  <div v-else>
-    Laden...
-  </div>
-
 </template>
 
 <script>
