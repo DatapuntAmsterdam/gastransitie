@@ -21,7 +21,7 @@
       <ams-footer :title="title"></ams-footer>
     </div>
 
-    <!--<loading-component></loading-component>-->
+    <loading-component></loading-component>
   </div>
 </template>
 
@@ -31,10 +31,12 @@ import header from './components/Layout/Header'
 import menu from './components/Layout/Menu'
 import content from './components/Layout/Content'
 import footer from './components/Layout/Footer'
+import LoadingComponent from './components/Layout/LoadingComponent'
 
 export default {
   name: 'App',
   components: {
+    LoadingComponent,
     'ams-header': header,
     'ams-menu': menu,
     'ams-content': content,

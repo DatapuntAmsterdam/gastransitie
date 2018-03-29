@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { get } from './datareader'
 import { getToken } from './auth'
 import privateDataSets from './privatedatasets'
 
@@ -22,7 +22,7 @@ async function readPaginatedData (
   let results = []
   while (next) {
     try {
-      let response = await Vue.axios.get(next, { headers })
+      let response = await get(next, headers)
       next = getNext(response)
       results = results.concat(getData(response))
     } catch (e) {
@@ -88,7 +88,7 @@ async function loadBuurten () {
 }
 
 async function readData (url) {
-  let response = await Vue.axios.get(url)
+  let response = await get(url)
   return response.data
 }
 
