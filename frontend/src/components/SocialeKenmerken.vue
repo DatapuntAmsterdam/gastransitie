@@ -2,7 +2,7 @@
   <div>
     <div class="tableHeader">Sociale kenmerken</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover" v-if="BBGAData">
       <tbody>
         <tr>
           <td>Aantal inwoners:</td>
@@ -10,10 +10,14 @@
         </tr>
       </tbody>
     </table>
+    <p v-else>
+      Geen gegevens beschikbaar
+    </p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getBBGAVariables } from '../services/bbga'
 
 const requiredVariables = [
@@ -21,21 +25,26 @@ const requiredVariables = [
 ]
 
 export default {
-  props: [
-    'buurt'
-  ],
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
+  },
+  watch: {
+    'buurt': () => this.setBBGAData()
+  },
   data () {
     return {
-      BBGAData: {}
+      BBGAData: null
     }
   },
   created () {
-    this.setBBGAData(this.buurt)
+    this.setBBGAData()
   },
   methods: {
-    async setBBGAData (buurt) {
+    async setBBGAData () {
       // access the relevant BBGA variable, latest year
-      this.BBGAData = await getBBGAVariables(requiredVariables, 2017, buurt)
+      this.BBGAData = await getBBGAVariables(requiredVariables, 2017, this.buurt)
     }
   }
 }

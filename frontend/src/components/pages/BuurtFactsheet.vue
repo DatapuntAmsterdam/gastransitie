@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <buurt-info></buurt-info>
-          <sociale-kenmerken :buurt="buurt"></sociale-kenmerken>
+          <sociale-kenmerken></sociale-kenmerken>
         </div>
         <div class="col-lg-6 col-md-12">
           <amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map>
