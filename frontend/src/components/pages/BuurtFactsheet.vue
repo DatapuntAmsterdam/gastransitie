@@ -4,7 +4,7 @@
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
-          <buurt-info :buurt="buurt"></buurt-info>
+          <buurt-info></buurt-info>
           <sociale-kenmerken :buurt="buurt"></sociale-kenmerken>
         </div>
         <div class="col-lg-6 col-md-12">

@@ -18,7 +18,7 @@
         </tr>
         <tr>
           <td>Buurtcode:</td>
-          <td>{{buurt}}</td>
+          <td>{{buurtData.volledige_code}}</td>
         </tr>
       </tbody>
     </table>
@@ -26,42 +26,13 @@
 </template>
 
 <script>
-import util from '../services/util'
 import { mapGetters } from 'vuex'
 
 export default {
-  props: [
-    'buurt'
-  ],
-  data () {
-    return {
-      buurtData: null
-    }
-  },
-  created () {
-    this.setBuurtData(this.buurt)
-  },
   computed: {
     ...mapGetters([
-      'buurten'
+      'buurtData'
     ])
-  },
-  methods: {
-    async setBuurtData (buurt) {
-      if (!this.buurten.length) {
-        // this function can only be called meaningfully when the buurten are in the store
-        console.error('buurten is not available from the Vuex store')
-      } else {
-        let tmp = this.buurten.find(
-          d => d.vollcode === buurt
-        )
-        const url = 'https://api.data.amsterdam.nl/gebieden/buurt/' + tmp.landelijk
-        this.buurtData = await util.readData(url)
-      }
-    }
   }
 }
 </script>
-
-<style scoped>
-</style>
