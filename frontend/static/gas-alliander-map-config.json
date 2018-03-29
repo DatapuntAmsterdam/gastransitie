@@ -8,6 +8,12 @@
             "attribution": "Datapunt Amsterdam"
         }
     },
+    "leafletBaseOptions": {
+        "attributionControl": false,
+        "center": [52.367653, 4.900877],
+        "zoom": 11,
+        "scrollWheelZoom": false
+    },
     "layers": [
         {
             "dataset": "gasgroen",
