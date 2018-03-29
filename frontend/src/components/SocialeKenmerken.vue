@@ -44,11 +44,8 @@ export default {
   methods: {
     async setBBGAData () {
       // access the relevant BBGA variable, latest year
-      this.BBGAData = await getBBGAVariables(requiredVariables, 2017, this.buurt)
+      this.BBGAData = await getBBGAVariables(requiredVariables, -1, this.buurt)
     }
   }
 }
 </script>
-
-<style scoped>
-</style>

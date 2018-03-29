@@ -11,7 +11,7 @@
           <amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map>
         </div>
       </div>
-      <migratie-achtergrond :buurt="buurt"></migratie-achtergrond>
+      <migratie-achtergrond></migratie-achtergrond>
     </card>
 
     <card :title="`Woning bezit in ${buurtData.naam}`">

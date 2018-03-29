@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getBBGAVariables } from '../services/bbga'
 
 const requiredVariables = [
@@ -37,25 +38,27 @@ const requiredVariables = [
 ]
 
 export default {
-  props: [
-    'buurt'
-  ],
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
+  },
+  watch: {
+    'buurt': () => this.setBBGAData()
+  },
   data () {
     return {
       BBGAData: {}
     }
   },
   created () {
-    this.setBBGAData(this.buurt)
+    this.setBBGAData()
   },
   methods: {
     async setBBGAData (buurt) {
       // access the relevant BBGA variable, latest year
-      this.BBGAData = await getBBGAVariables(requiredVariables, 2017, buurt)
+      this.BBGAData = await getBBGAVariables(requiredVariables, -1, this.buurt)
     }
   }
 }
 </script>
-
-<style scoped>
-</style>
