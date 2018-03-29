@@ -22,7 +22,7 @@ async function readPaginatedData (
   let results = []
   while (next) {
     try {
-      let response = await get(next, headers)
+      let response = await get(next, { headers })
       next = getNext(response)
       results = results.concat(getData(response))
     } catch (e) {

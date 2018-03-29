@@ -26,13 +26,13 @@ function sleep (ms) {
  * @param nTries optional parameter specifying the number of retries, default = 5
  * @returns {Promise<*>}
  */
-export async function get (url, headers = {}, nTries = 5) {
+export async function get (url, headers = null, nTries = 5) {
   let result
   let nTry = 0
   do {
     try {
       HTTPStatus.pending++ // Track pending requests
-      result = await axios.get(url, { headers })
+      result = await (headers ? axios.get(url, headers) : axios.get(url))
     } catch (error) {
       console.error('Retry...', url)
       nTry++
