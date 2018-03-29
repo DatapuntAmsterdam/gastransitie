@@ -42,8 +42,8 @@
     </card>
 
     <card :title="`Werkzaamheden in ${buurtData.naam}`">
-      <gepland-per-corporatie :buurt="buurt"></gepland-per-corporatie>
-      <gepland-per-jaar :buurt="buurt"></gepland-per-jaar>
+      <gepland-per-corporatie></gepland-per-corporatie>
+      <gepland-per-jaar></gepland-per-jaar>
       <div class="row">
         <div class="col-12">
           <meerjarig-investerings-plan></meerjarig-investerings-plan>

@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import datasets from '@/services/privatedatasets'
 
 const startYear = (new Date()).getFullYear() - 1
@@ -29,9 +31,6 @@ const NYEARS = 7
 const years = new Array(NYEARS).fill(0).map((i, n) => startYear + n)
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
       data: null,
@@ -40,6 +39,11 @@ export default {
   },
   created () {
     this.getData()
+  },
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
   },
   methods: {
     async getData () {

@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import datasets from '@/services/privatedatasets'
 
 const corporaties = {
@@ -36,14 +38,16 @@ const corporaties = {
 }
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
       data: null,
       corporaties
     }
+  },
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
   },
   created () {
     this.getData()
