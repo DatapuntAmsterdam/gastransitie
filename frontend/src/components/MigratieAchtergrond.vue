@@ -2,7 +2,7 @@
   <div>
     <div class="tableHeader">Bevolking buurt naar migratie achtergrond</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
       <thead>
         <tr>
           <th>Nederlands</th>

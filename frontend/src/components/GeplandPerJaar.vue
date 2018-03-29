@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tableHeader">Geplande werkzaamheden per jaar</div>
-    <table v-if="data && data.features.length" class="table table-hover">
+    <table v-if="data && data.features.length" class="table table-hover table-responsive">
       <thead>
         <tr>
           <th v-for="y in years" :key="y">{{y}}</th>

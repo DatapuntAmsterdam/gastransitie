@@ -2,7 +2,7 @@
   <div>
     <div class="tableHeader">Woningvoorraad gebruiksoppervlakte</div>
 
-    <table class="table table-hover" v-if="grootte">
+    <table class="table table-hover table-responsive" v-if="grootte">
       <tbody>
         <tr>
           <th v-for="g in Object.keys(grootte)" :key="g">{{g}}m<sup>2</sup></th>

@@ -2,7 +2,7 @@
   <div v-if="corporaties">
     <div class="tableHeader">Aantal en spreiding woningen per aanwezige Woningcorporatie</div>
 
-    <table class="table table-hover" v-if="Object.keys(corporaties).length">
+    <table class="table table-hover table-responsive" v-if="Object.keys(corporaties).length">
       <tbody>
         <tr>
           <th v-for="c in Object.keys(corporaties)" :key="c">
