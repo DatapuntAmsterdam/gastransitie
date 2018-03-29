@@ -13,19 +13,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import L from 'leaflet'
 import MapLayer from '@/components/AmsterdamMapLayer'
 import datasets from '@/services/privatedatasets'
 
 export default {
   props: [
-    'config',
-    'buurt'
+    'config'
   ],
   data () {
     return {
       map: null
     }
+  },
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
   },
   components: {
     'map-layer': MapLayer
@@ -58,7 +64,6 @@ export default {
   watch: {
     buurt (to, from) {
       if (to) {
-        console.log('Map received new buurt', to)
         this.setMapBounds(to)
       }
     }

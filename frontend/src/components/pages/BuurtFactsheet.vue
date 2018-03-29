@@ -8,7 +8,7 @@
           <sociale-kenmerken></sociale-kenmerken>
         </div>
         <div class="col-lg-6 col-md-12">
-          <amsterdam-map :config="buurtMapConfig" :buurt="buurt"></amsterdam-map>
+          <amsterdam-map :config="buurtMapConfig"></amsterdam-map>
         </div>
       </div>
       <migratie-achtergrond></migratie-achtergrond>
@@ -21,7 +21,7 @@
         <div class="col-lg-6 col-md-12">
         </div>
         <div class="col-lg-6 col-md-12">
-          <amsterdam-map :config="afwcMapConfig" :buurt="buurt"></amsterdam-map>
+          <amsterdam-map :config="afwcMapConfig"></amsterdam-map>
         </div>
       </div>
     </card>
@@ -49,7 +49,7 @@
           <meerjarig-investerings-plan></meerjarig-investerings-plan>
         </div>
         <div class="col-12">
-          <amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map>
+          <amsterdam-map :config="mipMapConfig"></amsterdam-map>
         </div>
       </div>
     </card>
