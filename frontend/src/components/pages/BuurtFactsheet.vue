@@ -46,7 +46,7 @@
       <gepland-per-jaar :buurt="buurt"></gepland-per-jaar>
       <div class="row">
         <div class="col-12">
-          <meerjarig-investerings-plan :buurt="buurt"></meerjarig-investerings-plan>
+          <meerjarig-investerings-plan></meerjarig-investerings-plan>
         </div>
         <div class="col-12">
           <amsterdam-map :config="mipMapConfig" :buurt="buurt"></amsterdam-map>

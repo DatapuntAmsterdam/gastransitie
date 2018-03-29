@@ -31,34 +31,27 @@ import datasets from '@/services/privatedatasets'
 import _ from 'lodash'
 
 export default {
-  props: [
-    'buurt'
-  ],
   data () {
     return {
       geojson: null,
       mipData: null
     }
   },
-
-  async mounted () {
-    this.geojson = await datasets.getJsonByName('mip', this.buurt)
-    this.mipData = this.orderedMIP()
-  },
   created () {
-    this.setBuurtData(this.buurt)
+    this.setBuurtData()
   },
   computed: {
     ...mapGetters([
-      'buurten'
+      'buurt'
     ])
   },
+  watch: {
+    'buurt': () => this.setBuurtData()
+  },
   methods: {
-    async setBuurtData (buurt) {
-      if (!this.buurten.length) {
-        // this function can only be called meaningfully when the buurten are in the store
-        console.error('buurten is not available from the Vuex store')
-      }
+    async setBuurtData () {
+      this.geojson = await datasets.getJsonByName('mip', this.buurt)
+      this.mipData = this.orderedMIP()
     },
     orderedMIP: function () {
       let featuredata = this.geojson.features.map(mip => mip.properties)
@@ -69,6 +62,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>
