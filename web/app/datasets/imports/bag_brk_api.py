@@ -3,7 +3,6 @@ Download per BRK / BAG informatie per buurt / per coorporatie.
 
 We use the BAG API, and SQL for the more compliated data.
 
-
 """
 
 import logging
@@ -126,42 +125,39 @@ def make_corporatie_rapport(buurt):
     return corportatie_rapport
 
 
-def corporatie_sql(persoon_id, buurt):
+def make_bezit_rapport(buurt):
     """Corporatie vbo's sql
 
     Achterhaal hoeveel bezit coorporaties hebben in de buurt
     """
 
     sql = f"""
-SELECT count(*)
+SELECT
+   s.statutaire_naam, s.naam, count(*) as thecounts
 FROM
      bag_verblijfsobject v,
      brk_zakelijkrechtverblijfsobjectrelatie zr,
-     brk_zakelijkrecht r
+     brk_zakelijkrecht r,
+     brk_kadastraalsubject s
 WHERE
-    r.kadastraal_subject_id = '{persoon_id}'
-AND r.aard_zakelijk_recht_id = '2'
+    r.kadastraal_subject_id = s.id
 AND zr.zakelijk_recht_id = r.id
 AND v.id = zr.verblijfsobject_id
 AND v.buurt_id = '{buurt.id}'
+GROUP BY (s.statutaire_naam, s.naam) order by thecounts desc
     """
 
     with connections['bag'].cursor() as cursor:
         cursor.execute(sql)
         data = dictfetchall(cursor)
-        return data[0]['count']
 
+    big_owners = []
 
-def make_corporatie_rapport_sql(buurt):
+    for item in data:
+        if item['thecounts'] > 5:
+            big_owners.append(item)
 
-    corportatie_rapport = {}
-
-    for c_persoon, c_naam in WONING_CORPORATIES:
-        c_count = corporatie_sql(c_persoon, buurt)
-        if c_count:
-            corportatie_rapport[c_naam] = c_count
-
-    return corportatie_rapport
+    return big_owners
 
 
 def dictfetchall(cursor):
@@ -325,7 +321,7 @@ def get_bag_brk_for_all_buurten():
     """
     bag.BagRapport.objects.all().delete()
 
-    for b in bag.BagBuurt.objects.using('bag').all().order_by('naam'):
+    for b in bag.BagBuurt.objects.using('bag').all().order_by('naam'):  # .filter(vollcode='M57a'):
         # bewoners
         bewoner_count = bewoners_per_buurt(b)
         bag_gebruik = gebruik_per_buurt(b)
@@ -359,15 +355,14 @@ def get_bag_brk_for_all_buurten():
         # Corporatie bezit
         # c_rapport = make_corporatie_rapport(b)
         # print(c_rapport)
-        c2_rapport = make_corporatie_rapport_sql(b)
-        print(c2_rapport)
+        bezit_rapport = make_bezit_rapport(b)
 
         buurt_rapport = {
             'vbo_count': vbo_count,
             'subjecten_count': sub_count,
             'natuurlijke_subjecten': n_sub_count,
             'niet_natuurlijke_subjecten': nn_sub_count,
-            'corporaties': c2_rapport,
+            'groot_bezitters': bezit_rapport,
             'bewoners_count': bewoner_count,
             'gebruik': bag_gebruik,
             'bouwkundige_groote': bouwkundige_groote,
