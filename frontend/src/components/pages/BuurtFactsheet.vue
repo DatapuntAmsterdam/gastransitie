@@ -39,6 +39,7 @@
     </card>
 
     <card :title="`Bouwkundige kenmerken ${buurtData.naam}`">
+      <bouwkundige-kenmerken></bouwkundige-kenmerken>
       <woning-oppervlakten></woning-oppervlakten>
     </card>
 
@@ -105,6 +106,7 @@ import migratieAchtergrond from '../MigratieAchtergrond'
 import GeplandPerJaar from '../GeplandPerJaar'
 import GeplandPerCorporatie from '../GeplandPerCorporatie'
 import WoningenPerCorporatie from '../WoningenPerCorporatie'
+import BouwkundigeKenmerken from '../BouwkundigeKenmerken'
 import WoningOppervlakten from '../WoningOppervlakten'
 import WoningenNaarEigendom from '../WoningenNaarEigendom'
 import GebruiksOverzicht from '../GebruiksOverzicht'
@@ -131,6 +133,7 @@ export default {
     BuurtInfo,
     GebruiksOverzicht,
     WoningenNaarEigendom,
+    BouwkundigeKenmerken,
     WoningOppervlakten,
     WoningenPerCorporatie,
     GeplandPerCorporatie,

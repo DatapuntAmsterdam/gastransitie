@@ -28,8 +28,7 @@ export default {
   },
   data () {
     return {
-      author: 'Datapunt Amsterdam',
-      visible: 'invisible'
+      author: 'Datapunt Amsterdam'
     }
   },
   computed: {

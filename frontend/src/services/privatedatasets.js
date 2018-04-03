@@ -162,9 +162,10 @@ async function getBagBrk (buurten, buurt) {
     const buurtDetail = buurten.find(b => b.vollcode === buurt)
     const landelijkeCode = buurtDetail.landelijk
     let url = PRIVATE_DATA_HOST + `/gastransitie/api/bag/${landelijkeCode}/`
-    bagBrkCache[buurt] = await readDataJson(url)
+    bagBrkCache[buurt] = readDataJson(url)
   }
-  return bagBrkCache[buurt][0]
+  const result = await bagBrkCache[buurt]
+  return result[0]
 }
 
 async function getGasGroen (buurt) {
