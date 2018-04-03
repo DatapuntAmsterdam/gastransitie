@@ -143,7 +143,7 @@ registerStyleFunction('energielabel', energieLabelStyle)
 
 function allBordersStyle (feature) {
   return {
-    color: "black",
+    color: 'black',
     fill: false,
     weight: 1
   }

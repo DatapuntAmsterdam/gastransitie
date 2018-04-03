@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header">
+    <div>
       <ams-header :title="title"></ams-header>
 
       <div>
@@ -59,10 +59,6 @@ export default {
 <style scoped>
 .content {
   min-height: calc(100vh - 348px);
-}
-
-.header {
-
 }
 
 .footer {
