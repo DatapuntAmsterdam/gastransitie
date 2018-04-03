@@ -30,9 +30,68 @@ function warmteKoudeStyle (feature) {
 registerStyleFunction('warmtekoude', warmteKoudeStyle)
 
 function afwcStyle (feature) {
-  let color = 'blue'
-  if (feature.properties.corp === 'YMERE') {
-    color = 'blue'
+  let color = 'gray'
+  switch (feature.properties.corp) {
+    case 'CORDAAN':
+      color = 'rgb(99,98,97)'
+      break
+    case 'DEALLIANTIE':
+      color = 'rgb(253,50,78)'
+      break
+    case 'DEGOEDEWONING':
+      color = 'rgb(133,251,213)'
+      break
+    case 'DEKEY':
+      color = 'rgb(216,151,75)'
+      break
+    case 'DUWO':
+      color = 'rgb(149,42,124)'
+      break
+    case 'DUWOROCHDALE':
+      color = 'rgb(70,180,215)'
+      break
+    case 'EIGENHAARD':
+      color = 'rgb(237,143,211)'
+      break
+    case 'GOEDESTEDE':
+      color = 'rgb(249,232,70)'
+      break
+    case 'HABION':
+      color = 'rgb(214,230,86)'
+      break
+    case 'INTERMARIS':
+      color = 'rgb(220,84,137)'
+      break
+    case 'PARTEON':
+      color = 'rgb(165,82,219)'
+      break
+    case 'ROCHDALE':
+      color = 'rgb(157,174,93)'
+      break
+    case 'SAMENWERKING':
+      color = 'rgb(148,148,148)'
+      break
+    case 'STADGENOOT':
+      color = 'rgb(48,217,77)'
+      break
+    case 'STADSHERSTEL':
+      color = 'rgb(153,73,45)'
+      break
+    case 'WOONCOMPAGNIE':
+      color = 'rgb(254,145,81)'
+      break
+    case 'WOONZORGNEDERLAND':
+      color = 'rgb(47,158,118)'
+      break
+    case 'WORMERWONEN':
+      color = 'rgb(201,193,252)'
+      break
+    case 'YMERE':
+      color = 'rgb(80,117,189)'
+      break
+    case 'ZVH':
+      color = 'rgb(205,110,94)'
+      break
   }
 
   return {
@@ -69,8 +128,6 @@ function energieLabelStyle (feature) {
     case 'G':
       color = 'rgb(223,22,27)'
       break
-    default:
-      color = 'gray'
   }
 
   return {
