@@ -87,13 +87,13 @@ class Mip2016ViewSet(viewsets.ModelViewSet):
 
 class EnergieLabelFilter(FilterSet, BuurtFilter):
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = EnergieLabel
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
