@@ -22,7 +22,8 @@
         },
         {
             "dataset": "afwc",
-            "color": "blue"
+            "color": "blue",
+            "styleFunction": "afwc"
         }
     ]
 }

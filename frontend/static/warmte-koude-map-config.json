@@ -23,7 +23,8 @@
         },
         {
             "dataset": "warmtekoude",
-            "color": "goldenrod"
+            "color": "goldenrod",
+            "styleFunction": "warmtekoude"
         }
     ]
 }
