@@ -95,11 +95,11 @@ async function readData (url) {
 
 async function readProtectedData (url) {
   const token = getToken()
+  let headers = {
+    Authorization: 'bearer ' + token
+  }
   let response = await get(
-    url,
-    {
-      Authorization: 'bearer ' + token
-    }
+    url, { headers }
   )
   return response.data
 }
