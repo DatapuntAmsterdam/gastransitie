@@ -19,6 +19,8 @@ let hrCache = {}
 let hrBuurtCache = {}
 let bagBrkCache = {}
 
+let allBorders = null
+
 function UnknownHostException (message) {
   this.message = message
   this.name = 'uknownHostException'
@@ -182,6 +184,14 @@ async function getGasOranje (buurt) {
   return gasOranjeCache[buurt]
 }
 
+async function getAllBorders (buurt) {
+  if (!allBorders) {
+    const url = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
+    allBorders = util.readData(url)
+  }
+  return allBorders
+}
+
 async function getJsonByName (name, buurt) {
   let getters = new Map([
     ['afwc', getAfwc],
@@ -195,7 +205,8 @@ async function getJsonByName (name, buurt) {
     ['warmtekoude', getWarmtekoude],
     ['bagbrk', getBagBrk],
     ['gasgroen', getGasGroen],
-    ['gasoranje', getGasOranje]
+    ['gasoranje', getGasOranje],
+    ['allborders', getAllBorders]
   ])
 
   return getters.get(name)(buurt)

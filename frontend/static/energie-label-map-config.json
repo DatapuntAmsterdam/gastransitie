@@ -1,10 +1,4 @@
 {
-    "leafletBaseOptions": {
-        "attributionControl": false,
-        "center": [52.367653, 4.900877],
-        "zoom": 11,
-        "scrollWheelZoom": false
-    },
     "wms": {
         "url": "https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png",
         "settings": {
@@ -14,16 +8,23 @@
             "attribution": "Datapunt Amsterdam"
         }
     },
+
+    "leafletBaseOptions": {
+        "attributionControl": false,
+        "center": [52.367653, 4.900877],
+        "zoom": 11,
+        "scrollWheelZoom": false
+    },
+
     "layers": [
         {
             "dataset": "buurt",
-            "color": "green"
+            "color": "black"
         },
         {
-            "dataset": "allborders",
-            "color": "black",
-            "styleFunction": "allborders"
+            "dataset": "energielabel",
+            "color": "pink",
+            "styleFunction": "energielabel"
         }
-    ],
-    "noZoom": true
+    ]
 }
