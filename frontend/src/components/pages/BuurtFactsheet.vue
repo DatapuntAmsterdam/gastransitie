@@ -82,6 +82,13 @@
       </div>
     </card>
 
+    <card :title="`Energie labels in ${buurtData.naam}`">
+      <div class="row">
+        <div class="col-12">
+          <amsterdam-map :config="energieLabelMapConfig"></amsterdam-map>
+        </div>
+      </div>
+    </card>
   </div>
 </template>
 
@@ -98,6 +105,7 @@ import mipMapConfig from '../../../static/mip-map-config'
 import buurtMapConfig from '../../../static/buurt-map-config'
 import gasAllianderMapConfig from '../../../static/gas-alliander-map-config'
 import warmteKoudeMapConfig from '../../../static/warmte-koude-map-config'
+import energieLabelMapConfig from '../../../static/energie-label-map-config'
 
 import socialeKenmerken from '../SocialeKenmerken'
 import migratieAchtergrond from '../MigratieAchtergrond'
@@ -121,7 +129,8 @@ export default {
       mipMapConfig,
       buurtMapConfig,
       gasAllianderMapConfig,
-      warmteKoudeMapConfig
+      warmteKoudeMapConfig,
+      energieLabelMapConfig
     }
   },
   components: {
