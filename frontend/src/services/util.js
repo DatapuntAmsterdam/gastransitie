@@ -21,14 +21,14 @@ async function readPaginatedData (
   let next = url
   let results = []
   while (next) {
+    let requestedUrl = next
     try {
       let response = await get(next, { headers })
       next = getNext(response)
-      console.log('Next page', next)
       results = results.concat(getData(response))
     } catch (e) {
-      console.error('Request failed', e)
       next = null
+      console.log('Failure while accessing', requestedUrl)
     }
   }
   return results
@@ -93,6 +93,17 @@ async function readData (url) {
   return response.data
 }
 
+async function readProtectedData (url) {
+  const token = getToken()
+  let response = await get(
+    url,
+    {
+      Authorization: 'bearer ' + token
+    }
+  )
+  return response.data
+}
+
 const filteredText = (text, filterText) => {
   // $& Inserts the matched substring
   return filterText ? text.replace(RegExp(filterText, 'ig'), `<span class="filterText">$&</span>`) : text
@@ -102,6 +113,7 @@ export default {
   readPaginatedData,
   readProtectedPaginatedData,
   readData,
+  readProtectedData,
   loadBuurten,
   resultsAsGeoJSON,
   // helper functions:
