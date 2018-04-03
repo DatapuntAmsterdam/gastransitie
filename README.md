@@ -67,22 +67,22 @@ relevant credentials and your SSH key is known).
   ```
 * Wait for the database to start up, then run
   ```
-  docker-copmose run --rm importer python manage.py download_data
-  docker-copmose exec -T database update-table.sh bag bag_buurt public gastransitie
-  docker-copmose exec -T database update-db.sh bag
+  docker-compose run --rm web python manage.py download_data
+  docker-compose exec -T database update-table.sh bag bag_buurt public gastransitie <username>
+  docker-compose exec -T database update-db.sh bag <username>
   ```
   Note that downloading these database backups and restoring them is time
   consuming (but the BAG database is needed to generate some of the
   neighborhood summaries).
 * Then run the Django management commands for imports:
   ```
-  docker-copmose run --rm importer python manage.py run_import
+  docker-compose run --rm web python manage.py run_import
 
-  docker-copmose run --rm importer python manage.py run_import --indexgebied
-  docker-copmose run --rm importer python manage.py run_import --brkbag
-  docker-copmose run --rm importer python manage.py run_import --handelsregister
-  docker-copmose run --rm importer python manage.py run_import --sbicodes
-  docker-copmose run --rm importer python manage.py run_import --hrrapport
+  docker-compose run --rm web python manage.py run_import --indexgebied
+  docker-compose run --rm web python manage.py run_import --brkbag
+  docker-compose run --rm web python manage.py run_import --handelsregister
+  docker-compose run --rm web python manage.py run_import --sbicodes
+  docker-compose run --rm web python manage.py run_import --hrrapport
   ```
 * Now start the services:
   ```

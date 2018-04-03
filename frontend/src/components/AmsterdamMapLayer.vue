@@ -5,6 +5,7 @@
 <script>
 import L from 'leaflet'
 import datasets from '@/services/privatedatasets'
+import { getStyleFunction } from '@/services/mapStyle'
 
 export default {
   props: [
@@ -34,7 +35,16 @@ export default {
       let geojsonLayer = this.geojsonLayer
       // Create a Leaflet geoJSON layer, or clear it
       if (!geojsonLayer) {
-        geojsonLayer = L.geoJSON(null, {color: this.config.color}).addTo(this.map)
+        let styleFunction = null
+        if (this.config.styleFunction) {
+          styleFunction = getStyleFunction(this.config.styleFunction)
+        }
+
+        if (!styleFunction) {
+          geojsonLayer = L.geoJSON(null, {color: this.config.color}).addTo(this.map)
+        } else {
+          geojsonLayer = L.geoJSON(null, {style: styleFunction}).addTo(this.map)
+        }
       } else {
         geojsonLayer.clearlayers()
       }

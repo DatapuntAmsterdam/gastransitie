@@ -24,14 +24,6 @@
         {
             "dataset": "mip",
             "color": "red"
-        },
-        {
-            "dataset": "renovatie",
-            "color": "goldenrod"
-        },
-        {
-            "dataset": "warmtekoude",
-            "color": "goldenrod"
         }
     ]
 }

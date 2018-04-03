@@ -3,7 +3,6 @@ Download per BRK / BAG informatie per buurt / per coorporatie.
 
 We use the BAG API, and SQL for the more compliated data.
 
-
 """
 
 import logging
@@ -126,42 +125,39 @@ def make_corporatie_rapport(buurt):
     return corportatie_rapport
 
 
-def corporatie_sql(persoon_id, buurt):
+def make_bezit_rapport(buurt):
     """Corporatie vbo's sql
 
     Achterhaal hoeveel bezit coorporaties hebben in de buurt
     """
 
     sql = f"""
-SELECT count(*)
+SELECT
+   s.statutaire_naam, s.naam, count(*) as thecounts
 FROM
      bag_verblijfsobject v,
      brk_zakelijkrechtverblijfsobjectrelatie zr,
-     brk_zakelijkrecht r
+     brk_zakelijkrecht r,
+     brk_kadastraalsubject s
 WHERE
-    r.kadastraal_subject_id = '{persoon_id}'
-AND r.aard_zakelijk_recht_id = '2'
+    r.kadastraal_subject_id = s.id
 AND zr.zakelijk_recht_id = r.id
 AND v.id = zr.verblijfsobject_id
 AND v.buurt_id = '{buurt.id}'
+GROUP BY (s.statutaire_naam, s.naam) order by thecounts desc
     """
 
     with connections['bag'].cursor() as cursor:
         cursor.execute(sql)
         data = dictfetchall(cursor)
-        return data[0]['count']
 
+    big_owners = []
 
-def make_corporatie_rapport_sql(buurt):
+    for item in data:
+        if item['thecounts'] > 5:
+            big_owners.append(item)
 
-    corportatie_rapport = {}
-
-    for c_persoon, c_naam in WONING_CORPORATIES:
-        c_count = corporatie_sql(c_persoon, buurt)
-        if c_count:
-            corportatie_rapport[c_naam] = c_count
-
-    return corportatie_rapport
+    return big_owners
 
 
 def dictfetchall(cursor):
@@ -225,7 +221,7 @@ def gebruik_per_buurt(buurt) -> dict:
         return data
 
 
-def bouwkundige_verdeling(buurt) -> dict:
+def get_bouwkundige_verdeling(buurt) -> dict:
     """Bouwkundige samenstelling
 
     Deze cijfers staan ook in BBGA.
@@ -244,7 +240,9 @@ def bouwkundige_verdeling(buurt) -> dict:
         (300, 400),
         (400, 1000),
         (1000, 2000),
-        (2000, 999999),
+        (2000, 3000),
+        (3000, 5000),
+        (5000, 999999),
     ]
 
     groote_verdeling = {}
@@ -268,6 +266,51 @@ def bouwkundige_verdeling(buurt) -> dict:
     return groote_verdeling
 
 
+def get_bouwjaar_verdeling(buurt) -> dict:
+    """Bouwjaar verdeling in buurt.
+    """
+
+    ranges = [
+        (-10000, 1850),
+        (1850, 1900),
+        (1900, 1920),
+        (1920, 1930),
+        (1930, 1940),
+        (1940, 1950),
+        (1950, 1960),
+        (1960, 1970),
+        (1970, 1980),
+        (1980, 1990),
+        (1990, 2000),
+        (2000, 2010),
+        (2010, 2020),
+        (2020, 2030),
+    ]
+
+    bouwjaar_verdeling = {}
+
+    for _min, _max in ranges:
+        sql = f"""
+            SELECT count(v.id)
+            FROM bag_verblijfsobject v,
+                 bag_pand p,
+                 bag_verblijfsobjectpandrelatie vp
+            WHERE v."buurt_id" = '{buurt.id}'
+            AND p.id = vp."pand_id"
+            AND v.id = vp."verblijfsobject_id"
+            AND p.bouwjaar > {_min}
+            AND p.bouwjaar <= {_max}
+        """  # noqa
+        with connections['bag'].cursor() as cursor:
+            cursor.execute(sql)
+            data = dictfetchall(cursor)
+            bouwjaar_verdeling[f'{_min}-{_max}'] = data[0]['count']
+
+    assert len(ranges) == len(bouwjaar_verdeling)
+    log.debug('Bouwjaren: %s', bouwjaar_verdeling)
+    return bouwjaar_verdeling
+
+
 def get_bag_brk_for_all_buurten():
     """
     - totaal VBO
@@ -278,11 +321,12 @@ def get_bag_brk_for_all_buurten():
     """
     bag.BagRapport.objects.all().delete()
 
-    for b in bag.BagBuurt.objects.all().order_by('naam'):
+    for b in bag.BagBuurt.objects.using('bag').all().order_by('naam'):  # .filter(vollcode='M57a'):
         # bewoners
         bewoner_count = bewoners_per_buurt(b)
         bag_gebruik = gebruik_per_buurt(b)
-        bouwkundige_groote = bouwkundige_verdeling(b)
+        bouwkundige_groote = get_bouwkundige_verdeling(b)
+        bouwjaar_verdeling = get_bouwjaar_verdeling(b)
 
         # Totaal VBO's
         parameters = {'buurt': b.id}
@@ -311,18 +355,18 @@ def get_bag_brk_for_all_buurten():
         # Corporatie bezit
         # c_rapport = make_corporatie_rapport(b)
         # print(c_rapport)
-        c2_rapport = make_corporatie_rapport_sql(b)
-        print(c2_rapport)
+        bezit_rapport = make_bezit_rapport(b)
 
         buurt_rapport = {
             'vbo_count': vbo_count,
             'subjecten_count': sub_count,
             'natuurlijke_subjecten': n_sub_count,
             'niet_natuurlijke_subjecten': nn_sub_count,
-            'corporaties': c2_rapport,
+            'groot_bezitters': bezit_rapport,
             'bewoners_count': bewoner_count,
             'gebruik': bag_gebruik,
             'bouwkundige_groote': bouwkundige_groote,
+            'bouwjaar_verdeling': bouwjaar_verdeling,
         }
 
         # Create Buurt BAG / corporatie rapport

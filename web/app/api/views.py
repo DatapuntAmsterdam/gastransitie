@@ -8,6 +8,7 @@ from .serializers import RenovatieSerializer
 from .serializers import BagBuurtBboxSerializer
 from .serializers import WarmtekoudeSerializer
 from .serializers import BagBuurtRapportSerializer
+from .serializers import GasOranjeSerializer, GasGroenSerializer
 
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
@@ -16,6 +17,7 @@ from datasets.models.mip import Mip2016
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
 from datasets.models.warmtekoude import Warmtekoude
+from datasets.models.alliander import GasGroen, GasOranje
 
 
 from django_filters.rest_framework import filters
@@ -87,13 +89,13 @@ class Mip2016ViewSet(viewsets.ModelViewSet):
 
 class EnergieLabelFilter(FilterSet, BuurtFilter):
 
-    buurt_code = filters.CharFilter(
-        label='buurt_code', method='buurtcode_filter')
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
 
     class Meta:
         model = EnergieLabel
         fields = (
-            'buurt_code',
+            'buurt',
         )
 
 
@@ -163,8 +165,42 @@ class WarmtekoudeFilter(FilterSet, BuurtFilter):
             'buurt',
         )
 
+
 class WarmtekoudeViewSet(viewsets.ModelViewSet):
     serializer_class = WarmtekoudeSerializer
     queryset = Warmtekoude.objects.all().order_by('ogc_fid')
     filter_class = WarmtekoudeFilter
 
+
+class GasGroenFilter(FilterSet, BuurtFilter):
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
+
+    class Meta:
+        model = GasGroen
+        fields = (
+            'buurt',
+        )
+
+
+class GasGroenViewSet(viewsets.ModelViewSet):
+    serializer_class = GasGroenSerializer
+    queryset = GasGroen.objects.all().order_by('ogc_fid')
+    filter_class = GasGroenFilter
+
+
+class GasOranjeFilter(FilterSet, BuurtFilter):
+    buurt = filters.CharFilter(
+        label='buurt', method='buurtcode_filter')
+
+    class Meta:
+        model = GasOranje
+        fields = (
+            'buurt',
+        )
+
+
+class GasOranjeViewSet(viewsets.ModelViewSet):
+    serializer_class = GasOranjeSerializer
+    queryset = GasOranje.objects.all().order_by('ogc_fid')
+    filter_class = GasOranjeFilter

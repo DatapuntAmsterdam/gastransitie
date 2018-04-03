@@ -12,10 +12,14 @@ let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
 let warmtekoudeCache = {}
+let gasGroenCache = {}
+let gasOranjeCache = {}
 
 let hrCache = {}
 let hrBuurtCache = {}
 let bagBrkCache = {}
+
+let allBorders = null
 
 function UnknownHostException (message) {
   this.message = message
@@ -155,12 +159,36 @@ async function getWarmtekoude (buurt) {
   return warmtekoudeCache[buurt]
 }
 
-async function getBagBrk (landelijkeCode) {
-  if (!bagBrkCache[landelijkeCode]) {
+async function getBagBrk (buurten, buurt) {
+  if (!bagBrkCache[buurt]) {
+    const buurtDetail = buurten.find(b => b.vollcode === buurt)
+    const landelijkeCode = buurtDetail.landelijk
     let url = PRIVATE_DATA_HOST + `/gastransitie/api/bag/${landelijkeCode}/`
-    bagBrkCache[landelijkeCode] = readDataJson(url)
+    bagBrkCache[buurt] = await readDataJson(url)
   }
-  return bagBrkCache[landelijkeCode]
+  return bagBrkCache[buurt][0]
+}
+
+async function getGasGroen (buurt) {
+  if (!gasGroenCache[buurt]) {
+    gasGroenCache[buurt] = readGeojson(getUrl('/gasgroen/') + `?buurt=${buurt}`)
+  }
+  return gasGroenCache[buurt]
+}
+
+async function getGasOranje (buurt) {
+  if (!gasOranjeCache[buurt]) {
+    gasOranjeCache[buurt] = readGeojson(getUrl('/gasoranje/') + `?buurt=${buurt}`)
+  }
+  return gasOranjeCache[buurt]
+}
+
+async function getAllBorders (buurt) {
+  if (!allBorders) {
+    const url = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
+    allBorders = util.readData(url)
+  }
+  return allBorders
 }
 
 async function getJsonByName (name, buurt) {
@@ -174,7 +202,10 @@ async function getJsonByName (name, buurt) {
     ['handelsregister', getHr],
     ['handelsregisterbuurt', getHrBuurt],
     ['warmtekoude', getWarmtekoude],
-    ['bagbrk', getBagBrk]
+    ['bagbrk', getBagBrk],
+    ['gasgroen', getGasGroen],
+    ['gasoranje', getGasOranje],
+    ['allborders', getAllBorders]
   ])
 
   return getters.get(name)(buurt)

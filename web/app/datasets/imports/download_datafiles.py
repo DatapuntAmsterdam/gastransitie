@@ -42,9 +42,9 @@ DATASETS = set([
     'mip',
     'renovaties',
     'warmtekoude',
-    'cbs',
-    'eigendomskaart',
-    'functiekaart'
+    # 'cbs',
+    # 'eigendomskaart',
+    # 'functiekaart'
 ])
 
 

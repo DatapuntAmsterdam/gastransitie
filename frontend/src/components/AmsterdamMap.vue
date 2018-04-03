@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="map" style="height:400px"></div>
+    <div class="map"></div>
     <map-layer
       v-for="layerconfig in config.layers"
       v-bind:key="layerconfig.dataset"
@@ -13,19 +13,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import L from 'leaflet'
 import MapLayer from '@/components/AmsterdamMapLayer'
 import datasets from '@/services/privatedatasets'
 
 export default {
   props: [
-    'config',
-    'buurt'
+    'config'
   ],
   data () {
     return {
       map: null
     }
+  },
+  computed: {
+    ...mapGetters([
+      'buurt'
+    ])
   },
   components: {
     'map-layer': MapLayer
@@ -46,26 +52,25 @@ export default {
     }
 
     if (this.buurt && !this.config.noZoom) {
-      this.setMapBounds(this.buurt)
+      this.setMapBounds()
     }
   },
   methods: {
-    async setMapBounds (buurt) {
-      const bounds = await datasets.getJsonByName('buurtbounds', buurt)
+    async setMapBounds () {
+      const bounds = await datasets.getJsonByName('buurtbounds', this.buurt)
       this.map.fitBounds(bounds)
     }
   },
   watch: {
-    buurt (to, from) {
-      if (to) {
-        console.log('Map received new buurt', to)
-        this.setMapBounds(to)
-      }
+    'buurt': function () {
+      this.setMapBounds()
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scope>
+.map {
+  height: 400px;
+}
 </style>
