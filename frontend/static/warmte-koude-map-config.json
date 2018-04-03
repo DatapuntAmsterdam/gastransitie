@@ -22,8 +22,8 @@
             "color": "black"
         },
         {
-            "dataset": "mip",
-            "color": "red"
+            "dataset": "warmtekoude",
+            "color": "goldenrod"
         }
     ]
 }

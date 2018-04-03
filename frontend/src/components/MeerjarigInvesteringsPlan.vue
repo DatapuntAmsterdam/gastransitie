@@ -2,7 +2,7 @@
   <div v-if="geojson">
     <div class="tableHeader">Geplande werkzaamheden Meerjarig Investeringsplan</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
       <tbody>
         <tr>
           <th>Datum</th>

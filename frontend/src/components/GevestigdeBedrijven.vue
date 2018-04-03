@@ -2,7 +2,7 @@
   <div v-if="hrData">
     <div class="tableHeader">Gevestigde bedrijven naar hoofdfunctie</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
       <tbody>
       <tr>
         <th>Activiteit</th>

@@ -2,7 +2,7 @@
   <div v-if="buurtData">
     <div class="tableHeader">Buurt</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
       <tbody>
       <tr>
         <td>Naam buurt:</td>

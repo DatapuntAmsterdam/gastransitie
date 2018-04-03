@@ -3,7 +3,7 @@
 
     <div class="tableHeader">Aantal woningen naar eigendom</div>
 
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
       <tbody>
       <tr>
         <th>Eigenaar bewoner</th>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tableHeader">Geplande werkzaamheden per woningcorporatie</div>
-    <table v-if="data && data.features.length" class="table table-hover">
+    <table v-if="data && data.features.length" class="table table-hover table-responsive">
       <thead>
         <tr>
           <th v-for="c in Object.keys(corporaties)" :key="c">

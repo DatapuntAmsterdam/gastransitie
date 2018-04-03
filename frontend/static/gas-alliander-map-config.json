@@ -8,22 +8,25 @@
             "attribution": "Datapunt Amsterdam"
         }
     },
-
     "leafletBaseOptions": {
         "attributionControl": false,
         "center": [52.367653, 4.900877],
         "zoom": 11,
         "scrollWheelZoom": false
     },
-
     "layers": [
+        {
+            "dataset": "gasgroen",
+            "color": "green"
+        },
+        {
+            "dataset": "gasoranje",
+            "color": "orange"
+        },
         {
             "dataset": "buurt",
             "color": "black"
-        },
-        {
-            "dataset": "mip",
-            "color": "red"
         }
-    ]
+    ],
+    "noZoom": false
 }

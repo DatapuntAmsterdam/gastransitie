@@ -13,7 +13,7 @@
         <button type="button"
                 class="btn btn-primary mt-1"
                 :disabled="!filterText"
-                @click="clearFilter()">
+                @click="clear()">
           Wis filter
         </button>
       </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import util from '../../services/util'
 
 const buurtText = v => ['naam', 'vollcode', 'landelijk'].map(key => v[key].toLowerCase()).join('.')
@@ -63,9 +63,16 @@ export default {
     }
   },
   methods: {
-    clearFilter () {
+    ...mapActions({
+      setBuurt: 'setBuurt',
+      setBuurtData: 'setBuurtData'
+    }),
+
+    clear () {
       this.filterText = ''
       this.filteredList = this.buurten
+      this.setBuurt(null)
+      this.setBuurtData(null)
     },
 
     filter () {
@@ -82,7 +89,7 @@ export default {
   },
   watch: {
     'buurten' () {
-      this.clearFilter()
+      this.clear()
     },
     'filterText' () {
       if (autoFilter) {
@@ -92,7 +99,7 @@ export default {
     }
   },
   created () {
-    this.clearFilter()
+    this.clear()
   },
   components: {
   }

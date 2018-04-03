@@ -2,7 +2,7 @@
   <div>
   <div class="tableHeader">WOZ en inkomen</div>
 
-  <table class="table table-hover" v-if="BBGAData">
+  <table class="table table-hover table-responsive" v-if="BBGAData">
     <tbody>
     <tr v-for="v in Object.keys(variables)" :key="v">
       <td>{{variables[v]}}</td>

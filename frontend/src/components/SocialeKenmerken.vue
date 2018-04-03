@@ -2,7 +2,7 @@
   <div>
     <div class="tableHeader">Sociale kenmerken</div>
 
-    <table class="table table-hover" v-if="BBGAData">
+    <table class="table table-hover table-responsive" v-if="BBGAData">
       <tbody>
         <tr>
           <td>Aantal inwoners:</td>
