@@ -140,3 +140,13 @@ function energieLabelStyle (feature) {
 }
 
 registerStyleFunction('energielabel', energieLabelStyle)
+
+function allBordersStyle (feature) {
+  return {
+    color: "black",
+    fill: false,
+    weight: 1
+  }
+}
+
+registerStyleFunction('allborders', allBordersStyle)

@@ -17,8 +17,13 @@
     "layers": [
         {
             "dataset": "buurt",
-            "color": "black"
-	}
+            "color": "green"
+        },
+        {
+            "dataset": "allborders",
+            "color": "black",
+            "styleFunction": "allborders"
+        }
     ],
     "noZoom": true
 }
