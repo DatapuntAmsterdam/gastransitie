@@ -1,5 +1,5 @@
 <template>
-  <div v-if="buurtData">
+  <div v-if="orderedGebruik.length">
 
     <div class="tableHeader">Gebruik panden</div>
 
@@ -53,9 +53,6 @@ export default {
     ]),
     orderedGebruik: function () {
       return _.orderBy(this.gebruik, 'count', ['desc'])
-    },
-    orderedCorporatie: function () {
-      return _.orderBy(this.corporaties, 'count', ['desc'])
     }
   },
   methods: {
@@ -65,8 +62,9 @@ export default {
       this.gebruik = this.buurtData.data.gebruik
       this.gebruikSum = this.gebruik.reduce((t, item) => item.count + t, 0)
 
-      let c1 = this.buurtData.data.corporaties
-      this.corporaties = Object.entries(c1).map(([k, v]) => ({'key': k, 'count': v}))
+      // let c1 = this.buurtData.data.corporaties
+      // debugger
+      // this.corporaties = Object.entries(c1).map(([k, v]) => ({'key': k, 'count': v}))
       let g = this.buurtData.data.bouwkundige_groote
       this.groote = Object.entries(g).map(([k, v]) => ({'groote': k, 'count': v}))
     }
