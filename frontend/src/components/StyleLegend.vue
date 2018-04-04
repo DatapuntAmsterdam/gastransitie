@@ -1,8 +1,12 @@
 <template>
   <div>
     <div>
-      <div v-for="i in Object.keys(items)" :key="i" class="legend-entry">
-        <span :style="getBulletStyle(items[i])" class="legend-bullet">&#9634;</span>
+      <div v-for="i in Object.keys(items)" :key="i"
+           v-if="complete || items[i].count > 0"
+           class="legend-entry">
+        <span :style="getBulletStyle(items[i])" class="legend-bullet">
+          &#9634;
+        </span>
         {{items[i].label}}
       </div>
     </div>
@@ -15,9 +19,13 @@ import { LABELS } from '../services/mapStyle'
 
 export default {
   name: 'style-legend',
-  props: [
-    'legend'
-  ],
+  props: {
+    'legend': String,
+    'complete': {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     getBulletStyle (entry) {
       return {

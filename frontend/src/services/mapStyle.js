@@ -1,6 +1,13 @@
 let styleFunctions = {}
 
-const getColor = (labels, label) => (labels[label] && labels[label].color) || 'gray'
+const getColor = (labels, label) => {
+  if (labels[label] && labels[label].color) {
+    labels[label].count += 1
+    return labels[label].color
+  } else {
+    return 'gray'
+  }
+}
 
 export function getStyleFunction (name) {
   return styleFunctions[name]
@@ -13,6 +20,16 @@ export function registerStyleFunction (name, callback) {
 // register style callbacks for various data sets
 
 export const LABELS = {
+  'GAS': {
+    'GROEN': {
+      label: 'Groen',
+      color: 'green'
+    },
+    'ORANJE': {
+      label: 'Oranje',
+      color: 'orange'
+    }
+  },
   'CORPORATIE': {
     'CORDAAN': {
       label: 'Cordaan',
@@ -137,6 +154,22 @@ export const LABELS = {
   }
 }
 
+export function clearStats () {
+  Object.keys(LABELS)
+    .map(key => LABELS[key])
+    .forEach(label =>
+      Object.keys(label).forEach(l => { label[l].count = 0 }))
+}
+
+function gasStyle (id) {
+  return {
+    color: getColor(LABELS.GAS, id)
+  }
+}
+
+registerStyleFunction('gasgroen', () => gasStyle('GROEN'))
+registerStyleFunction('gasoranje', () => gasStyle('ORANJE'))
+
 function afwcStyle (feature) {
   const color = getColor(LABELS.CORPORATIE, feature.properties.corp)
   return {
@@ -174,7 +207,7 @@ registerStyleFunction('energielabel', energieLabelStyle)
 
 function allBordersStyle (feature) {
   return {
-    color: 'black',
+    color: 'gray',
     fill: false,
     weight: 1
   }
