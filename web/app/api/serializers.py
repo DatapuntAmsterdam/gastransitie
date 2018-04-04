@@ -13,6 +13,26 @@ from datasets.models import Warmtekoude
 from datasets.models import GasGroen, GasOranje
 
 
+# Candidate to be added to the drf_amsterdam project:
+class SelfLinkSerializerMixin():
+    def get__links(self, obj):
+        """
+        Serialization of _links field for detail view (assumes ModelViewSet).
+
+        Note:
+            Used to provide HAL-JSON style self links.
+        """
+        view = self.context['view']
+        model = view.queryset.model
+        pk_value = getattr(obj, model._meta.pk.name)
+
+        return {
+            'self': {
+                'href': view.reverse_action('detail', args=[pk_value])
+            }
+        }
+
+
 class GasAfwc2017Serializer(GeoFeatureModelSerializer):
     class Meta:
         model = GasAfwc2017
@@ -30,7 +50,9 @@ class BagBuurtSerializer(GeoFeatureModelSerializer):
         # bbox_geo_field = 'bbox_geometry'
 
 
-class BagBuurtRapportSerializer(ModelSerializer):
+class BagBuurtRapportSerializer(ModelSerializer, SelfLinkSerializerMixin):
+    _links = SerializerMethodField()
+
     class Meta:
         model = BagRapport
         fields = '__all__'

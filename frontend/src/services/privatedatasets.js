@@ -55,7 +55,7 @@ async function readGeojson (url) {
   const results = await util.readProtectedPaginatedData(
     url,
     util.getGeoJSONData,
-    util.getNextPage
+    util.getNextPageHAL
   )
   return util.resultsAsGeoJSON(results)
 }
@@ -64,18 +64,8 @@ async function readJson (url) {
   const results = await util.readProtectedPaginatedData(
     url,
     util.getPaginatedData,
-    util.getNextPage
+    util.getNextPageHAL
   )
-  return results
-}
-
-async function readDataJson (url) {
-  const results = await util.readProtectedPaginatedData(
-    url,
-    util.getNormalData,
-    util.getNextPage
-  )
-  // debugger
   return results
 }
 
@@ -164,10 +154,9 @@ async function getBagBrk (buurten, buurt) {
     const buurtDetail = buurten.find(b => b.vollcode === buurt)
     const landelijkeCode = buurtDetail.landelijk
     let url = PRIVATE_DATA_HOST + `/gastransitie/api/bag/${landelijkeCode}/`
-    bagBrkCache[buurt] = readDataJson(url)
+    bagBrkCache[buurt] = await util.readProtectedData(url)
   }
-  const result = await bagBrkCache[buurt]
-  return result[0]
+  return bagBrkCache[buurt]
 }
 
 async function getGasGroen (buurt) {

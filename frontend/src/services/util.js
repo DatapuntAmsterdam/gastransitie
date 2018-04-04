@@ -5,7 +5,7 @@ import privateDataSets from './privatedatasets'
 // Helper function to access next link (used with readData)
 const getNoNext = r => null
 const getNextPage = r => r.data.next
-const getNextPageHAL = r => r._links.next.href
+const getNextPageHAL = r => r.data._links.next.href
 
 const getNormalData = r => r.data
 const getPaginatedData = r => r.data.results
@@ -21,13 +21,14 @@ async function readPaginatedData (
   let next = url
   let results = []
   while (next) {
+    let requestedUrl = next
     try {
       let response = await get(next, { headers })
       next = getNext(response)
       results = results.concat(getData(response))
     } catch (e) {
-      console.error('Request failed', e)
       next = null
+      console.log('Failure while accessing', requestedUrl)
     }
   }
   return results
@@ -66,7 +67,7 @@ async function loadBuurten () {
   let results = await readProtectedPaginatedData(
     url,
     getGeoJSONData,
-    getNextPage
+    getNextPageHAL
   )
   let tmp = results.map(function (d, i) {
     return {
@@ -92,6 +93,17 @@ async function readData (url) {
   return response.data
 }
 
+async function readProtectedData (url) {
+  const token = getToken()
+  let headers = {
+    Authorization: 'bearer ' + token
+  }
+  let response = await get(
+    url, { headers }
+  )
+  return response.data
+}
+
 const filteredText = (text, filterText) => {
   // $& Inserts the matched substring
   return filterText ? text.replace(RegExp(filterText, 'ig'), `<span class="filterText">$&</span>`) : text
@@ -101,6 +113,7 @@ export default {
   readPaginatedData,
   readProtectedPaginatedData,
   readData,
+  readProtectedData,
   loadBuurten,
   resultsAsGeoJSON,
   // helper functions:

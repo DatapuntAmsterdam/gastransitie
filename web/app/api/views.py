@@ -23,6 +23,8 @@ from datasets.models.alliander import GasGroen, GasOranje
 from django_filters.rest_framework import filters
 from django_filters.rest_framework import FilterSet
 
+from datapunt_api.rest import DatapuntViewSet
+
 import logging
 
 LOG = logging.getLogger(__name__)
@@ -127,8 +129,15 @@ class RenovatieViewSet(viewsets.ModelViewSet):
     filter_class = RenovatieFilter
 
 
-class BagBuurtRapportViewSet(viewsets.ReadOnlyModelViewSet):
+class OLDBagBuurtRapportViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = BagBuurtRapportSerializer
+    queryset = BagRapport.objects.all().order_by('id')
+    filter_fields = ('vollcode', 'code', 'naam')
+
+
+class BagBuurtRapportViewSet(DatapuntViewSet):
+    serializer_class = BagBuurtRapportSerializer
+    serializer_detail_class = BagBuurtRapportSerializer
     queryset = BagRapport.objects.all().order_by('id')
     filter_fields = ('vollcode', 'code', 'naam')
 
