@@ -31,6 +31,7 @@
       <woningen-per-corporatie></woningen-per-corporatie>
       <div class="row">
         <div class="col-lg-6 col-md-12">
+          <style-legend :legend="afwcMapConfig.legend" :complete="false"></style-legend>
         </div>
         <div class="col-lg-6 col-md-12">
           <amsterdam-map :config="afwcMapConfig"></amsterdam-map>
@@ -69,7 +70,10 @@
 
     <card :title="`Gasleidingen Alliander in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+          <style-legend :legend="gasAllianderMapConfig.legend"></style-legend>
+        </div>
+        <div class="col-8">
           <amsterdam-map :config="gasAllianderMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -77,7 +81,10 @@
 
     <card :title="`Warmte / Koude net in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+          <style-legend :legend="warmteKoudeMapConfig.legend"></style-legend>
+        </div>
+        <div class="col-8">
           <amsterdam-map :config="warmteKoudeMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -85,7 +92,10 @@
 
     <card :title="`Energie labels in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+          <style-legend :legend="energieLabelMapConfig.legend"></style-legend>
+        </div>
+        <div class="col-8">
           <amsterdam-map :config="energieLabelMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -123,6 +133,9 @@ import GevestigdeBedrijven from '../GevestigdeBedrijven'
 import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
 import WaardeEnInkomen from '../WaardeEnInkomen'
 import Pano from '../Pano'
+import StyleLegend from '../StyleLegend'
+
+import { clearStats } from '../../services/mapStyle'
 
 export default {
   data () {
@@ -148,6 +161,7 @@ export default {
     GeplandPerCorporatie,
     GeplandPerJaar,
     Pano,
+    StyleLegend,
     'card': card,
     'amsterdam-map': AmsterdamMap,
     'sociale-kenmerken': socialeKenmerken,
@@ -160,6 +174,7 @@ export default {
     }),
     async loadBuurt (buurt) {
       this.setBuurt(buurt)
+      clearStats()
       if (this.buurten) {
         const buurtDetail = this.buurten.find(b => b.vollcode === buurt)
         const url = 'https://api.data.amsterdam.nl/gebieden/buurt/' + buurtDetail.landelijk

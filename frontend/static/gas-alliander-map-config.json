@@ -17,16 +17,17 @@
     "layers": [
         {
             "dataset": "gasgroen",
-            "color": "green"
+            "styleFunction": "gasgroen"
         },
         {
             "dataset": "gasoranje",
-            "color": "orange"
+            "styleFunction": "gasoranje"
         },
         {
             "dataset": "buurt",
             "color": "black"
         }
     ],
-    "noZoom": false
+  "legend": "GAS",
+  "noZoom": false
 }
