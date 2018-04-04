@@ -17,6 +17,7 @@
         <div class="col-lg-6 col-md-12">
           <buurt-info></buurt-info>
           <sociale-kenmerken></sociale-kenmerken>
+          <parkeer-info></parkeer-info>
         </div>
         <div class="col-lg-6 col-md-12">
           <amsterdam-map :config="buurtMapConfig"></amsterdam-map>
@@ -119,6 +120,7 @@ import warmteKoudeMapConfig from '../../../static/warmte-koude-map-config'
 import energieLabelMapConfig from '../../../static/energie-label-map-config'
 
 import socialeKenmerken from '../SocialeKenmerken'
+import parkeerInfo from '../ParkeerInfo'
 import migratieAchtergrond from '../MigratieAchtergrond'
 
 import GeplandPerJaar from '../GeplandPerJaar'
@@ -162,6 +164,7 @@ export default {
     GeplandPerJaar,
     Pano,
     StyleLegend,
+    parkeerInfo,
     'card': card,
     'amsterdam-map': AmsterdamMap,
     'sociale-kenmerken': socialeKenmerken,
