@@ -26,5 +26,7 @@
             "color": "goldenrod",
             "styleFunction": "warmtekoude"
         }
-    ]
+    ],
+
+  "legend": "WARMTE"
 }

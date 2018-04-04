@@ -31,6 +31,7 @@
       <woningen-per-corporatie></woningen-per-corporatie>
       <div class="row">
         <div class="col-lg-6 col-md-12">
+          <style-legend :legend="afwcMapConfig.legend"></style-legend>
         </div>
         <div class="col-lg-6 col-md-12">
           <amsterdam-map :config="afwcMapConfig"></amsterdam-map>
@@ -77,7 +78,10 @@
 
     <card :title="`Warmte / Koude net in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+          <style-legend :legend="warmteKoudeMapConfig.legend"></style-legend>
+        </div>
+        <div class="col-8">
           <amsterdam-map :config="warmteKoudeMapConfig"></amsterdam-map>
         </div>
       </div>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h5>Legenda</h5>
     <div>
       <div v-for="i in Object.keys(items)" :key="i" class="legend-entry">
         <span :style="getBulletStyle(items[i])" class="legend-bullet">&#9634;</span>

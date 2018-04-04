@@ -1,9 +1,8 @@
 let styleFunctions = {}
 
+const getColor = (labels, label) => (labels[label] && labels[label].color) || 'gray'
+
 export function getStyleFunction (name) {
-  if (!styleFunctions[name]) {
-    return null
-  }
   return styleFunctions[name]
 }
 
@@ -13,98 +12,99 @@ export function registerStyleFunction (name, callback) {
 
 // register style callbacks for various data sets
 
-function warmteKoudeStyle (feature) {
-  let color = 'gray'
-  if (feature.properties.type_net.includes('WARMTE')) {
-    color = 'red'
-  } else if (feature.properties.type_net.includes('KOUDE')) {
-    color = 'blue'
-  }
-
-  return {
-    color: color,
-    fillColor: 'none'
-  }
-}
-
-registerStyleFunction('warmtekoude', warmteKoudeStyle)
-
-function afwcStyle (feature) {
-  let color = 'gray'
-  switch (feature.properties.corp) {
-    case 'CORDAAN':
-      color = 'rgb(99,98,97)'
-      break
-    case 'DEALLIANTIE':
-      color = 'rgb(253,50,78)'
-      break
-    case 'DEGOEDEWONING':
-      color = 'rgb(133,251,213)'
-      break
-    case 'DEKEY':
-      color = 'rgb(216,151,75)'
-      break
-    case 'DUWO':
-      color = 'rgb(149,42,124)'
-      break
-    case 'DUWOROCHDALE':
-      color = 'rgb(70,180,215)'
-      break
-    case 'EIGENHAARD':
-      color = 'rgb(237,143,211)'
-      break
-    case 'GOEDESTEDE':
-      color = 'rgb(249,232,70)'
-      break
-    case 'HABION':
-      color = 'rgb(214,230,86)'
-      break
-    case 'INTERMARIS':
-      color = 'rgb(220,84,137)'
-      break
-    case 'PARTEON':
-      color = 'rgb(165,82,219)'
-      break
-    case 'ROCHDALE':
-      color = 'rgb(157,174,93)'
-      break
-    case 'SAMENWERKING':
-      color = 'rgb(148,148,148)'
-      break
-    case 'STADGENOOT':
-      color = 'rgb(48,217,77)'
-      break
-    case 'STADSHERSTEL':
-      color = 'rgb(153,73,45)'
-      break
-    case 'WOONCOMPAGNIE':
-      color = 'rgb(254,145,81)'
-      break
-    case 'WOONZORGNEDERLAND':
-      color = 'rgb(47,158,118)'
-      break
-    case 'WORMERWONEN':
-      color = 'rgb(201,193,252)'
-      break
-    case 'YMERE':
-      color = 'rgb(80,117,189)'
-      break
-    case 'ZVH':
-      color = 'rgb(205,110,94)'
-      break
-  }
-
-  return {
-    color: color,
-    fillColor: color,
-    fillOpacity: 0.7,
-    weight: 2
-  }
-}
-
-registerStyleFunction('afwc', afwcStyle)
-
 export const LABELS = {
+  'CORPORATIE': {
+    'CORDAAN': {
+      label: 'Cordaan',
+      color: 'rgb(99,98,97)'
+    },
+    'DEALLIANTIE': {
+      label: 'De Alliantie',
+      color: 'rgb(253,50,78)'
+    },
+    'DEGOEDEWONING': {
+      label: 'De Goede Woning',
+      color: 'rgb(133,251,213)'
+    },
+    'DEKEY': {
+      label: 'De Key',
+      color: 'rgb(216,151,75)'
+    },
+    'DUWO': {
+      label: 'DUWO',
+      color: 'rgb(149,42,124)'
+    },
+    'DUWOROCHDALE': {
+      label: 'DUWO Rochdale',
+      color: 'rgb(70,180,215)'
+    },
+    'EIGENHAARD': {
+      label: 'Eigen Haard',
+      color: 'rgb(237,143,211)'
+    },
+    'GOEDESTEDE': {
+      label: 'Goede Stede',
+      color: 'rgb(249,232,70)'
+    },
+    'HABION': {
+      label: 'Habion',
+      color: 'rgb(214,230,86)'
+    },
+    'INTERMARIS': {
+      label: 'Intermaris',
+      color: 'rgb(220,84,137)'
+    },
+    'PARTEON': {
+      label: 'Parteon',
+      color: 'rgb(165,82,219)'
+    },
+    'ROCHDALE': {
+      label: 'Rochdale',
+      color: 'rgb(157,174,93)'
+    },
+    'SAMENWERKING': {
+      label: 'Samenwerking',
+      color: 'rgb(148,148,148)'
+    },
+    'STADGENOOT': {
+      label: 'Stadgenoot',
+      color: 'rgb(48,217,77)'
+    },
+    'STADSHERSTEL': {
+      label: 'Stadsherstel',
+      color: 'rgb(153,73,45)'
+    },
+    'WOONCOMPAGNIE': {
+      label: 'Wooncompagnie',
+      color: 'rgb(254,145,81)'
+    },
+    'WOONZORGNEDERLAND': {
+      label: 'Woonzorg Nederland',
+      color: 'rgb(47,158,118)'
+    },
+    'WORMERWONEN': {
+      label: 'Wormer Wonen',
+      color: 'rgb(201,193,252)'
+    },
+    'YMERE': {
+      label: 'Ymere',
+      color: 'rgb(80,117,189)'
+    },
+    'ZVH': {
+      label: 'ZVH',
+      color: 'rgb(205,110,94)'
+    }
+  },
+  'WARMTE': {
+    'WARMTE TRANSPORT': {
+      label: 'Warmte net',
+      color: 'red'
+    },
+    'KOUDE TRANSPORT': {
+      label: 'Koude net',
+      color: 'blue'
+    }
+  },
   'ENERGIE': {
     'A': {
       label: 'Zeer laag energieverbruik',
@@ -137,7 +137,27 @@ export const LABELS = {
   }
 }
 
-const getColor = (labels, label) => (labels[label] && labels[label].color) || 'gray'
+function afwcStyle (feature) {
+  const color = getColor(LABELS.CORPORATIE, feature.properties.corp)
+  return {
+    color,
+    fillColor: color,
+    fillOpacity: 0.7,
+    weight: 2
+  }
+}
+
+registerStyleFunction('afwc', afwcStyle)
+
+function warmteKoudeStyle (feature) {
+  const color = getColor(LABELS.WARMTE, feature.properties.type_net)
+  return {
+    color,
+    fillColor: 'none'
+  }
+}
+
+registerStyleFunction('warmtekoude', warmteKoudeStyle)
 
 function energieLabelStyle (feature) {
   const color = getColor(LABELS.ENERGIE, feature.properties.energielabel)
