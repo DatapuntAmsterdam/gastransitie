@@ -36,6 +36,10 @@ import _ from 'lodash'
 const WIDTH = 400
 const HEIGHT = 400
 
+const N_LARGE_OWNERS = 10
+const COLORS = d3.schemePaired.slice(0, N_LARGE_OWNERS)
+COLORS.push('gray')
+
 export default {
   props: [
     'buurtData'
@@ -52,23 +56,24 @@ export default {
   },
   methods: {
     prepData (buurtData) {
-      // Owners with more than 5 dwellings, and no "statutaire_naam".
-      let overige = _.filter(this.buurtData.data.groot_bezitters, item => !(item.statutaire_naam))
-      let overigeSum = overige.reduce((sum, item) => sum + item.thecounts, 0)
-      let overigeEigenaar = [{naam: 'Overige', aantal: overigeSum}]
-
-      // Owners with more than 5 dwellings and a "statutaire_naam"
-      let statutairEigenaar = (_.filter(buurtData.data.groot_bezitters, item => item.statutaire_naam)).map(
-        item => ({naam: item.statutaire_naam, aantal: item.thecounts})
+      let statutairEigenaar = _.slice(
+        _.filter(
+          _.sortBy(buurtData.data.groot_bezitters, item => -item.aantal),
+          item => item.statutaire_naam
+        ).map(
+          item => ({naam: item.statutaire_naam, aantal: item.thecounts})
+        ),
+        0,
+        N_LARGE_OWNERS
       )
 
-      // owner-occupiers
-      let bewonerEigenaar = [{naam: 'Eigenaar en bewoner', aantal: buurtData.data.bewoners_count}]
-
-      return [].concat(statutairEigenaar, overigeEigenaar, bewonerEigenaar).sort()
+      let overige = buurtData.data.vbo_count - statutairEigenaar.reduce((sum, item) => sum + item.aantal, 0)
+      return _.sortBy(statutairEigenaar, item => -item.aantal).concat(
+        [{naam: 'Overige', aantal: overige}]
+      )
     },
     getBulletStyle (index) {
-      const color = d3.schemePaired[index % d3.schemePaired.length]
+      const color = COLORS[index]
       return {
         'background-color': color,
         color: color
@@ -90,8 +95,12 @@ export default {
         .sort(null)
 
       let path = d3.arc()
-        .outerRadius(HEIGHT / 2 - 20)
+        .outerRadius(HEIGHT / 2)
         .innerRadius(HEIGHT / 4)
+
+      let label = d3.arc()
+        .outerRadius(HEIGHT / 2 - 50)
+        .innerRadius(HEIGHT / 2 - 50)
 
       let arc = g.selectAll('.arc')
         .data(pie(data))
@@ -100,15 +109,19 @@ export default {
 
       arc.append('path')
         .attr('d', path)
-        .attr('fill', (d, i) => d3.schemePaired[i % d3.schemePaired.length])
+        .attr('fill', (d, i) => COLORS[i])
+
+      arc.append('text')
+        .attr('transform', d => 'translate(' + label.centroid(d) + ')')
+        .text(function (d) {
+          return (180 * (d.endAngle - d.startAngle) / Math.PI) > 20 ? d.data.aantal : ''
+        })
+        .style('text-anchor', 'middle')
     },
     draw (buurtData) {
       if (buurtData) {
         this.data = this.prepData(buurtData)
         this.drawPieChart(this.data)
-
-        // Eigenaar bewoners: data.bewoners_count
-        // overig: data.groot_bezitters
       }
     }
   }
