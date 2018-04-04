@@ -143,10 +143,59 @@ async function getHrBuurt (buurt) {
 }
 
 async function getWarmtekoude (buurt) {
-  if (!warmtekoudeCache[buurt]) {
-    warmtekoudeCache[buurt] = readGeojson(getUrl('/warmtekoude/') + `?buurt=${buurt}&page_size=2000`)
+  const wm = await readGeojson(getUrl('/warmtekoude/') + `?page_size=2000`)
+  console.log('wm', wm)
+  return {
+    type: 'FeatureCollection',
+    features: []
   }
-  return warmtekoudeCache[buurt]
+
+  // const surrounds = surroundedBuurten(buurt)
+  // console.log('surrounds', surrounds)
+  // let features = []
+  // for (let b of surrounds.slice(0, 10)) {
+  //   console.log('b', b)
+  //   if (!warmtekoudeCache[b]) {
+  //     warmtekoudeCache[b] = await readGeojson(getUrl('/warmtekoude/') + `?buurt=${b}&page_size=2000`)
+  //   }
+  //   const result = warmtekoudeCache[b]
+  //   console.log('result', b, result)
+  //   features = features.concat(result.features)
+  // }
+  // console.log('features', features)
+  // return {
+  //   type: 'FeatureCollection',
+  //   features
+  // }
+}
+
+// const middle = {}
+//
+// const distance = ([x1, y1], [x2, y2]) => Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)))
+
+// function surroundedBuurten (buurt) {
+//   // Sorted on distance to buurt
+//   Object.keys(middle).forEach(b => {
+//     middle[b].distance = distance(middle[b], middle[buurt])
+//   })
+//   return Object.keys(middle).sort((b1, b2) => middle[b1].distance - middle[b2].distance)
+// }
+
+async function init (buurten) {
+  // const borders = await getAllBorders()
+  // borders.features.forEach(border => {
+  //   let minX = Number.MAX_VALUE
+  //   let minY = Number.MAX_VALUE
+  //   let maxX = Number.MIN_VALUE
+  //   let maxY = Number.MIN_VALUE
+  //   border.geometry.coordinates[0].forEach(([x, y]) => {
+  //     minX = Math.min(x, minX)
+  //     minY = Math.min(y, minY)
+  //     maxX = Math.max(x, maxX)
+  //     maxY = Math.max(y, maxY)
+  //   })
+  //   middle[border.properties.vollcode] = [(maxX + minX) / 2, (maxY + minY) / 2]
+  // })
 }
 
 async function getBagBrk (buurten, buurt) {
@@ -210,5 +259,6 @@ export default {
   getBuurtBounds,
   getBuurt,
   getBagBrk,
+  init,
   PRIVATE_DATA_HOST
 }
