@@ -26,7 +26,22 @@ AS (
 
 DROP INDEX IF EXISTS warmtekoude_idx;
 CREATE INDEX warmtekoude_idx ON public.warmtekoude_clean USING GIST(wkb_geometry);
-"""
+
+
+DROP TABLE IF EXISTS public.wk_merged_buff;
+CREATE TABLE wk_merged_buff AS
+ SELECT ROW_NUMBER() OVER(ORDER BY selectie) as id, selectie, ST_Union(ST_Simplify(ST_Buffer(wkb_geometry,0.0001), 0.00001)) as  wkb_geometry
+ FROM warmtekoude_clean
+ GROUP BY selectie;
+
+
+DROP TABLE IF EXISTS public.wk_merged_grid;
+CREATE TABLE wk_merged_grid as
+ SELECT ROW_NUMBER() OVER(ORDER BY selectie) as id, ST_Union(ST_SnapToGrid(wkb_geometry,0.0001)) as wkb_geometry
+ FROM warmtekoude_clean
+ GROUP BY selectie;
+
+"""  # noqa
 
 
 def import_warmtekoude(datadir):

@@ -1,36 +1,42 @@
 <template>
-  <div v-if="corporaties">
-    <div class="tableHeader">Aantal en spreiding woningen per aanwezige Woningcorporatie</div>
+  <div>
+    <div class="tableHeader">Groot bezitters woningen</div>
 
-    <table class="table table-hover table-responsive" v-if="Object.keys(corporaties).length">
-      <tbody>
+    <table class="table table-hover table-responsive" v-if="orderedGrootBezitters.length">
+      <thead>
         <tr>
-          <th v-for="c in Object.keys(corporaties)" :key="c">
-            {{c}}
-          </th>
+          <th>Eigenaar</th>
+          <th>Aantal woningen</th>
         </tr>
-        <tr>
-          <td v-for="c in Object.keys(corporaties)" :key="c">
-            {{corporaties[c]}}
+      </thead>
+      <tbody>
+        <tr v-for="item in orderedGrootBezitters" :key="item.statutaire_naam">
+          <td>
+            {{item.statutaire_naam}}
+          </td>
+          <td>
+            {{item.thecounts}}
           </td>
         </tr>
       </tbody>
     </table>
     <p v-else>
-      Geen gegevens beschikbaar
+      Geen gegevens beschikbaar:
     </p>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import _ from 'lodash'
 
 import privatedatasets from '../services/privatedatasets'
 
 export default {
   data () {
     return {
-      corporaties: null
+      corporaties: null,
+      grootBezitters: null
     }
   },
   created () {
@@ -45,12 +51,16 @@ export default {
     ...mapGetters([
       'buurten',
       'buurt'
-    ])
+    ]),
+    orderedGrootBezitters: function () {
+      let tmp = _.filter(this.grootBezitters, item => item.statutaire_naam)
+      return _.orderBy(tmp, 'thecounts', ['desc'])
+    }
   },
   methods: {
     async setBuurtData () {
       const buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
-      this.corporaties = buurtData.data.corporaties
+      this.grootBezitters = buurtData.data.groot_bezitters
     }
   }
 }
