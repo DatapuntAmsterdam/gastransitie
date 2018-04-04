@@ -23,6 +23,7 @@
     <p v-else>
       Geen gegevens beschikbaar:
     </p>
+    <piechart :buurtData="buurtData"></piechart>
   </div>
 </template>
 
@@ -31,13 +32,18 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 import privatedatasets from '../services/privatedatasets'
+import Piechart from './Piechart'
 
 export default {
   data () {
     return {
       corporaties: null,
-      grootBezitters: null
+      grootBezitters: null,
+      buurtData: null
     }
+  },
+  components: {
+    Piechart
   },
   created () {
     this.setBuurtData()
@@ -59,8 +65,8 @@ export default {
   },
   methods: {
     async setBuurtData () {
-      const buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
-      this.grootBezitters = buurtData.data.groot_bezitters
+      this.buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
+      this.grootBezitters = _.cloneDeep(this.buurtData.data.groot_bezitters)
     }
   }
 }
