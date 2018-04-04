@@ -11,7 +11,7 @@ let afwcCache = {}
 let mipCache = {}
 let energieLabelCache = {}
 let renovatieCache = {}
-let warmtekoudeCache = {}
+let warmtekoudeCache = null
 let gasGroenCache = {}
 let gasOranjeCache = {}
 
@@ -143,10 +143,10 @@ async function getHrBuurt (buurt) {
 }
 
 async function getWarmtekoude (buurt) {
-  if (!warmtekoudeCache[buurt]) {
-    warmtekoudeCache[buurt] = readGeojson(getUrl('/warmtekoude/') + `?buurt=${buurt}&page_size=2000`)
+  if (!warmtekoudeCache) {
+    warmtekoudeCache = readGeojson(getUrl('/warmtekoude/') + `?page_size=2000`)
   }
-  return warmtekoudeCache[buurt]
+  return warmtekoudeCache
 }
 
 async function getBagBrk (buurten, buurt) {
