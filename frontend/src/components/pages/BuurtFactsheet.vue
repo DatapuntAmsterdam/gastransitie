@@ -85,7 +85,10 @@
 
     <card :title="`Energie labels in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+          <style-legend :legend="energieLabelMapConfig.legend"></style-legend>
+        </div>
+        <div class="col-8">
           <amsterdam-map :config="energieLabelMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -123,6 +126,7 @@ import GevestigdeBedrijven from '../GevestigdeBedrijven'
 import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
 import WaardeEnInkomen from '../WaardeEnInkomen'
 import Pano from '../Pano'
+import StyleLegend from '../StyleLegend'
 
 export default {
   data () {
@@ -148,6 +152,7 @@ export default {
     GeplandPerCorporatie,
     GeplandPerJaar,
     Pano,
+    StyleLegend,
     'card': card,
     'amsterdam-map': AmsterdamMap,
     'sociale-kenmerken': socialeKenmerken,

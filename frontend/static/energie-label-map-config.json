@@ -26,5 +26,7 @@
             "color": "pink",
             "styleFunction": "energielabel"
         }
-    ]
+    ],
+
+    "legend": "ENERGIE"
 }

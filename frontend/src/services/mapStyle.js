@@ -104,34 +104,45 @@ function afwcStyle (feature) {
 
 registerStyleFunction('afwc', afwcStyle)
 
-function energieLabelStyle (feature) {
-  let color = 'gray'
-  switch (feature.properties.energielabel) {
-    case 'A':
-      color = 'rgb(14,152,19)'
-      break
-    case 'B':
-      color = 'rgb(56,223,34)'
-      break
-    case 'C':
-      color = 'rgb(180,254,78)'
-      break
-    case 'D':
-      color = 'rgb(255,255,53)'
-      break
-    case 'E':
-      color = 'rgb(254,209,78)'
-      break
-    case 'F':
-      color = 'rgb(254,130,38)'
-      break
-    case 'G':
-      color = 'rgb(223,22,27)'
-      break
+export const LABELS = {
+  'ENERGIE': {
+    'A': {
+      label: 'Zeer laag energieverbruik',
+      color: 'rgb(14,152,19)'
+    },
+    'B': {
+      label: 'Laag energieverbruik',
+      color: 'rgb(56,223,34)'
+    },
+    'C': {
+      label: 'Redelijk laag energieverbruik',
+      color: 'rgb(180,254,78)'
+    },
+    'D': {
+      label: 'Gemiddeld energieverbruik',
+      color: 'rgb(255,255,53)'
+    },
+    'E': {
+      label: 'Redelijk hoog energieverbruik',
+      color: 'rgb(254,209,78)'
+    },
+    'F': {
+      label: 'Hoog energieverbruik',
+      color: 'rgb(254,130,38)'
+    },
+    'G': {
+      label: 'Zeer hoog energieverbruik',
+      color: 'rgb(223,22,27)'
+    }
   }
+}
 
+const getColor = (labels, label) => (labels[label] && labels[label].color) || 'gray'
+
+function energieLabelStyle (feature) {
+  const color = getColor(LABELS.ENERGIE, feature.properties.energielabel)
   return {
-    color: color,
+    color,
     stroke: false,
     fillColor: color,
     fillOpacity: 1,
