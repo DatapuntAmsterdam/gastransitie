@@ -145,10 +145,6 @@ async function getHrBuurt (buurt) {
 async function getWarmtekoude (buurt) {
   if (!warmtekoudeCache) {
     warmtekoudeCache = await readGeojson(getUrl('/warmtekoude/') + `?page_size=2000`)
-    let features = []
-    warmtekoudeCache.features.forEach(f => {
-      features = features.concat(f)
-    })
   }
   return warmtekoudeCache
 }
