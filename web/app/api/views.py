@@ -14,9 +14,11 @@ from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
 from datasets.models.bag import BagRapport
 from datasets.models.mip import Mip2016
+
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
 from datasets.models.warmtekoude import Warmtekoude
+from datasets.models.warmtekoude import WarmtekoudeSimple
 from datasets.models.alliander import GasGroen, GasOranje
 
 
@@ -168,8 +170,8 @@ class WarmtekoudeFilter(FilterSet, BuurtFilter):
 
 class WarmtekoudeViewSet(viewsets.ModelViewSet):
     serializer_class = WarmtekoudeSerializer
-    queryset = Warmtekoude.objects.all().order_by('ogc_fid')
-    filter_class = WarmtekoudeFilter
+    queryset = WarmtekoudeSimple.objects.all().order_by('selectie')
+    # filter_class = WarmtekoudeFilter
 
 
 class GasGroenFilter(FilterSet, BuurtFilter):

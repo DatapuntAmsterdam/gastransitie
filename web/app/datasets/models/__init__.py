@@ -9,4 +9,5 @@ from .handelsregister import Handelsregister
 from .handelsregister import SBIcodes
 from .handelsregister import HandelsregisterBuurt
 from .warmtekoude import Warmtekoude
+from .warmtekoude import WarmtekoudeSimple
 from .alliander import GasGroen, GasOranje

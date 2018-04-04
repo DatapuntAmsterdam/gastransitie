@@ -10,6 +10,7 @@ from datasets.models import Renovatie
 from datasets.models import Handelsregister
 from datasets.models import HandelsregisterBuurt
 from datasets.models import Warmtekoude
+from datasets.models import WarmtekoudeSimple
 from datasets.models import GasGroen, GasOranje
 
 
@@ -110,7 +111,7 @@ class BagBuurtBboxSerializer(GeoFeatureModelSerializer):
 
 class WarmtekoudeSerializer(GeoFeatureModelSerializer):
     class Meta:
-        model = Warmtekoude
+        model = WarmtekoudeSimple
         fields = '__all__'
 
         geo_field = 'wkb_geometry'
