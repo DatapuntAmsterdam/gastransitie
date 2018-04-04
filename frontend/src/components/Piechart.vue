@@ -68,7 +68,7 @@ export default {
       return [].concat(statutairEigenaar, overigeEigenaar, bewonerEigenaar).sort()
     },
     getBulletStyle (index) {
-      const color = d3.schemePaired[index % d3.schemePaired.length] 
+      const color = d3.schemePaired[index % d3.schemePaired.length]
       return {
         'background-color': color,
         color: color
