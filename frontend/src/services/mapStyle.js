@@ -113,13 +113,21 @@ export const LABELS = {
     }
   },
   'WARMTE': {
-    'WARMTE': {
-      label: 'Warmte net',
+    'WT': {
+      label: 'Warmte transport',
       color: 'red'
     },
-    'KOUDE': {
-      label: 'Koude net',
+    'WW': {
+      label: 'Warmte wijk',
+      color: 'PaleVioletRed '
+    },
+    'KT': {
+      label: 'Koude transport',
       color: 'blue'
+    },
+    'KW': {
+      label: 'Koude wijk',
+      color: 'Lightblue'
     }
   },
   'ENERGIE': {
@@ -183,8 +191,7 @@ function afwcStyle (feature) {
 registerStyleFunction('afwc', afwcStyle)
 
 function warmteKoudeStyle (feature) {
-  const label = Object.keys(LABELS.WARMTE).find(l => feature.properties.type_net.includes(l))
-  const color = getColor(LABELS.WARMTE, label)
+  const color = getColor(LABELS.WARMTE, feature.properties.selectie)
   return {
     color,
     fillColor: 'none'

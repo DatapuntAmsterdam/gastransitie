@@ -82,7 +82,7 @@
     <card :title="`Warmte / Koude net in ${buurtData.naam}`">
       <div class="row">
         <div class="col-4">
-          <style-legend :legend="warmteKoudeMapConfig.legend"></style-legend>
+          <style-legend :legend="warmteKoudeMapConfig.legend" :complete="false"></style-legend>
         </div>
         <div class="col-8">
           <amsterdam-map :config="warmteKoudeMapConfig"></amsterdam-map>
