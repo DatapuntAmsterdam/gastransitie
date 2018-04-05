@@ -53,15 +53,17 @@ export default {
       L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
     }
 
+    let zoomOut = this.config.zoomOut
+    const afterZoom = () => {
+      if (zoomOut) {
+        this.map.zoomOut(zoomOut)
+        zoomOut = null
+      }
+    }
+    this.map.on('zoomend', afterZoom)
+
     if (this.buurt && !this.config.noZoom) {
       await this.setMapBounds()
-      const zoomOut = () => {
-        if (this.config.zoomOut) {
-          this.map.zoomOut(this.config.zoomOut)
-        }
-        this.map.off('zoomend', zoomOut)
-      }
-      this.map.on('zoomend', zoomOut)
     }
   },
   methods: {
