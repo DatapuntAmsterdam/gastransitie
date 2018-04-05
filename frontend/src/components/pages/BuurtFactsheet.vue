@@ -15,12 +15,12 @@
     <div class="cards">
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <buurt-info></buurt-info>
           <sociale-kenmerken></sociale-kenmerken>
           <parkeer-info></parkeer-info>
         </div>
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <amsterdam-map :config="buurtMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -33,10 +33,10 @@
       <woningen-per-corporatie></woningen-per-corporatie>
       <div class="tableHeader">Corporatie bezit (bron AFWC 2017)</div>
       <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <style-legend :legend="afwcMapConfig.legend" :complete="false"></style-legend>
         </div>
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <amsterdam-map :config="afwcMapConfig"></amsterdam-map>
         </div>
       </div>
@@ -49,10 +49,10 @@
 
     <card :title="`Bedrijvigheid in ${buurtData.naam}`">
       <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <gebruiks-overzicht></gebruiks-overzicht>
         </div>
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-6 col-xs-12">
           <gevestigde-bedrijven></gevestigde-bedrijven>
         </div>
       </div>
