@@ -12,6 +12,7 @@
 
     <div class="clearfix"></div>
 
+    <div class="cards">
     <card :title="`${buurtData.naam} Algemeen`">
       <div class="row">
         <div class="col-lg-6 col-md-12">
@@ -101,6 +102,7 @@
         </div>
       </div>
     </card>
+    </div>
   </div>
 </template>
 
@@ -210,4 +212,9 @@ export default {
 </script>
 
 <style scoped>
+@media print {
+  .cards .card:not(:first-child) {
+    page-break-inside: avoid;
+  }
+}
 </style>
