@@ -1,16 +1,16 @@
 <template>
   <div v-if="ParkeerData">
-    <div class="tableHeader">EV parkeren</div>
+    <div class="tableHeader">Parkeervakken</div>
 
     <table class="table table-hover table-responsive">
       <tbody>
         <tr>
-          <td>Elektrische oplaad vakken:</td>
-          <td>{{ParkeerData.elektrisch}}</td>
+          <td>Aantal vakken:</td>
+          <td>{{ParkeerData.totaal}}</td>
         </tr>
         <tr>
-          <td>Totaal vakken</td>
-          <td>{{ParkeerData.totaal}}</td>
+          <td>Aantal laadplaatsen:</td>
+          <td>{{ParkeerData.elektrisch}}</td>
         </tr>
       </tbody>
     </table>

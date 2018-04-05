@@ -40,25 +40,36 @@ export default {
     // TODO: make baseOptions configurable as well (just an override in JSON config files)
     const baseOptions = {
       attributionControl: false,
-      zoomControl: false,
+      zoomControl: true,
+      scrollWheelZoom: false,
       center: [52.367653, 4.900877],
-      zoom: 11
+      zoom: 11,
+      ...this.config.leafletBaseOptions
     }
 
-    this.map = L.map(this.$el.querySelector('.map'), this.config.leafletBaseOptions || baseOptions)
+    this.map = L.map(this.$el.querySelector('.map'), baseOptions)
 
     if (this.config.wms) {
       L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
     }
 
+    let zoomOut = this.config.zoomOut
+    const afterZoom = () => {
+      if (zoomOut) {
+        this.map.zoomOut(zoomOut)
+        zoomOut = null
+      }
+    }
+    this.map.on('zoomend', afterZoom)
+
     if (this.buurt && !this.config.noZoom) {
-      this.setMapBounds()
+      await this.setMapBounds()
     }
   },
   methods: {
     async setMapBounds () {
       const bounds = await datasets.getJsonByName('buurtbounds', this.buurt)
-      this.map.fitBounds(bounds)
+      return this.map.fitBounds(bounds)
     }
   },
   watch: {

@@ -113,42 +113,50 @@ export const LABELS = {
     }
   },
   'WARMTE': {
-    'WARMTE TRANSPORT': {
-      label: 'Warmte net',
+    'WT': {
+      label: 'Warmte transport',
       color: 'red'
     },
-    'KOUDE TRANSPORT': {
-      label: 'Koude net',
+    'WW': {
+      label: 'Warmte wijk',
+      color: 'PaleVioletRed '
+    },
+    'KT': {
+      label: 'Koude transport',
       color: 'blue'
+    },
+    'KW': {
+      label: 'Koude wijk',
+      color: 'Lightblue'
     }
   },
   'ENERGIE': {
     'A': {
-      label: 'Zeer laag energieverbruik',
+      label: 'A Zeer laag',
       color: 'rgb(14,152,19)'
     },
     'B': {
-      label: 'Laag energieverbruik',
+      label: 'B Laag',
       color: 'rgb(56,223,34)'
     },
     'C': {
-      label: 'Redelijk laag energieverbruik',
+      label: 'C Redelijk laag',
       color: 'rgb(180,254,78)'
     },
     'D': {
-      label: 'Gemiddeld energieverbruik',
+      label: 'D Gemiddeld',
       color: 'rgb(255,255,53)'
     },
     'E': {
-      label: 'Redelijk hoog energieverbruik',
+      label: 'E Redelijk hoog',
       color: 'rgb(254,209,78)'
     },
     'F': {
-      label: 'Hoog energieverbruik',
+      label: 'F Hoog',
       color: 'rgb(254,130,38)'
     },
     'G': {
-      label: 'Zeer hoog energieverbruik',
+      label: 'G Zeer hoog',
       color: 'rgb(223,22,27)'
     }
   }
@@ -183,7 +191,7 @@ function afwcStyle (feature) {
 registerStyleFunction('afwc', afwcStyle)
 
 function warmteKoudeStyle (feature) {
-  const color = getColor(LABELS.WARMTE, feature.properties.type_net)
+  const color = getColor(LABELS.WARMTE, feature.properties.selectie)
   return {
     color,
     fillColor: 'none'
