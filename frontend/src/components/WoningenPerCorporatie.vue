@@ -7,7 +7,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
 
 import privatedatasets from '../services/privatedatasets'
 import Piechart from './Piechart'
