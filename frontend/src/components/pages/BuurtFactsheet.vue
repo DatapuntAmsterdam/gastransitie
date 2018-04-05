@@ -30,6 +30,7 @@
     <card :title="`Woning bezit in ${buurtData.naam}`">
       <woningen-naar-eigendom></woningen-naar-eigendom>
       <woningen-per-corporatie></woningen-per-corporatie>
+      <div class="tableHeader">Corporatie bezit (bron AFWC 2017)</div>
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <style-legend :legend="afwcMapConfig.legend" :complete="false"></style-legend>

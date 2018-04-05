@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tableHeader">Top 5 groot eigenaars verblijfsobjecten</div>
+    <div class="tableHeader">Top 5 groot eigenaars verblijfsobjecten (bron Kadaster)</div>
     <piechart :buurtData="buurtData"></piechart>
   </div>
 </template>
