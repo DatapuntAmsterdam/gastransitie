@@ -62,7 +62,7 @@ export default {
       // Convert results to std categories
 
       // First category starts at first non-zero time interval
-      const firstNonZero = bouwjaren.findIndex(bj => bj.count > 0)
+      const firstNonZero = bouwjaren.findIndex(bj => bj.count > 0 && bj.to > 1920)
       const firstYear = firstNonZero === -1 ? bouwjaren[0].to : bouwjaren[firstNonZero].from
       // Last category starts at current decennium
       const year = (new Date()).getFullYear()
@@ -70,7 +70,7 @@ export default {
 
       // Compose object
       this.bouwjaar = {
-        [`voor ${firstYear}`]: bouwjaren[0].count
+        [`voor ${firstYear}`]: bouwjaren.slice(0, firstNonZero).reduce((sum, bj) => sum + bj.count, 0)
       }
       bouwjaren.filter(bj => firstYear <= bj.from && bj.from < lastYear)
         .forEach(bj => {

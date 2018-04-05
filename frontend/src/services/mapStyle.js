@@ -132,31 +132,31 @@ export const LABELS = {
   },
   'ENERGIE': {
     'A': {
-      label: 'A Zeer laag energieverbruik',
+      label: 'A Zeer laag',
       color: 'rgb(14,152,19)'
     },
     'B': {
-      label: 'B Laag energieverbruik',
+      label: 'B Laag',
       color: 'rgb(56,223,34)'
     },
     'C': {
-      label: 'C Redelijk laag energieverbruik',
+      label: 'C Redelijk laag',
       color: 'rgb(180,254,78)'
     },
     'D': {
-      label: 'D Gemiddeld energieverbruik',
+      label: 'D Gemiddeld',
       color: 'rgb(255,255,53)'
     },
     'E': {
-      label: 'E Redelijk hoog energieverbruik',
+      label: 'E Redelijk hoog',
       color: 'rgb(254,209,78)'
     },
     'F': {
-      label: 'F Hoog energieverbruik',
+      label: 'F Hoog',
       color: 'rgb(254,130,38)'
     },
     'G': {
-      label: 'G Zeer hoog energieverbruik',
+      label: 'G Zeer hoog',
       color: 'rgb(223,22,27)'
     }
   }
