@@ -13,7 +13,7 @@
           <tbody>
             <tr v-for="(item, index) in data" :key="item.naam">
               <td>
-                <span :style="getBulletStyle(index)" class="legend-bullet">&#9634;</span>
+                <legend-bullet :color="COLORS[index]"></legend-bullet>
               </td>
               <td>
                 {{item.naam}}
@@ -25,7 +25,9 @@
           </tbody>
         </table>
       </div>
-      <div class="col-lg-6 col-md-6 piechart"></div>
+      <div class="col-lg-6 col-md-6 piecontainer">
+        <div class="piechart"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +35,7 @@
 <script>
 import * as d3 from 'd3'
 import _ from 'lodash'
+import LegendBullet from './LegendBullet'
 // edit for layout tweaks:
 const HEIGHT = 300 // Height of SVG element containing pie chart
 const FONT_SIZE = 12 // Font size used in pie chart
@@ -48,6 +51,7 @@ const COLORS = d3.schemePaired.slice(0, N_LARGE_OWNERS)
 COLORS.push('gray')
 
 export default {
+  components: {LegendBullet},
   props: [
     'buurtData'
   ],
@@ -58,7 +62,8 @@ export default {
   },
   data () {
     return {
-      data: []
+      data: [],
+      COLORS
     }
   },
   methods: {
@@ -137,13 +142,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.legend-entry {
-  margin-top: .3rem;
-}
-
-.legend-bullet {
-  letter-spacing: 2px;
-  border: 1px solid;
-  margin-right: 7px;
-}
+  .piecontainer {
+    text-align: center;
+    margin: auto;
+  }
 </style>

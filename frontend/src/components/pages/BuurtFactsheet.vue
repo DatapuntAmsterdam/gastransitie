@@ -217,5 +217,8 @@ export default {
   .cards .card:not(:first-child) {
     page-break-inside: avoid;
   }
+  .cards .card:first-child {
+    margin-top: 25px !important;
+  }
 }
 </style>
