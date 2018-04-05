@@ -1,28 +1,6 @@
 <template>
   <div>
-    <div class="tableHeader">Groot bezitters woningen</div>
-
-    <table class="table table-hover table-responsive" v-if="orderedGrootBezitters.length">
-      <thead>
-        <tr>
-          <th>Eigenaar</th>
-          <th>Aantal woningen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in orderedGrootBezitters" :key="item.statutaire_naam">
-          <td>
-            {{item.statutaire_naam}}
-          </td>
-          <td>
-            {{item.thecounts}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p v-else>
-      Geen gegevens beschikbaar:
-    </p>
+    <div class="tableHeader">Top 5 groot eigenaars verblijfsobjecten</div>
     <piechart :buurtData="buurtData"></piechart>
   </div>
 </template>

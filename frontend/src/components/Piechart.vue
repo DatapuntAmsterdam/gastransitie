@@ -1,42 +1,49 @@
 <template>
   <div>
-      <div class="row">
-        <div class="col-lg-6 col-md-12 piechart">
-        </div>
-        <div class="col-lg-6 col-md-12 pielegend">
-          <table>
-            <thead>
-              <tr>
-                <th>Kleur</th>
-                <th>Aantal</th>
-                <th>Eigenaar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="data.length" v-for="(item, index) in data" :key="item.naam">
-                <td class="legend-entry">
-                  <span :style="getBulletStyle(index)" class="legend-bullet">
-                    &#9634;
-                  </span>
-                </td>
-                <td>{{item.aantal}}</td>
-                <td>{{item.naam}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <table class="table table-hover table-responsive" v-if="data.length">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Eigenaar</th>
+              <th>Aantal woningen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in data" :key="item.naam">
+              <td>
+                <span :style="getBulletStyle(index)" class="legend-bullet">&#9634;</span>
+              </td>
+              <td>
+                {{item.naam}}
+              </td>
+              <td>
+                {{item.aantal}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="col-lg-6 col-md-6 piechart"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import * as d3 from 'd3'
 import _ from 'lodash'
+// edit for layout tweaks:
+const HEIGHT = 300 // Height of SVG element containing pie chart
+const FONT_SIZE = 12 // Font size used in pie chart
+const N_LARGE_OWNERS = 5 // Number of large "verblijfs object" (~ dwelling) owners
 
-const WIDTH = 400
-const HEIGHT = 400
+// layout constants
+const WIDTH = HEIGHT
+const OUTER_RADIUS = HEIGHT / 2
+const INNER_RADIUS = HEIGHT / 4
+const TEXT_RADIUS = (OUTER_RADIUS + INNER_RADIUS) / 2
 
-const N_LARGE_OWNERS = 10
 const COLORS = d3.schemePaired.slice(0, N_LARGE_OWNERS)
 COLORS.push('gray')
 
@@ -51,7 +58,7 @@ export default {
   },
   data () {
     return {
-      data: null
+      data: []
     }
   },
   methods: {
@@ -67,9 +74,8 @@ export default {
         N_LARGE_OWNERS
       )
 
-      let overige = buurtData.data.vbo_count - statutairEigenaar.reduce((sum, item) => sum + item.aantal, 0)
       return _.sortBy(statutairEigenaar, item => -item.aantal).concat(
-        [{naam: 'Overige', aantal: overige}]
+        [{naam: 'Eigenaar / Bewoner', aantal: buurtData.data.bewoners_count}]
       )
     },
     getBulletStyle (index) {
@@ -95,12 +101,12 @@ export default {
         .sort(null)
 
       let path = d3.arc()
-        .outerRadius(HEIGHT / 2)
-        .innerRadius(HEIGHT / 4)
+        .outerRadius(OUTER_RADIUS)
+        .innerRadius(INNER_RADIUS)
 
       let label = d3.arc()
-        .outerRadius(HEIGHT / 2 - 50)
-        .innerRadius(HEIGHT / 2 - 50)
+        .outerRadius(TEXT_RADIUS)
+        .innerRadius(TEXT_RADIUS)
 
       let arc = g.selectAll('.arc')
         .data(pie(data))
@@ -117,6 +123,8 @@ export default {
           return (180 * (d.endAngle - d.startAngle) / Math.PI) > 20 ? d.data.aantal : ''
         })
         .style('text-anchor', 'middle')
+        .style('vertical-align', 'middle')
+        .style('font-size', FONT_SIZE)
     },
     draw (buurtData) {
       if (buurtData) {
