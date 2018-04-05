@@ -15,8 +15,6 @@ import Piechart from './Piechart'
 export default {
   data () {
     return {
-      corporaties: null,
-      grootBezitters: null,
       buurtData: null
     }
   },
@@ -35,16 +33,11 @@ export default {
     ...mapGetters([
       'buurten',
       'buurt'
-    ]),
-    orderedGrootBezitters: function () {
-      let tmp = _.filter(this.grootBezitters, item => item.statutaire_naam)
-      return _.orderBy(tmp, 'thecounts', ['desc'])
-    }
+    ])
   },
   methods: {
     async setBuurtData () {
       this.buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
-      this.grootBezitters = _.cloneDeep(this.buurtData.data.groot_bezitters)
     }
   }
 }
