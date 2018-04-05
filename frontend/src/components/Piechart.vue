@@ -65,7 +65,7 @@ export default {
     prepData (buurtData) {
       let statutairEigenaar = _.slice(
         _.filter(
-          _.sortBy(buurtData.data.groot_bezitters, item => -item.aantal),
+          _.sortBy(buurtData.data.groot_bezitters, item => -item.thecounts),
           item => item.statutaire_naam
         ).map(
           item => ({naam: item.statutaire_naam, aantal: item.thecounts})
