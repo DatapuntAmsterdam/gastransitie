@@ -18,6 +18,7 @@
           <buurt-info></buurt-info>
           <sociale-kenmerken></sociale-kenmerken>
           <parkeer-info></parkeer-info>
+          <energie-info></energie-info>
         </div>
         <div class="col-lg-6 col-md-12">
           <amsterdam-map :config="buurtMapConfig"></amsterdam-map>
@@ -131,6 +132,7 @@ import WoningOppervlakten from '../WoningOppervlakten'
 import WoningenNaarEigendom from '../WoningenNaarEigendom'
 import GebruiksOverzicht from '../GebruiksOverzicht'
 import BuurtInfo from '../BuurtInfo'
+import EnergieInfo from '../EnergieInfo'
 import GevestigdeBedrijven from '../GevestigdeBedrijven'
 import MeerjarigInvesteringsPlan from '../MeerjarigInvesteringsPlan'
 import WaardeEnInkomen from '../WaardeEnInkomen'
@@ -162,6 +164,7 @@ export default {
     WoningenPerCorporatie,
     GeplandPerCorporatie,
     GeplandPerJaar,
+    EnergieInfo,
     Pano,
     StyleLegend,
     parkeerInfo,

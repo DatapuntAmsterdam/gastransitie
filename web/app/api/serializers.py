@@ -12,6 +12,7 @@ from datasets.models import HandelsregisterBuurt
 from datasets.models import Warmtekoude
 from datasets.models import WarmtekoudeSimple
 from datasets.models import GasGroen, GasOranje
+from datasets.models.alliander import VerbruikPerBuurt
 
 
 # Candidate to be added to the drf_amsterdam project:
@@ -56,6 +57,14 @@ class BagBuurtRapportSerializer(ModelSerializer, SelfLinkSerializerMixin):
 
     class Meta:
         model = BagRapport
+        fields = '__all__'
+
+
+class EnergieRapportSerializer(ModelSerializer, SelfLinkSerializerMixin):
+    _links = SerializerMethodField()
+
+    class Meta:
+        model = VerbruikPerBuurt
         fields = '__all__'
 
 
