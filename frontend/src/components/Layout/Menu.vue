@@ -66,4 +66,10 @@ export default {
 .menu {
   background-color: $ams-lichtgrijs;
 }
+
+@media print {
+  .menu {
+    display: none;
+  }
+}
 </style>

@@ -19,9 +19,4 @@ export default {
 </script>
 
 <style scoped>
-@media print {
-  .card {
-    page-break-after: always;
-  }
-}
 </style>
