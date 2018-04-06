@@ -173,7 +173,7 @@ def import_alliander(datadir):
     -leidingen
     -verbruik
     """
-    # load_xslx_verbruik_kv(datadir)
+    load_xslx_verbruik_kv(datadir)
     p6_buurt = create_p6_buurt()
     verbruik_per_buurt(p6_buurt)
 
