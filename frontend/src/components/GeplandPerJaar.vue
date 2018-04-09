@@ -26,8 +26,11 @@ import { mapGetters } from 'vuex'
 
 import datasets from '@/services/privatedatasets'
 
+// Start with the previous yaer
 const startYear = (new Date()).getFullYear() - 1
+// Show the following 7 years
 const NYEARS = 7
+// The years array contains becomes: [startyear, startyear + 1, ..., startyear + 7]
 const years = new Array(NYEARS).fill(0).map((i, n) => startYear + n)
 
 export default {
