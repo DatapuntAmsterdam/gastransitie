@@ -11,6 +11,7 @@ from factory import fuzzy
 
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagRapport
+from datasets.models.alliander import VerbruikPerBuurt
 from datasets.models.bag import BagBuurt
 from datasets.models.cbs import CBSBuurt
 from datasets.models.mip import Mip2016
@@ -108,6 +109,38 @@ class BagRapportFactory(factory.DjangoModelFactory):
 
     class Meta:
         model = BagRapport
+
+    id = fuzzy.FuzzyText(length=14)
+    code = fuzzy.FuzzyText(length=3)
+    vollcode = fuzzy.FuzzyText(length=4)
+    naam = fuzzy.FuzzyText(length=40)
+    data = dict(empty=True)
+
+
+class BagRapportFactory(factory.DjangoModelFactory):
+    """
+    Contains json doc with information about owners ship and
+    other counts
+    """
+
+    class Meta:
+        model = BagRapport
+
+    id = fuzzy.FuzzyText(length=14)
+    code = fuzzy.FuzzyText(length=3)
+    vollcode = fuzzy.FuzzyText(length=4)
+    naam = fuzzy.FuzzyText(length=40)
+    data = dict(empty=True)
+
+
+class VerbruikRapportFactory(factory.DjangoModelFactory):
+    """
+    Contains json doc with information about owners ship and
+    other counts
+    """
+
+    class Meta:
+        model = VerbruikPerBuurt
 
     id = fuzzy.FuzzyText(length=14)
     code = fuzzy.FuzzyText(length=3)

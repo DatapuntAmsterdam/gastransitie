@@ -9,11 +9,13 @@ from django.contrib.gis.geos import Polygon, MultiPolygon
 from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
 from datasets.models.mip import Mip2016
+from datasets.models.alliander import VerbruikPerBuurt
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
 from datasets.models.handelsregister import Handelsregister
 from datasets.models.handelsregister import HandelsregisterBuurt
 
+from .factories import VerbruikRapportFactory
 from .factories import RenovatieFactory
 from .factories import BuurtFactory
 from .factories import BagRapportFactory
@@ -75,7 +77,8 @@ class BrowseDatasetsTestCase(APITestCase, authorization.AuthorizationSetup):
         'gastransitie/api/bag',
         'gastransitie/api/buurtbbox',
         'gastransitie/api/handelsregister',
-        'gastransitie/api/handelsregisterbuurt'
+        'gastransitie/api/handelsregisterbuurt',
+        'gastransitie/api/energieverbruik',
     ]
 
     def setUp(self):
@@ -110,6 +113,7 @@ class BrowseDatasetsTestCase(APITestCase, authorization.AuthorizationSetup):
         EnergieLabelFactory.create()
         HandelsregisterFactory.create()
         HandelsregisterBuurtFactory.create()
+        VerbruikRapportFactory.create()
 
     @classmethod
     def tearDownClass(cls):
@@ -120,6 +124,7 @@ class BrowseDatasetsTestCase(APITestCase, authorization.AuthorizationSetup):
         EnergieLabel.objects.all().delete()
         Handelsregister.objects.all().delete()
         HandelsregisterBuurt.objects.all().delete()
+        VerbruikPerBuurt.objects.all().delete()
 
     def valid_response(self, url, response):
         """
