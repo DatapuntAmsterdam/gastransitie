@@ -17,6 +17,7 @@ let gasOranjeCache = {}
 
 let hrCache = {}
 let hrBuurtCache = {}
+let energieBuurtCache = {}
 let bagBrkCache = {}
 
 let allBorders = null
@@ -181,10 +182,19 @@ async function getAllBorders (buurt) {
   return allBorders
 }
 
+async function getEnergieBuurt (buurt) {
+  // Note: takes landelijk id not Amsterdam style ones
+  if (!energieBuurtCache[buurt]) {
+    energieBuurtCache[buurt] = util.readProtectedData(getUrl('/energieverbruik/') + `?vollcode=${buurt}`)
+  }
+  return energieBuurtCache[buurt]
+}
+
 async function getJsonByName (name, buurt) {
   let getters = new Map([
     ['afwc', getAfwc],
     ['energielabel', getEnergieLabel],
+    ['energie', getEnergieBuurt],
     ['mip', getMip],
     ['renovatie', getRenovatie],
     ['buurtbounds', getBuurtBounds],
@@ -204,6 +214,7 @@ async function getJsonByName (name, buurt) {
 export default {
   getAfwc,
   getEnergieLabel,
+  getEnergieBuurt,
   getMip,
   getRenovatie,
   getJsonByName,

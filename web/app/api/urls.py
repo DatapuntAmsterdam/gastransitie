@@ -11,6 +11,7 @@ from .views import WarmtekoudeViewSet
 from .views import BagBuurtRapportViewSet
 from .views import GasOranjeViewSet
 from .views import GasGroenViewSet
+from .views import VerbruikBuurtRapportViewSet
 
 from .hr_views import HandelsregisterViewSet
 from .hr_views import HandelsregisterBuurtViewSet
@@ -55,5 +56,6 @@ router.register('handelsregisterbuurt', HandelsregisterBuurtViewSet)
 router.register('warmtekoude', WarmtekoudeViewSet)
 router.register('gasoranje', GasOranjeViewSet)
 router.register('gasgroen', GasGroenViewSet)
+router.register('energieverbruik', VerbruikBuurtRapportViewSet)
 
 urlpatterns = router.urls

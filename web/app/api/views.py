@@ -14,6 +14,7 @@ from datasets.models.corporatie_bezit import GasAfwc2017
 from datasets.models.bag import BagBuurt
 from datasets.models.bag import BagRapport
 from datasets.models.mip import Mip2016
+from datasets.models.alliander import VerbruikPerBuurt
 
 from datasets.models.energie_labels import EnergieLabel
 from datasets.models.renovaties import Renovatie
@@ -131,17 +132,18 @@ class RenovatieViewSet(viewsets.ModelViewSet):
     filter_class = RenovatieFilter
 
 
-class OLDBagBuurtRapportViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = BagBuurtRapportSerializer
-    queryset = BagRapport.objects.all().order_by('id')
-    filter_fields = ('vollcode', 'code', 'naam')
-
-
 class BagBuurtRapportViewSet(DatapuntViewSet):
     serializer_class = BagBuurtRapportSerializer
     serializer_detail_class = BagBuurtRapportSerializer
     queryset = BagRapport.objects.all().order_by('id')
     filter_fields = ('vollcode', 'code', 'naam')
+
+
+class VerbruikBuurtRapportViewSet(DatapuntViewSet):
+    serializer_class = BagBuurtRapportSerializer
+    serializer_detail_class = BagBuurtRapportSerializer
+    queryset = VerbruikPerBuurt.objects.all().order_by('id')
+    filter_fields = ('vollcode', 'naam')
 
 
 class BagBuurtViewSet(viewsets.ReadOnlyModelViewSet):
