@@ -48,8 +48,7 @@ export default {
     async getData () {
       if (this.buurt) {
         let data = await datasets.getEnergieBuurt(this.buurt)
-	this.energieData = data.results[0]
-	debugger
+	    this.energieData = data.results[0]
       }
     }
   },
