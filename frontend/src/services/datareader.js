@@ -1,8 +1,8 @@
-import Vue from 'vue'
+import axios from 'axios'
 
 /**
  * Register HTTP status
- * @type {{pending: number, success: number, error: number}}
+ * @type \{{pending: number, success: number, error: number}}
  */
 export const HTTPStatus = {
   pending: 0, // The number of pending HTTP requests
@@ -26,13 +26,13 @@ function sleep (ms) {
  * @param nTries optional parameter specifying the number of retries, default = 5
  * @returns {Promise<*>}
  */
-export async function get (url, headers = null, nTries = 5) {
+async function get (url, headers = null, nTries = 5) {
   let result
   let nTry = 0
   do {
     try {
       HTTPStatus.pending++ // Track pending requests
-      result = await (headers ? Vue.axios.get(url, headers) : Vue.axios.get(url))
+      result = await (headers ? axios.get(url, headers) : axios.get(url))
     } catch (error) {
       console.error('Retry...', url)
       nTry++
