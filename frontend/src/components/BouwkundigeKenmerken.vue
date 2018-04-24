@@ -59,7 +59,7 @@ export default {
           // convert to object with from, to and count properties
           return {from, to, count: verdeling[key]}
         })
-        .sort((bj1, bj2) => bj1.from - bj2.from)  // Sort on start year ascending
+        .sort((bj1, bj2) => bj1.from - bj2.from) // Sort on start year ascending
 
       // Convert results to std categories
 
