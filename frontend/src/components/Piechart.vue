@@ -68,6 +68,12 @@ export default {
   },
   methods: {
     prepData (buurtData) {
+      // We want a piechart that is sorted piechart containing the top five large
+      // owners of "verblijfsobjecten" and the sum of all small owners. Goal is to
+      // be able to quickly judge the how fragmented the ownership in a neighborhood
+      // is (few large owners mean easier time coordinating / negotiating).
+      // Any owner without a "statutaire naam" is dropped (we want corporation here -
+      // and not show persons).
       let statutairEigenaar = _.slice(
         _.filter(
           _.sortBy(buurtData.data.groot_bezitters, item => -item.thecounts),
@@ -79,6 +85,7 @@ export default {
         N_LARGE_OWNERS
       )
 
+      // Show small owners as one category at the end.
       return _.sortBy(statutairEigenaar, item => -item.aantal).concat(
         [{naam: 'Eigenaar / Bewoner', aantal: buurtData.data.bewoners_count}]
       )
@@ -91,6 +98,10 @@ export default {
       }
     },
     drawPieChart (data) {
+      // Typical D3 piechart, we are not, however, using the update selection mechanism to
+      // update data in case of new data, we just redraw.
+
+      // Find element to append plot to, set correct size etc.
       let root = d3.select(this.$el).select('.piechart')
       root.selectAll().remove()
 
@@ -101,6 +112,9 @@ export default {
       let g = svg.append('g')
         .attr('transform', 'translate(' + WIDTH / 2 + ',' + HEIGHT / 2 + ')')
 
+      // "pie generator" (d3.pie) generates data that can be handed to a the SVG arc
+      // generator (d3.arc) which provide the content for the "d" property of SVG path
+      // elements that are added to the DOM.
       let pie = d3.pie()
         .value(d => d.aantal)
         .sort(null)

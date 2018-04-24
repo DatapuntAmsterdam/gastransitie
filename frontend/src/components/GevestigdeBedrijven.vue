@@ -62,6 +62,10 @@ export default {
       let buurtId = this.buurten.find(b => b.vollcode === this.buurt)
       const resultset = await privatedatasets.getJsonByName('handelsregisterbuurt', buurtId.landelijk)
       this.hrData = resultset[0]
+      // The q1 naming originates in the underlying API which in turn is based on Centraal Bureau 
+      // Statistiek (CBS) Standaard Bedrijfsindelin (SBI) database. SBI uses three questions to 
+      // categorize companies. The report in our API is based on the answers to q1 (high level 
+      // categorization).
       let q1 = this.hrData.data.q1
       this.q1 = Object.entries(q1).map(([k, v]) => ({'key': k, 'value': v}))
       this.q1Sum = Object.keys(q1).reduce((tot, key) => q1[key] + tot, 0)
