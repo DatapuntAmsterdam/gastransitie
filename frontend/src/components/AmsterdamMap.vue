@@ -1,3 +1,10 @@
+<!--
+Map component for GeoJSON data sets, uses AmsterdamMapLayer(s) internally to display data.
+
+This component handles the Leaflet instance, Leaflet settings and tile layer background layer.
+
+See the mounted() callback below for an explanation of the supported keys for the config object.
+-->
 <template>
   <div>
     <div class="map"></div>
@@ -37,7 +44,9 @@ export default {
     'map-layer': MapLayer
   },
   async mounted () {
-    // TODO: make baseOptions configurable as well (just an override in JSON config files)
+    // Set basic Leaflet options to show most of Amsterdam, override with config.leafletBaseOptions if defined.
+    // For config.leafletBaseOptions see the Leaflet documentation of map object:
+    // http://leafletjs.com/reference-1.3.0.html#map
     const baseOptions = {
       attributionControl: false,
       zoomControl: true,
@@ -47,8 +56,12 @@ export default {
       ...this.config.leafletBaseOptions
     }
 
+    // Create a Leaflet instance and save a reference to it
     this.map = L.map(this.$el.querySelector('.map'), baseOptions)
 
+    // If a wms tile background is defined, add it to the map.
+    // See leaflet docs: http://leafletjs.com/reference-1.3.0.html#tilelayer for config.wms.settings
+    // TODO: fix naming of "wms" config option (should be tiles or something close)
     if (this.config.wms) {
       L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
     }
@@ -62,6 +75,7 @@ export default {
     }
     this.map.on('zoomend', afterZoom)
 
+    // The map will recenter on the current neighborhood unless the config.noZoom config property it set.
     if (this.buurt && !this.config.noZoom) {
       await this.setMapBounds()
     }

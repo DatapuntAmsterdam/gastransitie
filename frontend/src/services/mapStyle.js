@@ -1,5 +1,11 @@
+// Service that provides pre-defined categorical color scales.
 let styleFunctions = {}
 
+/**
+ * Get the color associated with a label, update its count.
+ * @param {Object} labels labels is an object with colors and labels for a given dataset
+ * @param {string} label
+ */
 const getColor = (labels, label) => {
   if (labels[label] && labels[label].color) {
     labels[label].count += 1
@@ -9,16 +15,26 @@ const getColor = (labels, label) => {
   }
 }
 
+/**
+ * Get a style callback function for a given named data set.
+ * @param {string} name
+ */
 export function getStyleFunction (name) {
   return styleFunctions[name]
 }
 
+/**
+ * Register a style callback function for a named data set
+ * @param {string} name name of dataset
+ * @param {function} callback style callback function
+ */
 export function registerStyleFunction (name, callback) {
   styleFunctions[name] = callback
 }
 
-// register style callbacks for various data sets
-
+/**
+ * Predefined catergorical color scales:
+ */
 export const LABELS = {
   'GAS': {
     'GROEN': {
@@ -162,6 +178,9 @@ export const LABELS = {
   }
 }
 
+/**
+ * For each label counts are kept, this function will reset them all.
+ */
 export function clearStats () {
   Object.keys(LABELS)
     .map(key => LABELS[key])
@@ -169,14 +188,23 @@ export function clearStats () {
       Object.keys(label).forEach(l => { label[l].count = 0 }))
 }
 
-function gasStyle (id) {
+// register style callbacks for various data sets
+
+// Note: the Gas data set is slightly different from the other datasets as it originates
+// from two separate data files that were imported as two tables into the database.
+
+/**
+ * Get the color for one of the gas datasets:
+ * @param {string} id name of the gas data set (either "GROEN" or "ORANJE")
+ */
+function gasDatasetColor (id) {
   return {
     color: getColor(LABELS.GAS, id)
   }
 }
 
-registerStyleFunction('gasgroen', () => gasStyle('GROEN'))
-registerStyleFunction('gasoranje', () => gasStyle('ORANJE'))
+registerStyleFunction('gasgroen', () => gasDatasetColor('GROEN')) // anonymous function as style callback
+registerStyleFunction('gasoranje', () => gasDatasetColor('ORANJE'))
 
 function afwcStyle (feature) {
   const color = getColor(LABELS.CORPORATIE, feature.properties.corp)
