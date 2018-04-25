@@ -1,6 +1,7 @@
 // Handle all local geojson endpoints
 // Handle extracting data (for tables)
 import util from './util'
+import { getConfigForHost } from './hostConfig'
 
 // general data
 let buurtCache = {}
@@ -23,31 +24,7 @@ let bagBrkCache = {}
 let allBorders = null
 
 const NEIGHBORHOOD_WFS_URL = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
-const PRIVATE_DATA_HOST = getPrivateApiHost()
-
-function UnknownHostException (message) {
-  this.message = message
-  this.name = 'uknownHostException'
-}
-
-function getPrivateApiHost () {
-  let privateApiHost = ''
-  switch (document.location.hostname) {
-    case 'localhost':
-    case '127.0.0.1':
-      privateApiHost = 'http://' + document.location.hostname + ':8000'
-      break
-    case 'acc.data.amsterdam.nl':
-      privateApiHost = 'https://acc.data.amsterdam.nl'
-      break
-    case 'data.amsterdam.nl':
-      privateApiHost = 'https://data.amsterdam.nl'
-      break
-    default:
-      throw new UnknownHostException('Frontend is running on unknown host, cannot access data.')
-  }
-  return privateApiHost
-}
+const PRIVATE_DATA_HOST = getConfigForHost().privateApiHost
 
 function getUrl (endpoint) {
   return PRIVATE_DATA_HOST + `/gastransitie/api${endpoint}`
