@@ -22,6 +22,9 @@ let bagBrkCache = {}
 
 let allBorders = null
 
+const NEIGHBORHOOD_WFS_URL = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
+const PRIVATE_DATA_HOST = getPrivateApiHost()
+
 function UnknownHostException (message) {
   this.message = message
   this.name = 'uknownHostException'
@@ -46,9 +49,7 @@ function getPrivateApiHost () {
   return privateApiHost
 }
 
-const PRIVATE_DATA_HOST = getPrivateApiHost()
-
-function getUrl (endpoint, buurt = null) {
+function getUrl (endpoint) {
   return PRIVATE_DATA_HOST + `/gastransitie/api${endpoint}`
 }
 
@@ -62,12 +63,11 @@ async function readGeojson (url) {
 }
 
 async function readJson (url) {
-  const results = await util.readProtectedPaginatedData(
+  return util.readProtectedPaginatedData(
     url,
     util.getPaginatedData,
     util.getNextPageHAL
   )
-  return results
 }
 
 // Energie transitie specific data endpoints (all paginated GeoJSON)
@@ -103,8 +103,8 @@ async function getRenovatie (buurt) {
 async function _getAllBuurtBounds () {
   // From Django GEOSGeometry.extent docs:  (xmin, ymin, xmax, ymax). I.e. (lon, lat) coordinates.
   // This project uses Leaflet which uses (lat, lon) coordinates.
-  // So from Django we get [W, S, E, N] and Leaflet needs [S, W, N, E]
-  let geojson = await readGeojson(getUrl('/buurtbbox/'))
+  // So from Django we get [W, S, E, N] and Leaflet needs [[S, W], [N, E]]
+  const geojson = await readGeojson(getUrl('/buurtbbox/'))
   geojson.features.forEach(
     feature => {
       let [W, S, E, N] = feature.geometry
@@ -176,8 +176,7 @@ async function getGasOranje (buurt) {
 
 async function getAllBorders (buurt) {
   if (!allBorders) {
-    const url = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
-    allBorders = util.readData(url)
+    allBorders = util.readData(NEIGHBORHOOD_WFS_URL)
   }
   return allBorders
 }
@@ -191,24 +190,22 @@ async function getEnergieBuurt (buurt) {
 }
 
 async function getJsonByName (name, buurt) {
-  let getters = new Map([
-    ['afwc', getAfwc],
-    ['energielabel', getEnergieLabel],
-    ['energie', getEnergieBuurt],
-    ['mip', getMip],
-    ['renovatie', getRenovatie],
-    ['buurtbounds', getBuurtBounds],
-    ['buurt', getBuurt],
-    ['handelsregister', getHr],
-    ['handelsregisterbuurt', getHrBuurt],
-    ['warmtekoude', getWarmtekoude],
-    ['bagbrk', getBagBrk],
-    ['gasgroen', getGasGroen],
-    ['gasoranje', getGasOranje],
-    ['allborders', getAllBorders]
-  ])
-
-  return getters.get(name)(buurt)
+  return {
+    afwc: getAfwc,
+    energielabel: getEnergieLabel,
+    energie: getEnergieBuurt,
+    mip: getMip,
+    renovatie: getRenovatie,
+    buurtbounds: getBuurtBounds,
+    buurt: getBuurt,
+    handelsregister: getHr,
+    handelsregisterbuurt: getHrBuurt,
+    warmtekoude: getWarmtekoude,
+    bagbrk: getBagBrk,
+    gasgroen: getGasGroen,
+    gasoranje: getGasOranje,
+    allborders: getAllBorders
+  }[name](buurt)
 }
 
 export default {

@@ -69,23 +69,13 @@ async function loadBuurten () {
     getGeoJSONData,
     getNextPageHAL
   )
-  let tmp = results.map(function (d, i) {
-    return {
-      vollcode: d.properties.vollcode,
-      naam: d.properties.naam,
-      landelijk: d.id
-    }
-  })
-  tmp.sort(function (a, b) {
-    if (a.naam > b.naam) {
-      return +1
-    } else if (a.naam < b.naam) {
-      return -1
-    } else {
-      return 0
-    }
-  })
-  return tmp
+  return results.map(d => ({
+    vollcode: d.properties.vollcode,
+    naam: d.properties.naam,
+    landelijk: d.id
+  })).sort(
+    (a, b) => (a.naam === b.naam) ? 0 : ((a.naam > b.naam) ? 1 : -1)
+  )
 }
 
 async function readData (url) {
