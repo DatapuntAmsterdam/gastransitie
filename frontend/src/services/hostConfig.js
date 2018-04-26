@@ -36,6 +36,7 @@ export function getConfigForHost () {
       throw new UnknownHostException(msg)
   }
   config.authzUrl = config.authzHost + '/oauth2/authorize?idp_id=datapunt'
+  config.privateDataHost = config.privateApiHost // workaround until privateApiHost is phased out
 
   return config
 }

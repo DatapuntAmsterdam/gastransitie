@@ -53,6 +53,7 @@ export async function get (url, headers = null, nTries = 5) {
   }
 }
 
+// TODO: make this accept extra headers
 /**
  * Reads a sequence of responses from a HAL-Json endpoint
  * The endpoint is asked for data until there is no more data available (next = null)
