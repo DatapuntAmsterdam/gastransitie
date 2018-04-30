@@ -27,8 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 export default {
   data () {
@@ -47,8 +46,8 @@ export default {
   methods: {
     async getData () {
       if (this.buurt) {
-        let data = await datasets.getEnergieBuurt(this.buurt)
-        this.energieData = data.results[0]
+        let data = await getDataByName('energie', this.buurt)
+        this.energieData = data[0]
       }
     }
   },

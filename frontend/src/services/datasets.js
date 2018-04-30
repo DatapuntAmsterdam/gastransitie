@@ -1,11 +1,10 @@
 import { getToken } from './auth'
-import { readPaginatedData } from './datareader';
+import { cacheResponse } from './cache'
+import { get, readData, readPaginatedData } from './datareader'
+import { getConfigForHost } from './hostConfig'
 
 const LANDELIJK = 'LANDELIJK'
 const VOLLCODE = 'VOLLCODE'
-
-const GEOJSON = 'geojson'
-const JSON = 'json'
 
 const VOLLCODE2LANDELIJK = {}
 const LANDELIJK2VOLLCODE = {}
@@ -13,121 +12,107 @@ const LANDELIJK2VOLLCODE = {}
 const PRIVATE_URL = getConfigForHost().privateDataHost + '/gastransitie/api'
 const NEIGHBORHOOD_WFS_URL = 'https://map.data.amsterdam.nl/maps/gebieden?REQUEST=GetFeature&SERVICE=wfs&Version=2.0.0&SRSNAME=EPSG:4326&typename=buurt_simple&outputformat=geojson'
 
-// Cache keys are as follows: AREA.DATA_SETNAME where area is 'STAD' or a buurt identifier in VOLLCODE style
+// Listing of all data sets, do not access directly, instead, call ...
 const DATASETS = {
-  afwc: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: key => PRIVATE_URL + `/afwc/?buurt=${_translate(key, VOLLCODE)}`,
+  DEFAULT: {
+    // Default case, is used as fallback, override by defining them for a specific dataset.
+
+    // Default assumption; data set uses HAL-JSON pagination:
+    download: readPaginatedData,
+    // Default assumption; data set is cached at the neighborhood level:
     getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
+    // Default assumption; data is GeoJSON:
     postProcess: results => asGeojson(results),
+    // Default assumption: dataset endpoint uses OAuth2
     getHeaders: getDatapuntOAuthHeaders
+    // Note: there is no default getUrl function!
+  },
+  BOOTSTRAP: {
+    // To initialize the VOLLCODE <=> LANDELIJK neigborhood code mapping, that is used for all dataset
+    // to translate between these neighborhood ids we must hit the endpoint /gastransitie/api/buurt/ .
+    getUrl: () => PRIVATE_URL + '/buurt/',
+    getCacheKey: () => 'BOOTSTRAP',
+    postProcess: results => {
+      // Initialize the mappings, then just return the results (untouched) for use in application
+      // start-up (see main.js in root of this Vue project).
+      results = asGeojson(results)
+      results.features.forEach(item => {
+        VOLLCODE2LANDELIJK[item.properties.vollcode] = item.id
+        LANDELIJK2VOLLCODE[item.id] = item.properties.vollcode
+      })
+
+      return results
+    }
+  },
+  afwc: {
+    getUrl: neighborhood => PRIVATE_URL + `/afwc/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   energielabel: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/energielabel/?buurt=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/energielabel/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   mip: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/mip/?buurt=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/mip/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   renovatie: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/renovatie/?buurt=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/renovatie/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   // buurtbounds is used to zoom in the various maps to the relevant neighborhood (factsheet page)
   buurtbounds: {
-    download: (url, headers) => readPaginatedData(url, headers),
     getUrl: neighborhood => PRIVATE_URL + `/buurtbbox/?vollcode=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
     postProcess: results => {
+      results = asGeojson(results)
       let [W, S, E, N] = results.features[0].geometry
       return [[S, W], [N, E]]
-    },
-    getHeaders: getDatapuntOAuthHeaders
+    }
   },
   // allborders is used to draw borders on the small overall map on the neighborhood factsheet page
   allborders: {
-    download: (url, headers) => get(url),
+    download: async (url, headers) => get(url),
     getUrl: neighborhood => NEIGHBORHOOD_WFS_URL,
     getCacheKey: (datasetName, neighborhood) => `STAD.${datasetName}`,
-    postProcess: results => results,
+    postProcess: results => results.data,
     getHeaders: () => {}
   },
   buurt: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/buurt/?vollcode=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/buurt/?vollcode=${_translate(neighborhood, VOLLCODE)}`
   },
   handelsregister: {
-    download: (url, headers) => readPaginatedData(url, headers),
     getUrl: neighborhood => PRIVATE_URL + `/handelsregister/?buurt_id=${_translate(neighborhood, LANDELIJK)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => results,
-    getHeaders: getDatapuntOAuthHeaders
+    postProcess: results => results
   },
   handelsregisterbuurt: {
-    download: (url, headers) => readPaginatedData(url, headers),
     getUrl: neighborhood => PRIVATE_URL + `/handelsregisterbuurt/?buurt_id=${_translate(neighborhood, LANDELIJK)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => results,
-    headers: getDatapuntOAuthHeaders
+    postProcess: results => results
   },
   warmtekoude: {
-    download: (url, headers) => readPaginatedData(url, headers),
     getUrl: neighborhood => PRIVATE_URL + `/warmtekoude/`,
-    getCacheKey: (datasetName, neighborhood) => `STAD.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getCacheKey: (datasetName, neighborhood) => `STAD.${datasetName}`
   },
   bagbrk: {
-    download: (url, headers) => readPaginatedData(url, headers),
+    download: readData,
     getUrl: neighborhood => PRIVATE_URL + `/bag/${_translate(neighborhood, LANDELIJK)}/`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: async results => await results,
-    getHeaders: getDatapuntOAuthHeaders
+    postProcess: async results => results
   },
   gasgroen: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/gasgroen/?buurt=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/gasgroen/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   gasoranje: {
-    download: (url, headers) => readPaginatedData(url, headers),
-    getUrl: neighborhood => PRIVATE_URL + `/gasoranje/?buurt=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => asGeojson(results),
-    getHeaders: getDatapuntOAuthHeaders
+    getUrl: neighborhood => PRIVATE_URL + `/gasoranje/?buurt=${_translate(neighborhood, VOLLCODE)}`
   },
   energie: {
-    download: (url, headers) => readPaginatedData(url, headers),
     getUrl: neighborhood => PRIVATE_URL + `/energieverbruik/?vollcode=${_translate(neighborhood, VOLLCODE)}`,
-    getCacheKey: (datasetName, neighborhood) => `${_translate(neighborhood, VOLLCODE)}.${datasetName}`,
-    postProcess: results => results,
-    getHeaders: getDatapuntOAuthHeaders
+    postProcess: results => results
   }
 }
 
 /**
- * Create a valid GeoJSON Feature collection from an array of features.
- * @param {Array} features 
+ * Create a valid GeoJSON Feature collection from HAL-JSON style GeoJSON endpoint output.
+ * @param {Array} features
  */
-function asGeojson (features) {
+function asGeojson (results) {
   return {
     type: 'FeatureCollection',
-    features
+    features: results.reduce((a, b) => a.concat(b.features), [])
   }
 }
 
@@ -143,44 +128,47 @@ function getDatapuntOAuthHeaders () {
 }
 
 /**
- * Given a key of type vollcode or 
- * @param {string} key 
- * @param {string} keyType either 'VOLLCODE' or 'LANDELIJK' (but use the constants VOLLCODE or LANDELIJK)
+ * Access data set by name, either from cache or by downloading it from the API source.
+ * @param {string} datasetName Name of the dataset
+ * @param {string} neighborhood Neighborhood identifier (of type VOLLCODE, or LANDELIJK)
+ */
+export async function getDataByName (datasetName, neighborhood) {
+  let meta = DATASETS[datasetName]
+  let fallback = DATASETS.DEFAULT
+
+  let getData = async () => {
+    const url = meta.getUrl(neighborhood)
+    const headers = (meta.getHeaders || fallback.getHeaders)()
+    // const rawData = await (meta.download || fallback.download)(url, headers)
+    const rawData = await (meta.download || fallback.download)(url, headers)
+    const data = (meta.postProcess || fallback.postProcess)(rawData)
+    return data
+  }
+
+  let key = (meta.getCacheKey || fallback.getCacheKey)(datasetName, neighborhood)
+  return cacheResponse(key, getData)
+}
+
+/**
+ * Given a key of type VOLLCODE or LANDELIJK translate it to desired type
+ * @param {string} key neighborhood identifier (of type VOLLCODE or LANDELIJK)
+ * @param {string} keyType desired type of neighborhood identifier (either VOLLCODE or LANDELIJK)
  */
 function _translate (key, keyType) {
   let translated = ''
   switch (key.length) {
     case 4: // we were provided a key of type VOLLCODE
       translated = (keyType === VOLLCODE) ? key : VOLLCODE2LANDELIJK[key]
+      break
     case 14: // we were provided a key of type LANDELIJK
       translated = (keyType === LANDELIJK) ? key : LANDELIJK2VOLLCODE[key]
+      break
     default:
       throw new Error('key type not "volledige code" or "landelijke code"')
   }
   return translated
 }
 
-//////////
-
-async function accessData (datasetName, neighborhood) {
-  // Access data set metadata
-  let meta = DATASETS[datasetName]
-
-  let getData = async () => {
-    const url = meta.getUrl(neighborhood)
-    const headers = meta.getHeaders()
-
-    let download = meta.download ? meta.download : readPaginatedData // allow override of Paginated HAL-JSON assumption
-    let postProcess = meta.postProcess ? meta.postProcess // allow override "returned data are GeoJSON features" assumption
-
-
-    return meta.postProcess(download(url, headers))
-  }
-  let cacheKey = meta.getCacheKey(datasetName, neighborhood)
-
-  return cacheResponse(cacheKey, getData)
-}
-
-// om te gebruiken:
-
-let data = await accessData('mip', 'A08d')
+// boostrap the mappings
+getDataByName('BOOTSTRAP', 'DOES NOT MATTER')
+console.log('Initialized datasets')

@@ -1,6 +1,6 @@
 import { get } from './datareader'
 import { getToken } from './auth'
-import privateDataSets from './privatedatasets'
+import { getDataByName } from './datasets'
 
 // Helper function to access next link (used with readData)
 const getNoNext = r => null
@@ -63,13 +63,8 @@ function resultsAsGeoJSON (features) {
 }
 
 async function loadBuurten () {
-  const url = privateDataSets.PRIVATE_DATA_HOST + '/gastransitie/api/buurt/'
-  let results = await readProtectedPaginatedData(
-    url,
-    getGeoJSONData,
-    getNextPageHAL
-  )
-  return results.map(d => ({
+  let results = await getDataByName('BOOTSTRAP', 'DOES NOT MATTER')
+  return results.features.map(d => ({
     vollcode: d.properties.vollcode,
     naam: d.properties.naam,
     landelijk: d.id

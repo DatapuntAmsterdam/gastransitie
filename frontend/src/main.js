@@ -34,6 +34,7 @@ let vueApp = new Vue({
       setBuurten: 'setBuurten'
     }),
     async init () {
+      // following line implicitly initalizes the neighborhood id mappings in ./services/datasets.js
       const buurten = await util.loadBuurten()
       this.setBuurten(buurten)
     }

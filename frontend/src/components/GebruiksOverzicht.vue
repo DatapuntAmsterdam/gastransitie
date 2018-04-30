@@ -27,7 +27,7 @@
 import { mapGetters } from 'vuex'
 
 import _ from 'lodash'
-import privatedatasets from '../services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 export default {
   data () {
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async setBuurtData () {
-      this.buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
+      this.buurtData = await getDataByName('bagbrk', this.buurt)
 
       this.gebruik = this.buurtData.data.gebruik
       this.gebruikSum = this.gebruik.reduce((t, item) => item.count + t, 0)

@@ -21,8 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import privatedatasets from '../services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 export default {
   data () {
@@ -46,8 +45,7 @@ export default {
   },
   methods: {
     async setBuurtData () {
-      const buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
-
+      const buurtData = await getDataByName('bagbrk', this.buurt)
       const grootte = buurtData.data.bouwkundige_groote
 
       // Convert results to std categories
