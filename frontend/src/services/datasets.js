@@ -1,5 +1,5 @@
 import { getToken } from './auth'
-import { cacheResponse } from './cache'
+import { cacheResponse, cacheDelete } from './cache'
 import { get, readData, readPaginatedData } from './datareader'
 import { getConfigForHost } from './hostConfig'
 
@@ -147,6 +147,22 @@ export async function getDataByName (datasetName, neighborhood) {
 
   let key = (meta.getCacheKey || fallback.getCacheKey)(datasetName, neighborhood)
   return cacheResponse(key, getData)
+}
+
+/**
+ * Remove data cached at the neighborhood level
+ * @param {string} datasetName name of dataset
+ * @param {string} neighborhood neighborhood identifier (of type VOLLCODE, or LANDELIJK)
+ */
+export async function removeData (datasetName, neighborhood) {
+  let meta = DATASETS[datasetName]
+  let fallback = DATASETS.DEFAULT
+
+  const cacheKey = (meta.getCacheKey || fallback.getCacheKey)(datasetName, neighborhood)
+  if (cacheKey.includes(neighborhood)) {
+    // only reset cache for dataset that is keyed by neighborhood - do not re-download citywide data
+    cacheDelete(cacheKey)
+  }
 }
 
 /**

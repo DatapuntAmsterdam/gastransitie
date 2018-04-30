@@ -14,3 +14,7 @@ export async function cacheResponse (key, getData) {
   }
   return cache[key]
 }
+
+export function cacheDelete (key) {
+  delete cache[key]
+}
