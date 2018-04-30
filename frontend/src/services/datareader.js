@@ -61,7 +61,6 @@ export async function get (url, headers = null, nTries = 5) {
  * @returns {Promise<Array>}
  */
 export async function readPaginatedData (url, headers = null) {
-  console.log(headers)
   let next = url
   let results = []
   let page = 1

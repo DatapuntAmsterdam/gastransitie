@@ -111,7 +111,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-import util from '@/services/util'
+import { readData } from '@/services/datareader'
 
 import card from '../Layout/Card'
 
@@ -187,7 +187,7 @@ export default {
       if (this.buurten) {
         const buurtDetail = this.buurten.find(b => b.vollcode === buurt)
         const url = 'https://api.data.amsterdam.nl/gebieden/buurt/' + buurtDetail.landelijk
-        const buurtData = await util.readData(url)
+        const buurtData = await readData(url)
         this.setBuurtData(buurtData)
       } else {
         this.setBuurtData(null)

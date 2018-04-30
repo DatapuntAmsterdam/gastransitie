@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// import util from '../services/util'
 import { mapGetters } from 'vuex'
 import { getDataByName } from '../services/datasets'
 
