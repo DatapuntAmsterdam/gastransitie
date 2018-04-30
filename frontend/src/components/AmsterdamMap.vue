@@ -24,7 +24,7 @@ import { mapGetters } from 'vuex'
 
 import L from 'leaflet'
 import MapLayer from '@/components/AmsterdamMapLayer'
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 export default {
   props: [
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     async setMapBounds () {
-      const bounds = await datasets.getJsonByName('buurtbounds', this.buurt)
+      const bounds = await getDataByName('buurtbounds', this.buurt)
       return this.map.fitBounds(bounds)
     }
   },

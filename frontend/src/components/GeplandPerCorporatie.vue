@@ -25,8 +25,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 const corporaties = {
   alliantie: 'Alliantie',
@@ -55,7 +54,7 @@ export default {
   methods: {
     async getData () {
       if (this.buurt) {
-        this.data = await datasets.getJsonByName('renovatie', this.buurt)
+        this.data = await getDataByName('renovatie', this.buurt)
       }
     }
   },
