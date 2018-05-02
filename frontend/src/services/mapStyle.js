@@ -131,19 +131,19 @@ export const LABELS = {
   'WARMTE': {
     'WT': {
       label: 'Warmte transport',
-      color: 'red'
+      color: '#ca0020'
     },
     'WW': {
       label: 'Warmte wijk',
-      color: 'PaleVioletRed '
+      color: '#f4a582'
     },
     'KT': {
       label: 'Koude transport',
-      color: 'blue'
+      color: '#92c5de'
     },
     'KW': {
       label: 'Koude wijk',
-      color: 'Lightblue'
+      color: '#0571b0'
     }
   },
   'ENERGIE': {
