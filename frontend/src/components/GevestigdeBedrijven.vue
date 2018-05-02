@@ -26,10 +26,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import privatedatasets from '../services/privatedatasets'
-
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
+import { getDataByName } from '../services/datasets'
 
 export default {
   data () {
@@ -59,8 +58,8 @@ export default {
   },
   methods: {
     async setBuurtData () {
-      let buurtId = this.buurten.find(b => b.vollcode === this.buurt)
-      const resultset = await privatedatasets.getJsonByName('handelsregisterbuurt', buurtId.landelijk)
+      const resultset = await getDataByName('handelsregisterbuurt', this.buurt)
+
       this.hrData = resultset[0]
       // The q1 naming originates in the underlying API which in turn is based on Centraal Bureau
       // Statistiek (CBS) Standaard Bedrijfsindelin (SBI) database. SBI uses three questions to

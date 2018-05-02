@@ -24,9 +24,8 @@
 </template>
 
 <script>
-// import util from '../services/util'
 import { mapGetters } from 'vuex'
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 import _ from 'lodash'
 
@@ -52,7 +51,7 @@ export default {
   },
   methods: {
     async setBuurtData () {
-      this.geojson = await datasets.getJsonByName('mip', this.buurt)
+      this.geojson = await getDataByName('mip', this.buurt)
       this.mipData = this.orderedMIP()
     },
     orderedMIP: function () {

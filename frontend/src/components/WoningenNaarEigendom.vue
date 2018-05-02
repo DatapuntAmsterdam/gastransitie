@@ -23,8 +23,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import privatedatasets from '../services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 export default {
   data () {
@@ -48,7 +47,7 @@ export default {
   },
   methods: {
     async setBuurtData (buurt) {
-      this.buurtData = await privatedatasets.getBagBrk(this.buurten, this.buurt)
+      this.buurtData = await getDataByName('bagbrk', this.buurt)
     }
   }
 }

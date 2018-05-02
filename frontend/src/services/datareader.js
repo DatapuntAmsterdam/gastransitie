@@ -32,7 +32,7 @@ export async function get (url, headers = null, nTries = 5) {
   do {
     try {
       HTTPStatus.pending++ // Track pending requests
-      result = await (headers ? axios.get(url, headers) : axios.get(url))
+      result = await (headers ? axios.get(url, { headers }) : axios.get(url))
     } catch (error) {
       console.error('Retry...', url)
       nTry++
@@ -60,7 +60,7 @@ export async function get (url, headers = null, nTries = 5) {
  * @param url
  * @returns {Promise<Array>}
  */
-export async function readPaginatedData (url) {
+export async function readPaginatedData (url, headers = null) {
   let next = url
   let results = []
   let page = 1
@@ -69,7 +69,8 @@ export async function readPaginatedData (url) {
   while (next) {
     try {
       const requestUrl = `${url}${concatParam}page=${page}&page_size=${pageSize}`
-      let response = await get(requestUrl)
+      // let response = await get(requestUrl)
+      let response = await (headers ? get(requestUrl, headers) : get(requestUrl))
       next = response.data._links.next.href
       results = results.concat(response.data.results)
       page += 1
@@ -86,7 +87,7 @@ export async function readPaginatedData (url) {
  * @param resolve
  * @returns {Promise<*>}
  */
-export async function readData (url, resolve = d => d.data) {
-  let response = await get(url)
+export async function readData (url, headers = null, resolve = d => d.data) {
+  let response = await (headers ? get(url, headers) : get(url))
   return resolve(response)
 }

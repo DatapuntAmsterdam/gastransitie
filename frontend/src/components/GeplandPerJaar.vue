@@ -23,8 +23,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 
 // Start with the previous yaer
 const startYear = (new Date()).getFullYear() - 1
@@ -51,7 +50,7 @@ export default {
   methods: {
     async getData () {
       if (this.buurt) {
-        this.data = await datasets.getJsonByName('renovatie', this.buurt)
+        this.data = await getDataByName('renovatie', this.buurt)
       }
     }
   },

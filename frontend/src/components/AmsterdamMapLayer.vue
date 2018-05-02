@@ -6,7 +6,7 @@ files), a Leaflet map instance to draw on, and an Amsterdam neighborhood
 represented by its "volledige code" like "A08d".
 
 A layer config object is can contains the following keys:
-"dataset": the name of the dataset (defined in privatedatasets service)
+"dataset": the name of the dataset (defined in datasets service)
 "color": single color to use for this layer's GeoJSON data
 "styleFunction": a callback that returns the style for a feature in the dataset
 -->
@@ -16,7 +16,7 @@ A layer config object is can contains the following keys:
 
 <script>
 import L from 'leaflet'
-import datasets from '@/services/privatedatasets'
+import { getDataByName } from '../services/datasets'
 import { getStyleFunction } from '@/services/mapStyle'
 
 export default {
@@ -33,7 +33,7 @@ export default {
   },
   async mounted () {
     console.assert(this.config !== null && this.config !== undefined, 'A config entry is needed to render this layer.')
-    this.geojson = await datasets.getJsonByName(this.config.dataset, this.buurt)
+    this.geojson = await getDataByName(this.config.dataset, this.buurt)
   },
   watch: {
     geojson (to, from) {
