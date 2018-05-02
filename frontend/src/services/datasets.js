@@ -131,8 +131,16 @@ function getDatapuntOAuthHeaders () {
  * Access data set by name, either from cache or by downloading it from the API source.
  * @param {string} datasetName Name of the dataset
  * @param {string} neighborhood Neighborhood identifier (of type VOLLCODE, or LANDELIJK)
+ * @param {Boolean} isRecursive flag that is used by initialization code, no public use
  */
-export async function getDataByName (datasetName, neighborhood) {
+export async function getDataByName (datasetName, neighborhood, isRecursive = false) {
+  // This module needs the VOLLCODE <==> LANDELIJK mapping initialized, the following
+  // will always access the BOOTSTRAP data (which causes initialization). If the module
+  // is already initialized, this will result in a cache hit.
+  if (!isRecursive) {
+    await getDataByName('BOOTSTRAP', 'DOES NOT MATTER', true)
+  }
+
   let meta = DATASETS[datasetName]
   let fallback = DATASETS.DEFAULT
 
@@ -184,7 +192,3 @@ function _translate (key, keyType) {
   }
   return translated
 }
-
-// boostrap the mappings
-getDataByName('BOOTSTRAP', 'DOES NOT MATTER')
-console.log('Initialized datasets')
