@@ -37,6 +37,9 @@ class GasOranje(models.Model):
 
 
 class VerbruikPerBuurt(models.Model):
+    """
+    Gesommeerde verbruikers gegevens van alliander per buurt
+    """
     id = models.CharField(max_length=14, primary_key=True)
     code = models.CharField(max_length=3)
     vollcode = models.CharField(max_length=4)
@@ -44,7 +47,27 @@ class VerbruikPerBuurt(models.Model):
     data = JSONField()
 
 
+class VerbruikPerPandenP6(models.Model):
+    """
+    183.876 panden / 18.412 p6 / ~25 in amsterdam
+    ~verbruik per 25 huishoudens
+    per pand verzameling verbruiksgegevens samen gebracht.
+
+    - meerder p6 verbruiks gegevens in een groot pand.
+    - per p6 betrokken panden
+    """
+    code = models.CharField(max_length=3, db_index=True, null=True)
+    vollcode = models.CharField(max_length=4, db_index=True, null=True)
+    buurt_id = models.CharField(max_length=14, db_index=True)
+    data = JSONField(null=True)
+    # postcodes = models.TextField(blank=True, null=True)
+    geometrie = models.MultiPolygonField(null=True)
+
+
 class AllianderKv(models.Model):
+    """
+    Alliander kleinverbruikers informatie
+    """
     index = models.BigIntegerField(primary_key=True)
     meetverantwoordelijke = models.TextField(db_column='MEETVERANTWOORDELIJKE', blank=True, null=True)  # Field name made lowercase.
     netbeheerder = models.TextField(db_column='NETBEHEERDER', blank=True, null=True)  # Field name made lowercase.

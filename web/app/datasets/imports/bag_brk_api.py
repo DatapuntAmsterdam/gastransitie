@@ -128,7 +128,7 @@ def make_corporatie_rapport(buurt):
 def make_bezit_rapport(buurt):
     """Corporatie vbo's sql
 
-    Achterhaal hoeveel bezit coorporaties hebben in de buurt
+    Achterhaal groote bezitters in de buurt
     """
 
     sql = f"""

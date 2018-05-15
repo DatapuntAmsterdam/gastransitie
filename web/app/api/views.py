@@ -22,6 +22,7 @@ from datasets.models.warmtekoude import Warmtekoude
 from datasets.models.warmtekoude import WarmtekoudeSimple
 from datasets.models.alliander import GasGroen, GasOranje
 
+from django.shortcuts import get_object_or_404
 
 from django_filters.rest_framework import filters
 from django_filters.rest_framework import FilterSet
@@ -137,6 +138,17 @@ class BagBuurtRapportViewSet(DatapuntViewSet):
     serializer_detail_class = BagBuurtRapportSerializer
     queryset = BagRapport.objects.all().order_by('id')
     filter_fields = ('vollcode', 'code', 'naam')
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        if pk and len(pk) == 14:
+            obj = get_object_or_404(BagRapport, pk=pk)
+        if pk and len(pk) == 4:
+            obj = get_object_or_404(BagRapport, vollcode=pk)
+        if pk and len(pk) == 3:
+            obj = get_object_or_404(BagRapport, code=pk)
+
+        return obj
 
 
 class VerbruikBuurtRapportViewSet(DatapuntViewSet):
