@@ -321,6 +321,11 @@ def sum_rapports(rapports):
 
     m = master
 
+    if m['rapport_count'] > 1:
+        c = m['rapport_count']
+        m['elk']['leveringsrichting'] = m['elk']['leveringsrichting'] / c
+        m['gas']['leveringsrichting'] = m['gas']['leveringsrichting'] / c
+
     m.pop('postcodes')
     m.pop('buurt_ids')
 
@@ -329,6 +334,9 @@ def sum_rapports(rapports):
 
 def create_usage_views():
     """Create sql views
+
+    Create 'verbruik' field as total usage devided by the
+    amount of connections / aansluitingen.
     """
 
     sql_gas = """
@@ -346,7 +354,7 @@ FROM datasets_verbruikperpandenp6
     sql_elk = """
 CREATE OR REPLACE VIEW elk_verbruik as
 SELECT id, code, vollcode, buurt_id, geometrie,
-cast(data->'elk'->>'m3' as float) as gasm3,
+cast(data->'elk'->>'Kwh' as float) as Kwh,
 cast(data->'elk'->>'aansluitingen' as float) as aansluitingen,
 CAST(data->'elk'->>'leveringsrichting' as float) as leveringsrichting,
 COALESCE(
