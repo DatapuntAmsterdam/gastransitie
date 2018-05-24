@@ -134,9 +134,8 @@ function getDatapuntOAuthHeaders () {
  * @param {Boolean} isRecursive flag that is used by initialization code, no public use
  */
 export async function getDataByName (datasetName, neighborhood, isRecursive = false) {
-  // This module needs the VOLLCODE <==> LANDELIJK mapping initialized, the following
-  // will always access the BOOTSTRAP data (which causes initialization). If the module
-  // is already initialized, this will result in a cache hit.
+  // First data access will do an extra request to populate the VOLLCODE <==> LANDELIJK
+  // mappings, subsequent data access will hit the cache.
   if (!isRecursive) {
     await getDataByName('BOOTSTRAP', 'DOES NOT MATTER', true)
   }
