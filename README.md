@@ -114,7 +114,7 @@ docker-compose --rm web python manage.py migrate
 docker-compose run --rm web python manage.py run_import --alliander
 ```
 
-(Note: this is only relevant is you did not import the full dataset as
+(Note: this is only relevant if you did not import the full dataset as
 described in the previous section.)
 
 ### Running the tests
