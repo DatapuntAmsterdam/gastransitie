@@ -93,6 +93,30 @@ The source directories for the Django web application use a bind mount into
 the running Docker container. Furthermore the Django development server is used
 so there is no need to manually reload the application on a source update.
 
+### Creating the map "energieverbruik" layer
+A normal full import run of the gastransitie project will also create the
+energie verbruik map layer (as part of the Alliander import step). The map
+layer is constructed using open Alliander energy usage data and the BAG
+database that contains the "panden" (~buildings) and their postal codes.
+
+In the commands below replace `<password>` with the actual object store
+password and `<username>` with your username (assuming you are authorized to
+access the data).
+
+```
+export GASTRANSITIE_OBJECTSTORE_PASSWORD=<password>
+docker-compose pull
+docker-compose build
+docker-compose up -d database
+docker-compose exec -T database update-db.sh bag <username>
+docker-compose run --rm web python manage.py download_data
+docker-compose --rm web python manage.py migrate
+docker-compose run --rm web python manage.py run_import --alliander
+```
+
+(Note: this is only relevant is you did not import the full dataset as
+described in the previous section.)
+
 ### Running the tests
 You can run the tests for the `web` container that does both the imports
 and serve the API, using the following command (after building the containers).
