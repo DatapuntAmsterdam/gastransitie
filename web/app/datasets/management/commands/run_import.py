@@ -8,6 +8,8 @@ from datasets.imports import bag_brk_api
 from datasets.imports import bag_fix
 
 from datasets.imports.alliander import import_alliander
+from datasets.imports.alliander import load_xslx_verbruik_kv
+from datasets.imports.alliander import create_usage_views
 from datasets.imports.corporatie_bezit import import_corporatie_bezit
 from datasets.imports.renovaties import import_renovaties
 
@@ -29,9 +31,14 @@ class Command(BaseCommand):
         'corporatie_bezit': import_corporatie_bezit,
         'energielabels': import_energie_labels,
         'alliander': import_alliander,
+        'alliander_xml': load_xslx_verbruik_kv,
         # 'eigendomskaart': import_eigendomskaart,
         'warmtekoude': import_warmtekoude
         # 'cbs': import_cbs
+    }
+
+    operations = {
+        'alliander_views': create_usage_views,
     }
 
     def add_arguments(self, parser):
@@ -61,6 +68,12 @@ class Command(BaseCommand):
 
         # for every bron add flag.
         for key in self.bronnen.keys():
+            parser.add_argument(
+                f'--{key}', default=False,
+                action='store_true', help=f'Load {key}')
+
+        # for every operation add flag.
+        for key in self.operations.keys():
             parser.add_argument(
                 f'--{key}', default=False,
                 action='store_true', help=f'Load {key}')
@@ -95,6 +108,11 @@ class Command(BaseCommand):
                 import_function(target_dir)
                 return
 
-        # if no aguments is given load ALL static sources
+        for operation, operation_function in self.operations.items():
+            if options.get(operation):
+                operation_function()
+                return
+
+        # if no aguments is given load ALL static sources / bronnen
         for bron, import_function in self.bronnen.items():
                 import_function(target_dir)

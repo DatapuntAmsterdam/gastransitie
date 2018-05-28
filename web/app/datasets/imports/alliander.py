@@ -30,8 +30,6 @@ import pandas
 from openpyxl import load_workbook
 from sqlalchemy import create_engine
 from django.db import connections
-from django.contrib.gis.geos import MultiPolygon
-from django.contrib.gis.geos import GEOSGeometry
 from datasets.models import bag
 from datasets.models import alliander
 
@@ -124,7 +122,7 @@ def create_p6_buurt():
     AND postcode is not null
     AND postcode != ''
     ORDER BY naam
-    """
+    """   # noqa
 
     with connections['bag'].cursor() as cursor:
         cursor.execute(sql)
@@ -316,7 +314,9 @@ def add_panden_to_kv(p6_panden):
     return p6_rapports
 
 
-def _add_pand_to_collection(geomcollection, rapportcollection, rapport):
+def _add_pand_to_collection(pandcollection, rapportcollection, rapport):
+    """Find all involved panden.
+    """
 
     rapportcollection.append(rapport)
 
@@ -327,13 +327,13 @@ def _add_pand_to_collection(geomcollection, rapportcollection, rapport):
 
     for pand in rapport['panden']:
 
-        geomcollection.append(pand['geometrie'])
+        pandcollection.append(pand)
 
         if not pand['rapporten']:
             continue
 
         for sub_r in pand['rapporten']:
-            _add_pand_to_collection(geomcollection, rapportcollection, sub_r)
+            _add_pand_to_collection(pandcollection, rapportcollection, sub_r)
 
 
 def merge_rapport(m, r):
@@ -400,6 +400,21 @@ FROM datasets_verbruikperpandenp6
         cursor.execute(sql_elk)
 
 
+def _save_pand_record(master_rapport, buurt_id, pandcollection):
+    b = bag.BagBuurt.objects.using('bag').get(id=buurt_id)
+
+    for pand in pandcollection:
+
+        vp6 = alliander.VerbruikPerPandenP6(
+            code=b.code,
+            vollcode=b.vollcode,
+            buurt_id=buurt_id,
+            geometrie=pand['geometrie'],
+            data=master_rapport
+        )
+        vp6.save()
+
+
 def create_panden_usage_map(p6_rapports):
     """
     For all 6p - pand relations create single
@@ -415,31 +430,21 @@ def create_panden_usage_map(p6_rapports):
     for i, rapport in enumerate(p6_rapports.values()):
         if rapport.get('visited'):
             continue
-        geomcollection = []
+
+        pandcollection = []
         collection_rapports = []
 
-        _add_pand_to_collection(geomcollection, collection_rapports, rapport)
-
-        geomcollection = [GEOSGeometry(p, srid=28992) for p in geomcollection]
+        _add_pand_to_collection(pandcollection, collection_rapports, rapport)
 
         if not rapport['panden']:
             continue
 
         pand = rapport['panden'][0]
         buurt_id = pand['buurtids'][0]
-        b = bag.BagBuurt.objects.using('bag').get(id=buurt_id)
 
         master_rapport = sum_rapports(collection_rapports)
 
-        vp6 = alliander.VerbruikPerPandenP6(
-            code=b.code,
-            vollcode=b.vollcode,
-            buurt_id=buurt_id,
-            # postcode=
-            geometrie=MultiPolygon(geomcollection),
-            data=master_rapport
-        )
-        vp6.save()
+        _save_pand_record(master_rapport, buurt_id, pandcollection)
 
         if i % 100 == 0:
             log.debug(i)
@@ -488,7 +493,7 @@ def import_alliander(datadir):
     -verbruik pand
     -verbruik buurt
     """
-    load_xslx_verbruik_kv(datadir)
+    # load_xslx_verbruik_kv(datadir)
     p6_panden = create_p6_panden()
     p6_rapports = add_panden_to_kv(p6_panden)
     create_panden_usage_map(p6_rapports)

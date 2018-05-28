@@ -61,7 +61,7 @@ class VerbruikPerPandenP6(models.Model):
     buurt_id = models.CharField(max_length=14, db_index=True)
     data = JSONField(null=True)
     # postcodes = models.TextField(blank=True, null=True)
-    geometrie = models.MultiPolygonField(null=True)
+    geometrie = models.PolygonField(null=True, srid=28992)
 
 
 class AllianderKv(models.Model):
