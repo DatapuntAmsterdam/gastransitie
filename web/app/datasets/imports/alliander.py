@@ -1,3 +1,28 @@
+"""
+Handle Alliander data
+
+Note Regardig the "Energieverbruik" map layer creation process:
+* Data sources:
+    * Alliander provided dataset with energy usage per postcode 6
+      (kleinverbruik). Note that sometimes the smallest aggregation
+      has a few postcodes (if very few people live in a given
+      postcode area they are combined by Alliander to avoid spilling
+      personally identifiable data).
+    * Basisregistraties Adressen en Gebouwen
+
+* General point about Postcode (6), these are not areas! (Hence the
+  link to panden.)
+
+* For every row in the Alliander data the postcodes are retrieved along
+  with the amount of energy used.
+* For every Postcode 6 the panden (~ buildings) are retrieved along with
+  their geometry. Note: it is possible that a pand can have several
+  postcodes in case of large appartment blocks --- and it is possible
+  for a postcode 6 to have several panden.
+* Map now shows the aggregate energy usage per postcode 6 (or several
+  postcode 6s for large buildings) colorcoded.
+
+"""
 import os
 import logging
 
@@ -38,7 +63,10 @@ def _load_stoplicht_alliander(filename):
 
 def load_xslx_verbruik_kv(datadir):
     """
-    Verbruik P6 data. (klein)
+    Load kleinverbruiksdata per Postcode (6) into the database.
+
+    Note:
+    * Database table is later available through the `AllianderKv` model.
     """
     # LianderKV01012018.xlsx
     xls_path = os.path.join(datadir, 'alliander', 'LianderKV01012018.xlsx')
@@ -85,6 +113,9 @@ def dictfetchall(cursor):
 
 
 def create_p6_buurt():
+    """
+    Create mapping from Postcode (6) to buurt.
+    """
     sql = f"""
     SELECT DISTINCT postcode, b.id as id, b.vollcode as code, b.naam as naam
     FROM bag_nummeraanduiding n, bag_verblijfsobject v, bag_buurt b
@@ -113,7 +144,7 @@ def create_p6_buurt():
 
 def create_p6_panden():
     """
-    For each P6 collect geometrie and id's of involved PANDEN.
+    For each Postcode (6) collect geometrie and id's of involved PANDEN.
     """
     sql = f"""
     SELECT
@@ -150,7 +181,7 @@ def create_p6_panden():
 
 
 def link_panden_raport(p6_rapport, panden):
-    """link pand data <-> p6 rapport a
+    """Link pand data <-> p6 rapport a
     """
     for pand in panden:
         p6_rapport['postcodes'].update(pand['postcodes'])
@@ -217,6 +248,7 @@ def make_empty_rapports():
 
 def generate_postcodes(postcode_van, postcode_tot):
     """
+    Retrieve valid postcodes between postcode_van and postcode_tot.
     """
     if postcode_van == postcode_tot:
         return [postcode_van]
