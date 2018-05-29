@@ -25,8 +25,20 @@
           <amsterdam-map :config="buurtMapConfig"></amsterdam-map>
         </div>
       </div>
+
       <migratie-achtergrond></migratie-achtergrond>
       <waarde-en-inkomen></waarde-en-inkomen>
+    </card>
+
+    <card :title="`${buurtData.naam} Gasverbruik per ~25 aansluitingen`">
+      <div class="row">
+        <div class="col-md-3">
+          <img src="https://acc.map.data.amsterdam.nl/maps/energie?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=gas_verbruik&format=image/svg%2Bxml"/>
+        </div>
+        <div class="col-md-9">
+          <amsterdam-map :config="energieMapConfig"></amsterdam-map>
+        </div>
+      </div>
     </card>
 
     <card :title="`Woning bezit in ${buurtData.naam}`">
@@ -119,6 +131,7 @@ import AmsterdamMap from '../AmsterdamMap'
 import afwcMapConfig from '../../../static/afwc-map-config'
 import mipMapConfig from '../../../static/mip-map-config'
 import buurtMapConfig from '../../../static/buurt-map-config'
+import energieMapConfig from '../../../static/gasverbruik-map-config'
 import gasAllianderMapConfig from '../../../static/gas-alliander-map-config'
 import warmteKoudeMapConfig from '../../../static/warmte-koude-map-config'
 import energieLabelMapConfig from '../../../static/energie-label-map-config'
@@ -150,6 +163,7 @@ export default {
       afwcMapConfig,
       mipMapConfig,
       buurtMapConfig,
+      energieMapConfig,
       gasAllianderMapConfig,
       warmteKoudeMapConfig,
       energieLabelMapConfig

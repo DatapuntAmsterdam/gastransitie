@@ -65,6 +65,9 @@ export default {
     if (this.config.wms) {
       L.tileLayer(this.config.wms.url, this.config.wms.settings).addTo(this.map)
     }
+    if (this.config.wmsmapserver) {
+      L.tileLayer.wms(this.config.wmsmapserver.url, this.config.wmsmapserver.settings).addTo(this.map)
+    }
 
     let zoomOut = this.config.zoomOut
     const afterZoom = () => {
