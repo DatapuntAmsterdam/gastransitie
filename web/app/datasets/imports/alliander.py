@@ -493,7 +493,7 @@ def import_alliander(datadir):
     -verbruik pand
     -verbruik buurt
     """
-    # load_xslx_verbruik_kv(datadir)
+    load_xslx_verbruik_kv(datadir)
     p6_panden = create_p6_panden()
     p6_rapports = add_panden_to_kv(p6_panden)
     create_panden_usage_map(p6_rapports)
