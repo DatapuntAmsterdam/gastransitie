@@ -1,4 +1,10 @@
 {
+    "leafletBaseOptions": {
+        "attributionControl": false,
+        "center": [52.367653, 4.900877],
+        "zoom": 11,
+        "scrollWheelZoom": false
+    },
     "wms": {
         "url": "https://{s}.data.amsterdam.nl/topo_wm_zw/{z}/{x}/{y}.png",
         "settings": {
@@ -8,30 +14,20 @@
             "attribution": "Datapunt Amsterdam"
         }
     },
-
     "wmsmapserver": {
-        "url": "http://geoserver.energieatlas.abf.nl/geoserver/rvo_energieatlas/gwc/service/wms?",
+        "url": "https://acc.map.data.amsterdam.nl/maps/energie",
 	"settings": {
-            "attribution": "Data.overheid.nl",
-	    "layers": "energieklassewoningen",
+            "attribution": "Datapunt Amsterdam",
+	    "layers": "gas_verbruik",
             "format": "image/png",
-	    "transparent": "true"
+            "transparent": true
         }
     },
-
-    "leafletBaseOptions": {
-        "attributionControl": false,
-        "center": [52.367653, 4.900877],
-        "zoom": 11,
-        "scrollWheelZoom": false
-    },
-
     "layers": [
         {
             "dataset": "buurt",
             "color": "black"
         }
     ],
-
-    "legend": "ENERGIE"
+    "noZoom": false
 }
