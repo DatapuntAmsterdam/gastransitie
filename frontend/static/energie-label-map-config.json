@@ -10,7 +10,7 @@
     },
 
     "wmsmapserver": {
-        "url": "http://geoserver.energieatlas.abf.nl/geoserver/rvo_energieatlas/gwc/service/wms?",
+	"url": "https://map.data.amsterdam.nl/maps/energielabels?REQUEST=GetCapabilities&VERSION=1.1.0&SERVICE=wms",
 	"settings": {
             "attribution": "Data.overheid.nl",
 	    "layers": "energieklassewoningen",
