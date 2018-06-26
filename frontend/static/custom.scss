@@ -1,4 +1,5 @@
 @import "~stijl/dist/scss/ams-colorpalette";
+@import "~stijl/dist/scss/ams-font";
 
 $enable-rounded:     false;
 $enable-transitions: false;
@@ -37,13 +38,6 @@ $link-hover-color: $ams-rood;
 
 $line-height-base: 1.25;
 
-footer {
-  background-color: $ams-donkergrijs;
-  color: $ams-wit;
-  a {
-    color: $ams-wit;
-  }
-}
 
 .nav {
   background-color: $ams-lichtgrijs;
