@@ -4,7 +4,6 @@
 //
 
 @import "custom";
-@import "~bootstrap/scss/bootstrap";
 
 .filterText {
   font-weight: bolder;
@@ -12,6 +11,6 @@
 }
 
 .tableHeader {
-  @extend h5;
+  @extend h5 !optional;
   font-weight: bold;
 }
