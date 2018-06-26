@@ -89,17 +89,19 @@ class AuthorizationSetup(object):
 
         now = int(time.time())
 
+        valid_seconds = 7200
+
         token_default = jwt.encode({
             'scopes': [],
-            'iat': now, 'exp': now + 3600},
+            'iat': now, 'exp': now + valid_seconds},
             key.key, algorithm=key.alg, headers=header)
         token_employee = jwt.encode({
             'scopes': [s for s in authorization_levels.SCOPES_EMPLOYEE],
-            'iat': now, 'exp': now + 3600},
+            'iat': now, 'exp': now + valid_seconds},
             key.key, algorithm=key.alg, headers=header)
         token_employee_plus = jwt.encode({
             'scopes': [s for s in authorization_levels.SCOPES_EMPLOYEE_PLUS],
-            'iat': now, 'exp': now + 3600},
+            'iat': now, 'exp': now + valid_seconds},
             key.key, algorithm=key.alg, headers=header)
 
         self.token_default = str(token_default, 'utf-8')
