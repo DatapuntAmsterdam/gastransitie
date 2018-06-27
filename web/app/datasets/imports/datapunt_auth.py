@@ -1,6 +1,13 @@
 """
 Download per buurt alle vestigingen van dataselectie.
 """
+import requests
+import os
+import random
+import string
+
+from urllib.parse import urlparse, parse_qsl
+
 import time
 import jwt
 import logging
@@ -11,102 +18,90 @@ from authorization_django import jwks
 
 log = logging.getLogger(__name__)
 
+# utf-8
 
-class AuthorizationSetup(object):
+
+class GetAccessToken(object):
     """
-    Helper methods to setup JWT tokens and authorization levels
+        Get an header authentication item for access token
+        for using the internal API's
+        by logging in as type = 'employee'
 
-    sets the following attributes:
-
-    token_default
-    token_employee
-    token_employee_plus
+        Usage:
+            from accesstoken import AccessToken
+            getToken = AccessToken()
+            accessToken = getToken.getAccessToken()
+            requests.get(url, headers= accessToken)
     """
-    def __init__(self):
+    def get_auth_header(self):
+        email = os.getenv('GAS_USER', 'gastransitie_api_user')
+        password = os.getenv('GAS_API_PASSWORD', 'insecure')
+        access_token = GetAccessToken().getAccessToken(
+            email, password, acceptance)
+        return accesstoken
 
-        self.token_default = None
-        self.token_employee = None
-        self.token_employee_plus = None
+    def getAccessToken(self, email, password, acceptance):
 
-        self.set_up_authorization()
+        def randomword(length):
+            letters = string.ascii_lowercase
+            return ''.join(random.choice(letters) for i in range(length))
 
-    def set_up_authorization(self):
-        """
-        SET
+        state = randomword(10)
+        # scopes = ['SIG/ALL']
+        scopes = ['HR/R', 'BRK/RSN', 'BRK/RSN']
+        acc_prefix = 'acc.' if acceptance else ''
+        authzUrl = f'https://{acc_prefix}api.data.amsterdam.nl/oauth2/authorize'   # noqa
+        params = {
+            'idp_id': 'datapunt',
+            'response_type': 'token',
+            'client_id': 'citydata',
+            'scope': ' '.join(scopes),
+            'state': state,
+            'redirect_uri': f'https://{acc_prefix}data.amsterdam.nl/'
+        }
 
-        token_default
-        token_employee
-        token_employee_plus
+        response = requests.get(authzUrl, params, allow_redirects=False)
+        if response.status_code == 303:
+            location = response.headers["Location"]
+        else:
+            return {}
 
-        to use with:
+        data = {
+            'type': 'employee_plus',
+            'email': email,
+            'password': password,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Bearer {}'.format(self.token_employee_plus))
+        response = requests.post(location, data=data, allow_redirects=False)
+        if response.status_code == 303:
+            location = response.headers["Location"]
+        else:
+            return {}
 
-        """
-        # NEW STYLE AUTH
-        # The following JWKS data was obtained in the authz project :  jwkgen -create -alg ES256    # noqa
-        # This is a test public/private key def and added for testing .
-        JWKS_TEST_KEY = """
-            {
-                "keys": [
-                    {
-                        "kty": "EC",
-                        "key_ops": [
-                            "verify",
-                            "sign"
-                        ],
-                        "kid": "2aedafba-8170-4064-b704-ce92b7c89cc6",
-                        "crv": "P-256",
-                        "x": "6r8PYwqfZbq_QzoMA4tzJJsYUIIXdeyPA27qTgEJCDw=",
-                        "y": "Cf2clfAfFuuCB06NMfIat9ultkMyrMQO9Hd2H7O9ZVE=",
-                        "d": "N1vu0UQUp0vLfaNeM0EDbl4quvvL6m_ltjoAXXzkI3U="
-                    }
-                ]
-            }
-        """
+        response = requests.get(location, allow_redirects=False)
+        if response.status_code == 303:
+            returnedUrl = response.headers["Location"]
+        else:
+            return {}
 
-        jwks_string = os.getenv('PUB_JWKS', JWKS_TEST_KEY)
-        jwks_signers = jwks.load(jwks_string).signers
-
-        assert len(jwks_signers) > 0
-
-        if len(jwks_signers) == 0:
-            print("""
-
-            WARNING WARNING WARNING
-
-            'JWT_SECRET_KEY' MISSING!!
-
-            """)
-            return False
-
-        list_signers = [(k, v) for k, v in jwks_signers.items()]
-        (kid, key) = list_signers[len(list_signers)-1]
-        header = {"kid": kid}
-
-        log.info('We can create authorized requests!')
-
-        now = int(time.time())
-
-        valid_seconds = 7200
-
-        token_default = jwt.encode({
-            'scopes': [],
-            'iat': now, 'exp': now + valid_seconds},
-            key.key, algorithm=key.alg, headers=header)
-        token_employee = jwt.encode({
-            'scopes': [s for s in authorization_levels.SCOPES_EMPLOYEE],
-            'iat': now, 'exp': now + valid_seconds},
-            key.key, algorithm=key.alg, headers=header)
-        token_employee_plus = jwt.encode({
-            'scopes': [s for s in authorization_levels.SCOPES_EMPLOYEE_PLUS],
-            'iat': now, 'exp': now + valid_seconds},
-            key.key, algorithm=key.alg, headers=header)
-
-        self.token_default = str(token_default, 'utf-8')
-        self.token_employee = str(token_employee, 'utf-8')
-        self.token_employee_plus = str(token_employee_plus, 'utf-8')
+        # Get grantToken from parameter aselect_credentials in session URL
+        parsed = urlparse(returnedUrl)
+        fragment = parse_qsl(parsed.fragment)
+        access_token = fragment[0][1]
+        os.environ["ACCESS_TOKEN"] = access_token
+        return {"Authorization": 'Bearer ' + access_token}
 
 
 auth = AuthorizationSetup()
+
+if __name__ == "__main__":
+    acceptance = True
+    email = os.getenv('GAS_USER', 'gastransitie_api_user')
+    password = os.getenv('GAS_API_PASSWORD', 'insecure')
+    access_token = GetAccessToken().getAccessToken(
+        email, password, acceptance)
+    print(f'Received new Access Token Header: {access_token}')
+    url = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/?buurt_naam=Aalsmeerwegbuurt+Oost"   # noqa
+    response = requests.get(url, headers=access_token)
+    csvresponse = response.text
+    print(csvresponse)

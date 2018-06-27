@@ -16,12 +16,9 @@ trap 'dc kill ; dc rm -f' EXIT
 rm -rf ${DIR}/backups
 mkdir -p ${DIR}/backups
 
-echo "For debugging list volumes"
 dc down	-v
 dc rm -f
 dc pull
-
-docker volume ls
 
 echo "Building images"
 dc build
