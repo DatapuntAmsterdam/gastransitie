@@ -120,4 +120,3 @@ Werkzeug==0.14.1
 widgetsnbextension==3.2.1
 wrapt==1.10.11
 git+https://github.com/Amsterdam/drf_amsterdam.git#egg=drf_amsterdam
-drf-extensions
