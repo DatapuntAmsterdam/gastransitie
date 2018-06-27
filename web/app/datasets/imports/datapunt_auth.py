@@ -36,9 +36,10 @@ class GetAccessToken(object):
     def get_auth_header(self):
         email = os.getenv('GAS_USER', 'gastransitie_api_user')
         password = os.getenv('GAS_API_PASSWORD', 'insecure')
+        acceptance = os.getenv('ENVIRONMENT', 'acceptance') == 'acceptance'
         access_token = GetAccessToken().getAccessToken(
             email, password, acceptance)
-        return accesstoken
+        return access_token
 
     def getAccessToken(self, email, password, acceptance):
 

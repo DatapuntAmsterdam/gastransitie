@@ -14,7 +14,7 @@ from datasets.models import bag
 
 # from collections import Counter
 
-from .datapunt_auth import auth
+from datasets.imports import datapunt_auth
 
 from django.db import connections
 
@@ -27,8 +27,7 @@ STATUS_LINE_C = '%4s %20s %6d %-20s'
 # ROOT = "http://127.0.0.1:8081"
 ROOT = "https://acc.api.data.amsterdam.nl"
 
-# headers = {'Authorization': f'Bearer {auth.token_employee_plus}'}
-headers = auth.GetAccessToken().get_auth_header()
+headers = datapunt_auth.GetAccessToken().get_auth_header()
 
 
 URL_VBO = f"{ROOT}/bag/verblijfsobject/"

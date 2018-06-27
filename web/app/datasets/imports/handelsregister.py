@@ -13,13 +13,13 @@ from datasets.models import BagBuurt
 
 from collections import Counter
 
-from .datapunt_auth import auth
+from datasets.imports import datapunt_auth
 
 # logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 # headers = {'Authorization': f'Bearer {auth.token_employee_ds}'}
-headers = auth.GetAccessToken().get_auth_header()
+headers = datapunt_auth.GetAccessToken().get_auth_header()
 
 URL_HR = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/"
 URL_SBI = "https://acc.api.data.amsterdam.nl/handelsregister/sbicodes/"
