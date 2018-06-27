@@ -92,8 +92,6 @@ class GetAccessToken(object):
         return {"Authorization": 'Bearer ' + access_token}
 
 
-auth = AuthorizationSetup()
-
 if __name__ == "__main__":
     acceptance = True
     email = os.getenv('GAS_USER', 'gastransitie_api_user')
