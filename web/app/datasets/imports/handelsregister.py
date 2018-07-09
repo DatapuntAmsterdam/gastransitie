@@ -19,7 +19,6 @@ from datasets.imports import datapunt_auth
 log = logging.getLogger(__name__)
 
 # headers = {'Authorization': f'Bearer {auth.token_employee_ds}'}
-headers = datapunt_auth.GetAccessToken().get_auth_header()
 
 URL_HR = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/"
 URL_SBI = "https://acc.api.data.amsterdam.nl/handelsregister/sbicodes/"
@@ -33,6 +32,8 @@ PARAMS = {
 def get_hr_for_all_buurten():
 
     Handelsregister.objects.all().delete()
+
+    headers = datapunt_auth.GetAccessToken().get_auth_header()
 
     for b in bag.BagBuurt.objects.all().order_by('naam'):
         PARAMS['buurt_naam'] = b.naam
@@ -74,6 +75,7 @@ def get_sbi_code_meta():
         'detailed': True,
     }
 
+    headers = datapunt_auth.GetAccessToken().get_auth_header()
     response = requests.get(URL_SBI, params=params, headers=headers)
 
     if not response.status_code == 200:
