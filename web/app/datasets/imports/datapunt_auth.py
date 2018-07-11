@@ -49,7 +49,7 @@ class GetAccessToken(object):
 
         state = randomword(10)
         # scopes = ['SIG/ALL']
-        scopes = ['HR/R', 'BRK/RSN', 'BRK/RSN']
+        scopes = ['HR/R', 'BRK/RSN', 'BRK/RS']
         acc_prefix = 'acc.' if acceptance else ''
         authzUrl = f'https://{acc_prefix}api.data.amsterdam.nl/oauth2/authorize'   # noqa
         params = {
@@ -101,6 +101,7 @@ if __name__ == "__main__":
         email, password, acceptance)
     print(f'Received new Access Token Header: {access_token}')
     url = "https://acc.api.data.amsterdam.nl/dataselectie/hr/export/?buurt_naam=Aalsmeerwegbuurt+Oost"   # noqa
+    # url = "https://acc.api.data.amsterdam.nl/brk/subject/?buurt=K44d&zakelijk_recht=2"  # noqa
     response = requests.get(url, headers=access_token)
     csvresponse = response.text
     print(csvresponse)

@@ -31,7 +31,7 @@ class Command(BaseCommand):
         'corporatie_bezit': import_corporatie_bezit,
         'energielabels': import_energie_labels,
         'alliander': import_alliander,
-        'alliander_xml': load_xslx_verbruik_kv,
+        # 'alliander_xml': load_xslx_verbruik_kv,
         # 'eigendomskaart': import_eigendomskaart,
         'warmtekoude': import_warmtekoude
         # 'cbs': import_cbs
@@ -98,6 +98,7 @@ class Command(BaseCommand):
 
         if options['indexgebied']:
             bag_fix.reindex_bag_buurt()
+            return
 
         target_dir = options['dir'] if options['dir'] is not None else '/data'
         log.info('Downloading / Importing from %s', target_dir)

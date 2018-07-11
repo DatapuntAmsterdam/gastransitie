@@ -27,7 +27,6 @@ STATUS_LINE_C = '%4s %20s %6d %-20s'
 # ROOT = "http://127.0.0.1:8081"
 ROOT = "https://acc.api.data.amsterdam.nl"
 
-headers = datapunt_auth.GetAccessToken().get_auth_header()
 
 
 URL_VBO = f"{ROOT}/bag/verblijfsobject/"
@@ -78,7 +77,7 @@ WONING_CORPORATIES = [
 
 
 def get_json(url, params):
-
+    headers = datapunt_auth.GetAccessToken().get_auth_header()
     start = time.time()
     response = requests.get(url, params=params, headers=headers)
 
