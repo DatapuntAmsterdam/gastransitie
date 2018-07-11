@@ -35,7 +35,7 @@ class GetAccessToken(object):
     """
     def get_auth_header(self):
         email = os.getenv('GAS_USER', 'gastransitie_api_user')
-        password = os.getenv('GAS_API_PASSWORD', 'insecure')
+        password = os.getenv('GAS_API_PASSWORD')   # crash hard when missing.
         acceptance = os.getenv('ENVIRONMENT', 'acceptance') == 'acceptance'
         access_token = GetAccessToken().getAccessToken(
             email, password, acceptance)
@@ -96,7 +96,7 @@ class GetAccessToken(object):
 if __name__ == "__main__":
     acceptance = True
     email = os.getenv('GAS_USER', 'gastransitie_api_user')
-    password = os.getenv('GAS_API_PASSWORD', 'insecure')
+    password = os.getenv('GAS_API_PASSWORD')    # crash hard when missing.
     access_token = GetAccessToken().getAccessToken(
         email, password, acceptance)
     print(f'Received new Access Token Header: {access_token}')
