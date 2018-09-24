@@ -4,6 +4,8 @@ set -e
 set -u
 set -x
 
+POSTGRES_USER=gastransitie
+
 DIR="$(dirname $0)"
 
 dc() {
@@ -27,11 +29,12 @@ echo "Bringing up and waiting for database"
 dc up -d database
 dc run importer /deploy/docker-wait.sh
 
+dc exec -T database createuser -U $POSTGRES_USER postgres || echo "Could not create postgres, continuing"
 echo "Downloading raw datafiles from object store"
-dc run --rm importer ls /data
+# dc run --rm importer ls /data
 dc run --rm importer python manage.py download_data
-dc run --rm importer ls /data
-
+# dc run --rm importer ls /data
+#
 dc exec -T database update-table.sh bag bag_buurt public gastransitie
 dc exec -T database update-db.sh bag
 
