@@ -1,5 +1,6 @@
 # Creates neighborhood information dashboard related to energy.
 
+      
             +-------------------------------+
             | Buurten ~480                  |
             |                               |
@@ -7,28 +8,29 @@
                            |
                            |
                            +<------+ Renovaties
-                           |
-Meerjarige investerings    |
-plannend (MIP)    +------->+
+           Meerjarig       |
+           investerings    |
+           Plan mip------ >+
                            |
                            +<-------+ Coorporatie bezit
                            |
                            |
- Energielabels +           +<-------+ Eigenaren
+          Gasverbruik      +<-------+ Eigenaren
                +--------->>+
                            |
- Alliander gas verbruik    |          Handelsregister
+          Warmte Koude     |          Handelsregister
                    +------>+         +Acitviteiten
-                           |         |
- Warmte koude net +------->+         |
+          Energie labels   |         |
+                  +------->+         |
                            |         |
                            <---------+
                            |
-           +---------------+----------------+
-           |  Rapport per buurt.            |
-           |                                |
-           |                                |
-           +--------------------------------+
+          +----------------+---------------+
+          |   Rapport per buurt.           |
+          |                                |
+          |                                |
+          |                                |
+          +--------------------------------+
 
 
 
