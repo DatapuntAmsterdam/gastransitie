@@ -54,11 +54,11 @@ export default {
         // The oppervlakte category is n-m, eg 70-80.
         // Use a regexp to get the from value
         const [, from] = key.match(/^(\d+)-(\d+)$/)
-        if (from < 90) {
+        if (from < 2000) {
           oppervlakte[key] = grootte[key]
         } else {
           // Collect all oppervlaktes > 90 in one category 90+
-          oppervlakte['90+'] = (oppervlakte['90+'] || 0) + grootte[key]
+          oppervlakte['2000+'] = (oppervlakte['2000+'] || 0) + grootte[key]
         }
       })
 

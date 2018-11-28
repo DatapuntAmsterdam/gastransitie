@@ -160,6 +160,61 @@ GROUP BY (s.statutaire_naam, s.naam) order by thecounts desc
     return big_owners
 
 
+def make_category_rapport(buurt):
+    """
+    """
+    sql = f"""
+SELECT
+    b.naam, c.categorie, count(*)
+FROM brk_eigendom e, brk_eigenaarcategorie c, brk_kadastraalobject ko,
+     brk_kadastraalobjectverblijfsobjectrelatie ovbo,
+     bag_verblijfsobject vbo, bag_buurt b
+WHERE e.cat_id=c.id
+AND e.kadastraal_object_id = ko.id
+AND ovbo.kadastraal_object_id = ko.id
+AND vbo.id = ovbo.verblijfsobject_id
+AND vbo.buurt_id = '{buurt.id}'
+GROUP BY (b.naam, c.categorie)
+    """
+    with connections['bag'].cursor() as cursor:
+        cursor.execute(sql)
+        data = dictfetchall(cursor)
+
+    return data
+
+
+def make_bezit_rapport_v2(buurt):
+    """
+    """
+    sql = f"""
+SELECT * FROM (
+    SELECT b.naam, c.categorie, ei.statutaire_naam, count(*) bezit
+    FROM brk_eigendom e,
+         brk_eigenaarcategorie c,
+         brk_eigenaar ei,
+         brk_kadastraalobject ko,
+         brk_kadastraalobjectverblijfsobjectrelatie ovbo,
+         bag_verblijfsobject vbo, bag_buurt b
+    WHERE e.cat_id=c.id
+    /*and c.categorie = 'Woningbouwcorporaties'*/
+    AND ei.cat_id = c.id
+    AND ei.id = e.kadastraal_subject_id
+    AND ko.id = e.kadastraal_object_id
+    AND ovbo.kadastraal_object_id = e.kadastraal_object_id
+    AND vbo.id = ovbo.verblijfsobject_id
+    AND vbo.buurt_id = '{buurt.id}'
+    AND b.id = vbo.buurt_id
+    GROUP BY (b.naam, c.categorie, ei.statutaire_naam)) AS bezitters
+ORDER BY (bezitters.naam, bezitters.bezit) DESC
+    """
+
+    with connections['bag'].cursor() as cursor:
+        cursor.execute(sql)
+        data = dictfetchall(cursor)
+
+    return data
+
+
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
     columns = [col[0] for col in cursor.description]
@@ -334,35 +389,38 @@ def get_bag_brk_for_all_buurten():
         vbo_count = vbo_json['count']
         log.debug(STATUS_LINE, b.vollcode, 'VBO', vbo_count)
 
-        # Totaal eigenaars
-        parameters = {'buurt': b.vollcode, 'zakelijk_recht': 2}
-        sub_json = get_json(URL_SUB, parameters)
-        sub_count = sub_json['count']
-        log.debug(STATUS_LINE, b.vollcode, 'EIGENAARS', sub_count)
+        # # Totaal eigenaars
+        # parameters = {'buurt': b.vollcode, 'zakelijk_recht': 2}
+        # sub_json = get_json(URL_SUB, parameters)
+        # sub_count = sub_json['count']
+        # log.debug(STATUS_LINE, b.vollcode, 'EIGENAARS', sub_count)
 
-        # Natuurlijk
-        parameters = {'buurt': b.vollcode, 'type': 0, 'zakelijk_recht': 2}
-        sub_json = get_json(URL_SUB, parameters)
-        n_sub_count = sub_json['count']
-        log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NATUURLIJK', n_sub_count)
+        # # Natuurlijk
+        # parameters = {'buurt': b.vollcode, 'type': 0, 'zakelijk_recht': 2}
+        # sub_json = get_json(URL_SUB, parameters)
+        # n_sub_count = sub_json['count']
+        # log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NATUURLIJK', n_sub_count)
 
-        # Niet Natuurlijk
-        parameters = {'buurt': b.vollcode, 'type': 1, 'zakelijk_recht': 2}
-        sub_json = get_json(URL_SUB, parameters)
-        nn_sub_count = sub_json['count']
-        log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NIET N', nn_sub_count)
+        # # Niet Natuurlijk
+        # parameters = {'buurt': b.vollcode, 'type': 1, 'zakelijk_recht': 2}
+        # sub_json = get_json(URL_SUB, parameters)
+        # nn_sub_count = sub_json['count']
+        # log.debug(STATUS_LINE, b.vollcode, 'SUBJECTEN NIET N', nn_sub_count)
 
         # Corporatie bezit
         # c_rapport = make_corporatie_rapport(b)
         # print(c_rapport)
-        bezit_rapport = make_bezit_rapport(b)
 
+        bezit_rapport = make_bezit_rapport_v2(b)
+
+        category_rapport = make_category_rapport(b)
         buurt_rapport = {
-            'vbo_count': vbo_count,
-            'subjecten_count': sub_count,
-            'natuurlijke_subjecten': n_sub_count,
-            'niet_natuurlijke_subjecten': nn_sub_count,
+            # 'vbo_count': vbo_count,
+            # 'subjecten_count': sub_count,
+            # 'natuurlijke_subjecten': n_sub_count,
+            # 'niet_natuurlijke_subjecten': nn_sub_count,
             'groot_bezitters': bezit_rapport,
+            'category_rapport': category_rapport,
             'bewoners_count': bewoner_count,
             'gebruik': bag_gebruik,
             'bouwkundige_groote': bouwkundige_groote,
