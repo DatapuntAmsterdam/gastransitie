@@ -1,3 +1,38 @@
+# Creates neighborhood information dashboard related to energy.
+
+            +-------------------------------+
+            | Buurten ~480                  |
+            |                               |
+            +--------------+----------------+
+                           |
+                           |
+                           +<------+ Renovaties
+                           |
+Meerjarige investerings    |
+plannend (MIP)    +------->+
+                           |
+                           +<-------+ Coorporatie bezit
+                           |
+                           |
+ Energielabels +           +<-------+ Eigenaren
+               +--------->>+
+                           |
+ Alliander gas verbruik    |          Handelsregister
+                   +------>+         +Acitviteiten
+                           |         |
+ Warmte koude net +------->+         |
+                           |         |
+                           <---------+
+                           |
+           +---------------+----------------+
+           |  Rapport per buurt.            |
+           |                                |
+           |                                |
+           +--------------------------------+
+
+
+
+
 # Energy Transition Project / Energie transitie project
 
 Data dashboard providing information about gas / energy information
