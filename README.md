@@ -1,3 +1,40 @@
+# Creates neighborhood information dashboard related to energy.
+
+      
+            +-------------------------------+
+            | Buurten ~480                  |
+            |                               |
+            +--------------+----------------+
+                           |
+                           |
+                           +<------+ Renovaties
+           Meerjarig       |
+           investerings    |
+           Plan mip------ >+
+                           |
+                           +<-------+ Coorporatie bezit
+                           |
+                           |
+          Gasverbruik      +<-------+ Eigenaren
+               +--------->>+
+                           |
+          Warmte Koude     |          Handelsregister
+                   +------>+         +Acitviteiten
+          Energie labels   |         |
+                  +------->+         |
+                           |         |
+                           <---------+
+                           |
+          +----------------+---------------+
+          |   Rapport per buurt.           |
+          |                                |
+          |                                |
+          |                                |
+          +--------------------------------+
+
+
+
+
 # Energy Transition Project / Energie transitie project
 
 Data dashboard providing information about gas / energy information

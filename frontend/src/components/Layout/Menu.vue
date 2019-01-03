@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/stijl/dist/scss/ams-colorpalette";
+@import "~amsterdam-stijl/dist/scss/ams-colorpalette";
 
 .menu {
   background-color: $ams-lichtgrijs;
