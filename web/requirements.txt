@@ -12,7 +12,7 @@ click==6.7
 coreapi==2.3.3
 coreschema==0.0.4
 cryptography==2.3
-datapunt-authorization-django==0.3.1
+datapunt-authorization-django==1.0.0
 datapunt-authorization-levels==0.1.3
 datapunt-config-loader==1.1.0
 debtcollector==1.19.0
