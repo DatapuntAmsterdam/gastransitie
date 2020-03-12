@@ -90,7 +90,7 @@ python-dateutil==2.6.1
 python-keystoneclient==3.15.0
 python-swiftclient==3.5.0
 pytz==2018.3
-PyYAML==3.12
+PyYAML==5.1
 pyzmq==17.0.0
 qtconsole==4.3.1
 requests==2.20.0
